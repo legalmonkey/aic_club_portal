@@ -7,6 +7,9 @@ import { createNotification } from '@/lib/notifications';
 import { sendEmail } from '@/lib/email';
 import { calculateDistanceMeters, VIT_CAMPUS_LAT, VIT_CAMPUS_LNG } from '@/lib/exif';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET(request: Request) {
   const session = await getServerSession(authOptions);
   const { searchParams } = new URL(request.url);

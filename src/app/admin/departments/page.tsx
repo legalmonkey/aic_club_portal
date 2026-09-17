@@ -12,7 +12,7 @@ export default function AdminDepartmentsPage() {
   const [isCreating, setIsCreating] = useState(false);
 
   const fetchDepartments = () => {
-    fetch('/api/departments')
+    fetch(`/api/departments?_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.departments) setDepartments(data.departments);
