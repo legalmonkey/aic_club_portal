@@ -41,7 +41,7 @@ export function Header({ pageTitle = 'Portal Control Hub', userPoints }: HeaderP
     { name: 'Aditya Singh', email: 'aditya.singh@vitstudent.ac.in', role: 'lead', title: 'Lead — Operations' },
     { name: 'Rohan Patel', email: 'rohan.patel@vitstudent.ac.in', role: 'member', title: 'Member — Technical (350+ pts)' },
     { name: 'Dr. K. Swaminathan', email: 'k.swaminathan@vitstudent.ac.in', role: 'board', title: 'Board — Faculty Sponsor' },
-    { name: 'AIC Super Admin', email: 'admin@vitstudent.ac.in', role: 'super_admin', title: 'Super Admin — Governance' },
+    { name: 'Ritvik Arun Bhat', email: 'ritvik.arunbhat2025@vitstudent.ac.in', role: 'super_admin', title: 'Super Admin — Governance' },
   ];
 
   const handleSwitchPersona = async (persona: typeof personas[0]) => {

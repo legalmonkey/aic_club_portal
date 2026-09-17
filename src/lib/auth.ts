@@ -67,33 +67,23 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Only @vitstudent.ac.in accounts allowed');
         }
 
-        // 2. Fetch user directly from the database
-        let user = store.getUserByEmail(email);
+        // 2. Fetch user directly from the live database
+        let user: any = null;
+        try {
+          user = await prisma.user.findUnique({
+            where: { email },
+          });
+        } catch (err) {
+          console.error('Prisma user lookup error:', err);
+        }
 
         if (!user) {
-          // New user signup: check if in preconfigured roster, otherwise default to member
-          const preconfigured = preconfiguredLeadsAndBoard[email];
-          const role = preconfigured ? preconfigured.role : 'member';
-          const departmentId = preconfigured ? preconfigured.departmentId || null : null;
+          user = store.getUserByEmail(email);
+        }
 
-          user = {
-            id: `user-${Date.now()}`,
-            name: email.split('@')[0].split('.').map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(' '),
-            email,
-            role,
-            departmentId: role === 'lead' ? (departmentId || 'dept-tech') : null,
-            yearDept:
-              role === 'super_admin'
-                ? 'Chapter Governance & Super Admin'
-                : role === 'lead'
-                ? 'Department Co-Lead'
-                : role === 'board'
-                ? 'Chapter Executive'
-                : 'Student Member',
-            isOnboarded: role !== 'member', // members must complete onboarding
-            createdAt: new Date(),
-          };
-          store.users.push(user);
+        // Strict whitelist: Only registered users are allowed
+        if (!user) {
+          throw new Error('Your email is not registered in the chapter database. Please contact an administrator.');
         }
 
         return {
@@ -121,28 +111,25 @@ export const authOptions: NextAuthOptions = {
 
       // Sync role from database record
       const email = user.email.toLowerCase().trim();
-      let dbUser = store.getUserByEmail(email);
+      let dbUser: any = null;
+
+      try {
+        dbUser = await prisma.user.findUnique({
+          where: { email },
+        });
+      } catch (err) {
+        console.error('Prisma user lookup error:', err);
+      }
+
       if (!dbUser) {
-        const preconfigured = preconfiguredLeadsAndBoard[email];
-        const role = preconfigured ? preconfigured.role : 'member';
-        dbUser = {
-          id: user.id || `user-${Date.now()}`,
-          name: user.name || email.split('@')[0],
-          email,
-          role,
-          departmentId: preconfigured?.departmentId || null,
-          yearDept:
-            role === 'super_admin'
-              ? 'Chapter Governance & Super Admin'
-              : role === 'lead'
-              ? 'Department Co-Lead'
-              : role === 'board'
-              ? 'Chapter Executive'
-              : 'Student Member',
-          isOnboarded: role !== 'member',
-          createdAt: new Date(),
-        };
-        store.users.push(dbUser);
+        dbUser = store.getUserByEmail(email);
+      }
+
+      // STRICT PRE-AUTHORIZED WHITELIST:
+      // Only users whose emails are pre-registered in the database are allowed to sign in.
+      if (!dbUser) {
+        console.warn(`[AUTH] Access denied: ${email} is not registered in the database.`);
+        return false;
       }
 
       user.role = dbUser.role;
@@ -162,12 +149,30 @@ export const authOptions: NextAuthOptions = {
         token.isOnboarded = user.isOnboarded;
       }
 
-      // Always read latest role and status directly from the database record
-      if (token.id) {
-        const dbUser = store.getUserById(token.id as string) || (token.email ? store.getUserByEmail(token.email as string) : null);
+      // Always read latest role and status directly from the live database
+      if (token.id || token.email) {
+        let dbUser: any = null;
+        try {
+          if (token.email) {
+            dbUser = await prisma.user.findUnique({
+              where: { email: token.email as string },
+              include: { department: true },
+            });
+          }
+        } catch (err) {
+          console.error('Prisma jwt lookup error:', err);
+        }
+
+        if (!dbUser) {
+          dbUser = token.id
+            ? store.getUserById(token.id as string)
+            : (token.email ? store.getUserByEmail(token.email as string) : null);
+        }
+
         if (dbUser) {
           token.role = dbUser.role;
           token.departmentId = dbUser.departmentId;
+          token.departmentName = dbUser.department?.name || store.getDepartmentById(dbUser.departmentId || '')?.name || null;
           token.regNo = dbUser.regNo;
           token.yearDept = dbUser.yearDept;
           token.isOnboarded = dbUser.isOnboarded;
@@ -180,7 +185,7 @@ export const authOptions: NextAuthOptions = {
         if (session.isOnboarded !== undefined) token.isOnboarded = session.isOnboarded;
       }
 
-      if (token.departmentId) {
+      if (token.departmentId && !token.departmentName) {
         const dept = store.getDepartmentById(token.departmentId as string);
         token.departmentName = dept?.name || null;
       }

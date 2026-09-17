@@ -104,7 +104,7 @@ export const initialDepartments: DepartmentData[] = [
 
 // 2. Pre-configured Roster for Backend Configuration
 export const preconfiguredLeadsAndBoard: Record<string, { role: 'lead' | 'board' | 'super_admin'; departmentId?: string; title: string }> = {
-  'admin@vitstudent.ac.in': { role: 'super_admin', title: 'Super Administrator' },
+  'ritvik.arunbhat2025@vitstudent.ac.in': { role: 'super_admin', title: 'Super Administrator' },
 };
 
 // 3. Production Store Manager
@@ -115,8 +115,8 @@ class PortalStoreManager {
   users: UserData[] = [
     {
       id: 'admin-super-1',
-      name: 'AIC Super Administrator',
-      email: 'admin@vitstudent.ac.in',
+      name: 'Ritvik Arun Bhat',
+      email: 'ritvik.arunbhat2025@vitstudent.ac.in',
       role: 'super_admin',
       departmentId: null,
       yearDept: 'Chapter Governance & Super Admin',

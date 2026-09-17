@@ -12,6 +12,18 @@ export default function LoginPage() {
   const [errorMsg, setErrorMsg] = useState('');
   const [activeLaunchingEmail, setActiveLaunchingEmail] = useState<string | null>(null);
 
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const error = params.get('error');
+      if (error === 'AccessDenied') {
+        setErrorMsg('Access Restricted: Your @vitstudent.ac.in account is not registered in the chapter database. Please contact an administrator to be provisioned.');
+      } else if (error) {
+        setErrorMsg(`Authentication notice: ${error}`);
+      }
+    }
+  }, []);
+
   const handleOAuthLogin = () => {
     setLoading(true);
     // Let root page route directly based on database role

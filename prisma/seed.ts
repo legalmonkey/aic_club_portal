@@ -25,11 +25,13 @@ async function main() {
 
   // Seed initial Super Administrator
   await prisma.user.upsert({
-    where: { email: 'admin@vitstudent.ac.in' },
-    update: {},
+    where: { email: 'ritvik.arunbhat2025@vitstudent.ac.in' },
+    update: {
+      role: 'super_admin',
+    },
     create: {
-      name: 'AIC Super Administrator',
-      email: 'admin@vitstudent.ac.in',
+      name: 'Ritvik Arun Bhat',
+      email: 'ritvik.arunbhat2025@vitstudent.ac.in',
       role: 'super_admin',
     },
   });
