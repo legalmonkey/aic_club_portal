@@ -501,11 +501,17 @@ export default function LeadDashboardPage() {
                           <span className="w-6 h-6 rounded-full bg-off-white border border-light-grey flex items-center justify-center font-mono font-bold text-xs text-tech-grey shrink-0">
                             #{idx + 2}
                           </span>
-                          <img
-                            alt={user.name}
-                            src={user.avatarUrl || 'https://lh3.googleusercontent.com/aida-public/AB6AXuAmyetyiKeHvY7dm1vPmCYqn9ijagcVgT0d8aewMhkBcar6d_FVhQ-I8RKEWoYBPTE_o9K9bL3nr61r9WE72P6r1rhplnddMcweNMG_OymnomDEIBc4tAEf1h6A5h9ph6_WtVS9_YNRaoiOr6bISrZ7IpwSxHO8pfcu_qPA-OvVuxvNmBcHOH3NTjCVJ9tT4P3yaPtH0WmITDW2YMiqFyEbsHK3iyKoHSrY3V-IfjL53iE_Kd00-I8j'}
-                            className="w-8 h-8 rounded-full object-cover shrink-0"
-                          />
+                          {user.avatarUrl ? (
+                            <img
+                              alt={user.name}
+                              src={user.avatarUrl}
+                              className="w-8 h-8 rounded-full object-cover shrink-0"
+                            />
+                          ) : (
+                            <div className="w-8 h-8 rounded-full bg-off-white border border-light-grey flex items-center justify-center text-tech-grey shrink-0">
+                              <span className="material-symbols-outlined text-base text-tech-grey">person</span>
+                            </div>
+                          )}
                           <div className="flex flex-col min-w-0">
                             <span className="font-heading text-xs text-deep-navy font-bold truncate">
                               {user.name}

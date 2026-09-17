@@ -55,7 +55,7 @@ export async function POST(request: Request) {
     departmentId: departmentId || null,
     yearDept: yearDept || 'Student Member',
     regNo: regNo || '22BCE1000',
-    avatarUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBzkgs-Xs9KAw3ivlSvtEJ0uUrOEOwf1TMEf2YRpWINiZrHcEPQDTiO6dD7Qg3_i7pxgISTnrNvGo2eWlQei62-ocUEEtutzEPWblTSd3_60YbK8YPR5rNA1xgnF6c9MmQ64F85nCXk87wRMqyZN2FhkN2h7-pL-J9BKVNxjHZFF5TPosOeg0zeuM0gQit7i8ScbiApO6dhZaRKK1EDNkv9GpO57JpAMt8xET2g1Q50T0PhC5MjN6ZD',
+    avatarUrl: undefined,
     createdAt: new Date(),
   };
 

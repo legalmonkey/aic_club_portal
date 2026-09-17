@@ -185,14 +185,17 @@ export default function BoardDashboardPage() {
 
                         <td className="py-3.5 px-4">
                           <div className="flex items-center gap-3">
-                            <img
-                              alt={user.name}
-                              src={
-                                user.avatarUrl ||
-                                'https://lh3.googleusercontent.com/aida-public/AB6AXuBzkgs-Xs9KAw3ivlSvtEJ0uUrOEOwf1TMEf2YRpWINiZrHcEPQDTiO6dD7Qg3_i7pxgISTnrNvGo2eWlQei62-ocUEEtutzEPWblTSd3_60YbK8YPR5rNA1xgnF6c9MmQ64F85nCXk87wRMqyZN2FhkN2h7-pL-J9BKVNxjHZFF5TPosOeg0zeuM0gQit7i8ScbiApO6dhZaRKK1EDNkv9GpO57JpAMt8xET2g1Q50T0PhC5MjN6ZD'
-                              }
-                              className="w-8 h-8 rounded-full object-cover ring-1 ring-light-grey"
-                            />
+                            {user.avatarUrl ? (
+                              <img
+                                alt={user.name}
+                                src={user.avatarUrl}
+                                className="w-8 h-8 rounded-full object-cover ring-1 ring-light-grey shrink-0"
+                              />
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-off-white border border-light-grey flex items-center justify-center text-tech-grey shrink-0">
+                                <span className="material-symbols-outlined text-base text-tech-grey">person</span>
+                              </div>
+                            )}
                             <div className="flex flex-col min-w-0">
                               <span className="font-sans font-bold text-deep-navy">
                                 {user.name}
