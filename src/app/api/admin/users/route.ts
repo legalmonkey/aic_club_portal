@@ -5,6 +5,9 @@ import { authOptions } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { store } from '@/lib/store';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   const session = await getServerSession(authOptions);
   if (session?.user?.role !== 'super_admin' && session?.user?.role !== 'board') {
@@ -57,7 +60,14 @@ export async function GET() {
   }
 
   const users = Array.from(userMap.values());
-  return NextResponse.json({ users });
+  return NextResponse.json(
+    { users },
+    {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      },
+    }
+  );
 }
 
 export async function POST(request: Request) {
@@ -69,8 +79,10 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { name, email, role, departmentId, yearDept, regNo } = body;
 
-  if (!email || !email.endsWith('@vitstudent.ac.in')) {
-    return NextResponse.json({ error: 'Valid @vitstudent.ac.in email required' }, { status: 400 });
+  const cleanEmail = email ? email.toLowerCase().trim() : '';
+
+  if (!cleanEmail || !cleanEmail.endsWith('@vitstudent.ac.in')) {
+    return NextResponse.json({ error: 'Valid @vitstudent.ac.in institutional email required' }, { status: 400 });
   }
 
   const cleanRole = (role as 'member' | 'lead' | 'board' | 'super_admin') || 'member';
@@ -81,25 +93,29 @@ export async function POST(request: Request) {
   let savedUser: any = null;
   try {
     savedUser = await prisma.user.upsert({
-      where: { email: email.toLowerCase().trim() },
+      where: { email: cleanEmail },
       update: {
         name: name || undefined,
         role: cleanRole,
         departmentId: cleanDeptId,
       },
       create: {
-        name: name || email.split('@')[0],
-        email: email.toLowerCase().trim(),
+        name: name || cleanEmail.split('@')[0],
+        email: cleanEmail,
         role: cleanRole,
         departmentId: cleanDeptId,
       },
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error('Prisma user provisioning error:', err);
+    return NextResponse.json(
+      { error: `Database error provisioning user: ${err?.message || 'Check database connection'}` },
+      { status: 500 }
+    );
   }
 
   // 2. Keep in-memory store in sync
-  const existing = store.getUserByEmail(email);
+  const existing = store.getUserByEmail(cleanEmail);
   if (existing) {
     if (name) existing.name = name;
     existing.role = cleanRole;
@@ -109,8 +125,8 @@ export async function POST(request: Request) {
   } else {
     store.users.push({
       id: savedUser?.id || `user-${Date.now()}`,
-      name: name || email.split('@')[0],
-      email: email.toLowerCase().trim(),
+      name: name || cleanEmail.split('@')[0],
+      email: cleanEmail,
       role: cleanRole,
       departmentId: cleanDeptId,
       yearDept: yearDept || (cleanRole === 'super_admin' ? 'Chapter Governance & Super Admin' : 'Student Member'),
@@ -120,5 +136,12 @@ export async function POST(request: Request) {
     });
   }
 
-  return NextResponse.json({ success: true, user: savedUser || existing });
+  return NextResponse.json(
+    { success: true, user: savedUser || existing },
+    {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      },
+    }
+  );
 }

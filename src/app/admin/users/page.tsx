@@ -16,9 +16,10 @@ export default function AdminUsersPage() {
   const [role, setRole] = useState('lead');
   const [deptId, setDeptId] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+  const [modalError, setModalError] = useState('');
 
   const fetchUsers = () => {
-    fetch('/api/admin/users')
+    fetch(`/api/admin/users?_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.users) setUsers(data.users);
@@ -28,7 +29,7 @@ export default function AdminUsersPage() {
 
   useEffect(() => {
     fetchUsers();
-    fetch('/api/departments')
+    fetch('/api/departments', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.departments) {
@@ -42,26 +43,34 @@ export default function AdminUsersPage() {
   const handleCreateUser = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
+    setModalError('');
     try {
+      const cleanEmail = email.trim().toLowerCase();
       const res = await fetch('/api/admin/users', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name,
-          email,
+          name: name.trim(),
+          email: cleanEmail,
           role,
           departmentId: (role === 'lead' || role === 'member') ? deptId : null,
         }),
       });
 
-      if (res.ok) {
-        setShowAddModal(false);
-        setName('');
-        setEmail('');
-        fetchUsers();
+      const data = await res.json();
+      if (!res.ok) {
+        setModalError(data.error || 'Failed to provision user.');
+        return;
       }
-    } catch (err) {
+
+      setShowAddModal(false);
+      setName('');
+      setEmail('');
+      setModalError('');
+      fetchUsers();
+    } catch (err: any) {
       console.error(err);
+      setModalError(err.message || 'Error provisioning user.');
     } finally {
       setIsSaving(false);
     }
@@ -92,7 +101,10 @@ export default function AdminUsersPage() {
               </div>
 
               <button
-                onClick={() => setShowAddModal(true)}
+                onClick={() => {
+                  setModalError('');
+                  setShowAddModal(true);
+                }}
                 className="px-4 py-2.5 bg-gradient-to-r from-electric-blue to-light-blue text-white font-sans text-xs font-bold rounded-lg flex items-center gap-1.5 shadow-sm hover:opacity-90 transition-opacity self-start sm:self-auto"
               >
                 <span className="material-symbols-outlined text-base">person_add</span>
@@ -205,6 +217,13 @@ export default function AdminUsersPage() {
             </div>
 
             <form onSubmit={handleCreateUser} className="flex flex-col gap-4">
+              {modalError && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-lg flex items-center gap-2">
+                  <span className="material-symbols-outlined text-base text-red-500">error</span>
+                  <span>{modalError}</span>
+                </div>
+              )}
+
               <div className="flex flex-col gap-1.5">
                 <label className="font-sans text-xs font-semibold text-deep-navy">Full Name</label>
                 <input
