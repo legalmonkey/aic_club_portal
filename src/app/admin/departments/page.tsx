@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
+import { BackButton } from '@/components/ui/BackButton';
 
 export default function AdminDepartmentsPage() {
   const [departments, setDepartments] = useState<any[]>([]);
@@ -55,6 +56,7 @@ export default function AdminDepartmentsPage() {
         <main className="w-full pt-20 px-6 sm:px-8 pb-16 flex-1">
           <div className="flex flex-col w-full gap-8 max-w-7xl mx-auto">
             <div className="border-b border-light-grey pb-5">
+              <BackButton href="/admin" label="Back to Admin Dashboard" className="mb-2" />
               <div className="flex items-center gap-2 text-electric-blue font-mono text-xs font-semibold uppercase tracking-wider mb-1">
                 <span className="inline-block w-2 h-2 rounded-full bg-electric-blue animate-pulse"></span>
                 NIS-01 // CHAPTER STRUCTURE &amp; CO-LEADERSHIP

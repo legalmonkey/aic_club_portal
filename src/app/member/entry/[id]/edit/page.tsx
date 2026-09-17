@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
+import { BackButton } from '@/components/ui/BackButton';
 import { extractGeotagFromImage } from '@/lib/exif';
 
 export default function EditRejectedSubmissionPage() {
@@ -123,6 +124,7 @@ export default function EditRejectedSubmissionPage() {
           <div className="flex flex-col w-full max-w-4xl gap-space-lg">
             {/* Header */}
             <div className="flex flex-col gap-space-2xs">
+              <BackButton href="/member/dashboard" label="Back to Dashboard" className="mb-2" />
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-red-50 border border-red-200 text-red-600 font-mono text-xs uppercase tracking-wider mb-2 font-semibold w-fit">
                 <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
                 NIS-01 // REVISION REQUIRED

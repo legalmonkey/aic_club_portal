@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
+import { BackButton } from '@/components/ui/BackButton';
 
 interface Submission {
   id: string;
@@ -168,6 +169,7 @@ export default function LeadReviewQueuePage() {
             {/* Header & Pending Action Banner */}
             <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
               <div>
+                <BackButton href="/lead/dashboard" label="Back to Lead Dashboard" className="mb-2" />
                 <h1 className="font-heading text-3xl md:text-4xl text-deep-navy tracking-tight font-bold">
                   Verification &amp; Review Queue
                 </h1>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
+import { BackButton } from '@/components/ui/BackButton';
 import {
   BarChart,
   Bar,
@@ -116,6 +117,7 @@ export default function AnalyticsPage() {
             {/* Title Section */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-light-grey pb-5">
               <div>
+                <BackButton href="/lead/dashboard" label="Back to Lead Dashboard" className="mb-2" />
                 <div className="flex items-center gap-2 text-electric-blue font-mono text-xs font-semibold uppercase tracking-wider mb-1">
                   <span className="inline-block w-2 h-2 rounded-full bg-electric-blue animate-pulse"></span>
                   NIS-01 // TELEMETRY &amp; AUDIT INTELLIGENCE

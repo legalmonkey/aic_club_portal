@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
+import { BackButton } from '@/components/ui/BackButton';
 import { extractGeotagFromImage, GeotagResult } from '@/lib/exif';
 
 export default function NewShiftEntryPage() {
@@ -116,6 +117,7 @@ export default function NewShiftEntryPage() {
             {/* Page Header */}
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
               <div>
+                <BackButton href="/member/dashboard" label="Back to Dashboard" className="mb-2" />
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-electric-blue/10 border border-electric-blue/20 text-electric-blue font-mono text-xs uppercase tracking-wider mb-2 font-semibold">
                   <span className="w-1.5 h-1.5 rounded-full bg-electric-blue animate-pulse"></span>
                   NIS-01 // TELEMETRY INGESTION ENGINE

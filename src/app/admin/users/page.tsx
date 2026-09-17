@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
+import { BackButton } from '@/components/ui/BackButton';
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState<any[]>([]);
@@ -49,7 +50,7 @@ export default function AdminUsersPage() {
           name,
           email,
           role,
-          departmentId: deptId,
+          departmentId: (role === 'lead' || role === 'member') ? deptId : null,
         }),
       });
 
@@ -77,6 +78,7 @@ export default function AdminUsersPage() {
           <div className="flex flex-col w-full gap-8 max-w-7xl mx-auto">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-light-grey pb-5">
               <div>
+                <BackButton href="/admin" label="Back to Admin Dashboard" className="mb-2" />
                 <div className="flex items-center gap-2 text-electric-blue font-mono text-xs font-semibold uppercase tracking-wider mb-1">
                   <span className="inline-block w-2 h-2 rounded-full bg-electric-blue animate-pulse"></span>
                   NIS-01 // ACCESS CONTROL &amp; ROLES
@@ -160,9 +162,21 @@ export default function AdminUsersPage() {
                       </td>
 
                       <td className="py-3.5 px-4">
-                        <span className="font-sans font-medium text-electric-blue">
-                          {u.departmentName || 'All Divisions'}
-                        </span>
+                        {u.role === 'super_admin' ? (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-deep-navy/5 border border-deep-navy/15 text-deep-navy font-mono text-[11px] font-semibold">
+                            <span className="material-symbols-outlined text-xs text-electric-blue">corporate_fare</span>
+                            Chapter-wide (All Divisions)
+                          </span>
+                        ) : u.role === 'board' ? (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-900 font-mono text-[11px] font-semibold">
+                            <span className="material-symbols-outlined text-xs text-amber-600">shield_person</span>
+                            Executive Oversight
+                          </span>
+                        ) : (
+                          <span className="font-sans font-medium text-electric-blue">
+                            {u.departmentName && u.departmentName !== 'Unassigned' ? u.departmentName : 'Unassigned'}
+                          </span>
+                        )}
                       </td>
 
                       <td className="py-3.5 px-4 text-right font-mono font-bold text-deep-navy">
@@ -229,7 +243,7 @@ export default function AdminUsersPage() {
                 </select>
               </div>
 
-              {role === 'lead' && (
+              {(role === 'lead' || role === 'member') ? (
                 <div className="flex flex-col gap-1.5">
                   <label className="font-sans text-xs font-semibold text-deep-navy">Assigned Division</label>
                   <select
@@ -243,6 +257,17 @@ export default function AdminUsersPage() {
                       </option>
                     ))}
                   </select>
+                </div>
+              ) : (
+                <div className="p-3 bg-off-white rounded-lg border border-light-grey text-[11px] font-mono text-tech-grey flex items-center gap-2">
+                  <span className="material-symbols-outlined text-electric-blue text-base">
+                    {role === 'super_admin' ? 'corporate_fare' : 'shield_person'}
+                  </span>
+                  <span>
+                    {role === 'super_admin'
+                      ? 'Super Admins hold chapter-wide jurisdiction across all divisions.'
+                      : 'Board members oversee all chapter departments with executive authority.'}
+                  </span>
                 </div>
               )}
 

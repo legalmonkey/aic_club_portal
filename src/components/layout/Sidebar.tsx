@@ -47,7 +47,11 @@ export function Sidebar({ pendingReviewCount }: SidebarProps) {
           label: 'Overview',
           href: getOverviewHref(),
           icon: 'dashboard',
-          active: pathname === '/member/dashboard' || pathname === '/lead/dashboard' || pathname === '/board/dashboard',
+          active:
+            pathname === '/member/dashboard' ||
+            pathname === '/lead/dashboard' ||
+            pathname === '/board/dashboard' ||
+            (role === 'super_admin' && pathname === '/admin'),
         },
         // Lead and Super Admin only
         ...(role === 'lead' || role === 'super_admin'
