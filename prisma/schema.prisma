@@ -1,0 +1,108 @@
+// schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  member
+  lead
+  board
+  super_admin
+}
+
+enum SubmissionStatus {
+  pending
+  approved
+  rejected
+  resubmitted
+}
+
+model User {
+  id             String         @id @default(cuid())
+  name           String
+  email          String         @unique
+  googleId       String?        @unique
+  role           Role           @default(member)
+  departmentId   String?
+  department     Department?    @relation("MemberDepartment", fields: [departmentId], references: [id])
+  ledDepartments Department[]   @relation("DepartmentLeads")
+  submissions    Submission[]   @relation("SubmittedBy")
+  reviewed       Submission[]   @relation("ReviewedBy")
+  notifications  Notification[]
+  createdAt      DateTime       @default(now())
+}
+
+model Department {
+  id      String @id @default(cuid())
+  name    String @unique
+  leads   User[] @relation("DepartmentLeads")
+  members User[] @relation("MemberDepartment")
+}
+
+model Submission {
+  id              String           @id @default(cuid())
+  memberId        String
+  member          User             @relation("SubmittedBy", fields: [memberId], references: [id])
+  departmentId    String
+  date            DateTime
+  venue           String
+  roleInEvent     String
+  eventName       String
+  comments        String // mandatory, free text
+  photoUrl        String
+  geoLat          Float?
+  geoLng          Float?
+  status          SubmissionStatus @default(pending)
+  pointsAwarded   Int?
+  rejectionReason String?
+  reviewedById    String?
+  reviewedBy      User?            @relation("ReviewedBy", fields: [reviewedById], references: [id])
+  createdAt       DateTime         @default(now())
+  reviewedAt      DateTime?
+}
+
+model PointsLedger {
+  id           String   @id @default(cuid())
+  memberId     String
+  submissionId String
+  points       Int
+  createdAt    DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String // submission_approved | submission_rejected | new_submission_in_queue | resubmission
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model SmtpAccount {
+  id          String   @id @default(cuid())
+  label       String
+  host        String
+  port        Int
+  username    String
+  password    String // store encrypted or in env, not plain DB text, in production
+  dailyLimit  Int      @default(100)
+  sentToday   Int      @default(0)
+  lastResetAt DateTime @default(now())
+  active      Boolean  @default(true)
+}
+
+model EmailLog {
+  id            String   @id @default(cuid())
+  smtpAccountId String
+  recipient     String
+  type          String
+  status        String // sent | failed | queued
+  sentAt        DateTime @default(now())
+}

@@ -1,0 +1,527 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "on-primary": "#ffffff",
+        "on-primary-fixed": "#001453",
+        "surface-variant": "#dae2fd",
+        "surface-container-highest": "#dae2fd",
+        "outline-variant": "#c4c5d5",
+        "surface-container": "#eaedff",
+        "surface-container-high": "#e2e7ff",
+        "on-secondary": "#ffffff",
+        "on-error": "#ffffff",
+        "inverse-on-surface": "#eef0ff",
+        "tertiary-fixed": "#dbe1ff",
+        "tertiary": "#002e81",
+        "primary": "#00288e",
+        "on-error-container": "#93000a",
+        "on-tertiary-fixed": "#00174b",
+        "on-tertiary-container": "#a4b9ff",
+        "outline": "#757684",
+        "on-background": "#131b2e",
+        "surface-container-lowest": "#ffffff",
+        "on-secondary-fixed-variant": "#653e00",
+        "secondary": "#855300",
+        "on-tertiary": "#ffffff",
+        "surface-dim": "#d2d9f4",
+        "primary-fixed": "#dde1ff",
+        "surface-tint": "#3755c3",
+        "on-surface": "#131b2e",
+        "on-secondary-fixed": "#2a1700",
+        "inverse-surface": "#283044",
+        "surface": "#faf8ff",
+        "surface-container-low": "#f2f3ff",
+        "surface-bright": "#faf8ff",
+        "error-container": "#ffdad6",
+        "secondary-fixed": "#ffddb8",
+        "secondary-fixed-dim": "#ffb95f",
+        "on-surface-variant": "#444653",
+        "primary-fixed-dim": "#b8c4ff",
+        "background": "#faf8ff",
+        "tertiary-container": "#0042b2",
+        "primary-container": "#1e40af",
+        "inverse-primary": "#b8c4ff",
+        "error": "#ba1a1a",
+        "on-tertiary-fixed-variant": "#003ea8",
+        "secondary-container": "#fea619",
+        "on-primary-fixed-variant": "#173bab",
+        "tertiary-fixed-dim": "#b4c5ff",
+        "on-secondary-container": "#684000",
+        "on-primary-container": "#a8b8ff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "gutter-desktop": "1.5rem",
+        "margin-desktop": "2.5rem",
+        "gutter-mobile": "1rem",
+        "space-3xl": "3rem",
+        "margin-tablet": "1.5rem",
+        "margin-mobile": "1rem",
+        "margin": "2rem",
+        "space-xl": "2rem",
+        "space-lg": "1.5rem",
+        "space-2xl": "2.5rem",
+        "space-xs": "0.5rem",
+        "space-2xs": "0.25rem",
+        "gutter": "1.5rem",
+        "space-sm": "0.75rem",
+        "space-md": "1rem"
+      },
+      "fontFamily": {
+        "label-md": ["Plus Jakarta Sans"],
+        "headline-xl": ["Plus Jakarta Sans"],
+        "headline-md": ["Plus Jakarta Sans"],
+        "body-md": ["Plus Jakarta Sans"],
+        "headline-xl-mobile": ["Plus Jakarta Sans"],
+        "headline-lg-mobile": ["Plus Jakarta Sans"],
+        "label-sm": ["Plus Jakarta Sans"],
+        "metric-display": ["Plus Jakarta Sans"],
+        "body-sm": ["Plus Jakarta Sans"],
+        "body-lg": ["Plus Jakarta Sans"],
+        "headline-sm": ["Plus Jakarta Sans"],
+        "label-lg": ["Plus Jakarta Sans"],
+        "headline-lg": ["Plus Jakarta Sans"]
+      },
+      "fontSize": {
+        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+        "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+        "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+        "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+        "headline-xl-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700"}],
+        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+        "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+        "metric-display": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "700"}],
+        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+        "body-lg": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+        "headline-sm": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600"}],
+        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700"}]
+      }
+    }
+  }
+}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between select-none"><div class="flex flex-col"><div class="h-20 px-space-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="AIC Club Portal logo featuring a brain icon split vertically: left half in gray line art, right half in blue circuit line art with nodes, with a dark rounded chip labeled 'AIC' at the center." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VOTnKeqwY_mwx6F_ZPTOVlIAUuKAimk2fayA7J2x60R0kKMXmKdYiSp_euRmn5qLqzkbbtMJyq88vDpgxdGhpBfBo5vTCBFRsuFqFf0xCDH1kqslKguLXAMKkwEJ7zzj1Hz01evX2zF6K-uJDIBJGn0fnUw7V3NXJgy2F4RMCAzkGoh5NhC1DvRNKM40dbc3bHIvWkb13N1k7ZYZopFKRf6tgYHLaXNk4-dFRVjJO2kc0TMrZDHFOs-w"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">AIC Portal</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Student Chapter</span></div></div></div><div class="px-space-md py-space-xs"><div class="bg-surface-container-low rounded-lg p-space-xs flex items-center justify-between"><span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-space-2xs"><span class="w-2 h-2 rounded-full bg-secondary"></span>VIT Student Chapter</span></div></div><div class="px-space-md mt-space-sm"><span class="font-label-sm text-label-sm text-outline px-space-sm uppercase tracking-wider block mb-space-xs">Operations &amp; Records</span><nav class="flex flex-col gap-space-2xs" data-active-classes="bg-primary text-on-primary font-bold rounded-lg shadow-sm"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard-overview" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-outline">dashboard</span><span class="font-label-lg text-label-lg">Overview</span></div></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="review-queue" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-outline">rate_review</span><span class="font-label-lg text-label-lg">Review Queue</span></div><span class="font-label-sm text-label-sm px-space-xs py-space-2xs rounded-full bg-secondary-container text-on-secondary-container font-bold">12</span></a><a aria-current="page" class="flex items-center justify-between px-space-md py-space-sm transition-colors bg-primary text-on-primary font-bold rounded-lg shadow-sm" data-path="new-entry-log-shift" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-outline">add_circle</span><span class="font-label-lg text-label-lg">Log Shift Entry</span></div><span class="material-symbols-outlined text-secondary text-sm">bolt</span></a></nav></div><div class="px-space-md mt-space-lg"><span class="font-label-sm text-label-sm text-outline px-space-sm uppercase tracking-wider block mb-space-xs">Community &amp; Standings</span><nav class="flex flex-col gap-space-2xs" data-active-classes="bg-primary text-on-primary font-bold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="leaderboard-standings" href="#"><span class="material-symbols-outlined text-outline">military_tech</span><span class="font-label-lg text-label-lg">Leaderboard</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="members-directory" href="#"><span class="material-symbols-outlined text-outline">group</span><span class="font-label-lg text-label-lg">Members</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="super-admin" href="#"><span class="material-symbols-outlined text-outline">admin_panel_settings</span><span class="font-label-lg text-label-lg">Super Admin</span></a></nav></div></div><div class="p-space-md bg-surface-container-low"><div class="bg-surface-container-lowest rounded-xl p-space-sm flex items-center justify-between shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><div class="flex items-center gap-space-sm overflow-hidden"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1UcseL6Wos3zOu0hcOvIBjwfObWJ2Gdp17JKb0eXlAgPltXVEpZhOLNYVi0WN2hY8nCDW8uVXvgLh6MaDxLueWoCyqyDBxgyRiAVytM6qqOk9fEnHy1rTo-UpIDVGMFcmWrBOTNUGWMiIhStEHjyMNOnAkJUukrh6XaQIto09WM9X_PJR4HVU1PCF1UV4pUTywIVPS4J_EYlEPXm1GlWASdv6pT3sybHwlxN1NUUodILgggfz8L0TJLeSo"><div class="flex flex-col truncate"><span class="font-label-md text-label-md text-on-surface truncate">Arjun Verma</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Lead - AI &amp; Research</span></div></div><a class="p-space-2xs text-outline hover:text-error transition-colors shrink-0 flex items-center justify-center rounded-lg hover:bg-surface-container" data-path="login" href="#"><span class="material-symbols-outlined text-base">logout</span></a></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-20 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-space-margin-desktop flex items-center justify-between"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="font-label-md text-label-md text-primary font-bold">AIC Portal</span><span class="material-symbols-outlined text-xs text-outline">chevron_right</span><span class="font-label-md text-label-md text-on-surface">Portal Control Hub</span></div><div class="hidden xl:flex items-center bg-surface-container-low rounded-lg px-space-md py-space-xs text-outline hover:text-on-surface w-72 justify-between cursor-pointer"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-sm">search</span><span class="font-body-sm text-body-sm">Search records or members...</span></div><kbd class="bg-surface-container-lowest px-space-2xs rounded text-label-sm font-label-sm text-on-surface-variant shadow-sm">⌘K</kbd></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-high px-space-sm py-space-xs rounded-lg"><span class="material-symbols-outlined text-sm text-primary">calendar_today</span><span class="font-label-md text-label-md text-on-surface font-semibold">Fall 2024 - Active</span></div><div class="flex items-center gap-space-xs bg-secondary-fixed px-space-md py-space-xs rounded-full shadow-[0_4px_14px_0_rgba(245,158,11,0.15)]"><span class="material-symbols-outlined text-sm text-on-secondary-fixed-variant">stars</span><span class="font-label-md text-label-md text-on-secondary-fixed-variant font-bold">2,480 Pts</span></div><button class="relative p-space-xs rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-secondary-container ring-2 ring-surface"></span></button><div class="flex items-center gap-space-xs pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-secondary-fixed" src="https://lh3.googleusercontent.com/aida/AEtjO1UcseL6Wos3zOu0hcOvIBjwfObWJ2Gdp17JKb0eXlAgPltXVEpZhOLNYVi0WN2hY8nCDW8uVXvgLh6MaDxLueWoCyqyDBxgyRiAVytM6qqOk9fEnHy1rTo-UpIDVGMFcmWrBOTNUGWMiIhStEHjyMNOnAkJUukrh6XaQIto09WM9X_PJR4HVU1PCF1UV4pUTywIVPS4J_EYlEPXm1GlWASdv6pT3sybHwlxN1NUUodILgggfz8L0TJLeSo"></div></div></header><main class="w-full pt-20 px-space-margin-desktop pb-space-3xl flex-1 bg-surface"><div class="flex flex-col w-full">
+<div class="w-full max-w-7xl mx-auto flex flex-col gap-space-lg">
+<!-- Breadcrumb & Top Bar Context -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-2xs text-on-surface-variant">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Portal</span>
+<span class="material-symbols-outlined text-xs text-outline">chevron_right</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Shift Submissions</span>
+<span class="material-symbols-outlined text-xs text-outline">chevron_right</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary font-bold">New Entry</span>
+</div>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Submit Volunteer &amp; Event Shift</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mt-space-2xs">
+            Log your completed chapter activities for department lead verification and verified points ledger crediting.
+          </p>
+</div>
+<div class="flex items-center gap-space-xs self-start md:self-auto bg-surface-container px-space-md py-space-xs rounded-lg shadow-sm">
+<span class="material-symbols-outlined text-secondary text-base">verified_user</span>
+<span class="font-label-md text-label-md text-on-surface">Verified Student Portal Ledger</span>
+</div>
+</div>
+</div>
+<!-- Expedited Review Announcement Banner -->
+<div class="relative overflow-hidden bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-secondary-container rounded-l-xl"></div>
+<div class="flex items-center gap-space-md pl-space-xs">
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed flex items-center justify-center shrink-0 shadow-[0_4px_14px_0_rgba(245,158,11,0.15)]">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Fall 2024 Shift Window Active</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Submissions logged within 48h of event completion receive expedited 24h lead review and bonus chapter standing index.</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pl-space-xs md:pl-0 shrink-0">
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm px-space-sm py-space-2xs rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+          +50 Pts Auto-Bonus Active
+        </span>
+</div>
+</div>
+<!-- 12-Column Structured Layout (7 Cols Form / 5 Cols Live Status Ledger) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-gutter-desktop items-start">
+<!-- LEFT COLUMN: Structured Form Submission (7 Cols) -->
+<div class="lg:col-span-7 flex flex-col gap-space-lg">
+<!-- Section 1: Event & Shift Information -->
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-7 h-7 rounded-lg bg-primary-fixed text-primary flex items-center justify-center font-label-sm text-label-sm font-bold">01</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Event &amp; Shift Information</h2>
+</div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Section I</span>
+</div>
+<div class="flex flex-col gap-space-md">
+<!-- Event Title Input -->
+<div class="flex flex-col gap-space-2xs">
+<label class="font-label-md text-label-md text-on-surface flex items-center justify-between" for="event-title">
+<span class="">Event / Chapter Activity Title <span class="text-error">*</span></span>
+<span class="font-label-sm text-label-sm text-outline">Official AIC Calendar</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-lg">event_available</span>
+<input class="w-full bg-surface-container-low text-on-surface pl-10 pr-4 py-2.5 rounded-lg font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest shadow-sm transition-all" id="event-title" type="text" value="VIT Hackathon 2024 - AI Track Coordination">
+</div>
+</div>
+<!-- Role & Date Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<!-- Assigned Role -->
+<div class="flex flex-col gap-space-2xs">
+<label class="font-label-md text-label-md text-on-surface" for="role-select">
+                  Assigned Role <span class="text-error">*</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-lg">badge</span>
+<select class="w-full bg-surface-container-low text-on-surface pl-10 pr-9 py-2.5 rounded-lg font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest appearance-none shadow-sm transition-all cursor-pointer" id="role-select">
+<option selected="" value="lead">Workshop Mentor / Track Lead</option>
+<option value="facilitator">General Event Facilitator</option>
+<option value="infra">Compute &amp; Infra Logistics</option>
+<option value="judge">Judging &amp; Evaluation Desk</option>
+<option value="creatives">Media &amp; Documentation</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 text-outline pointer-events-none text-base">expand_more</span>
+</div>
+</div>
+<!-- Date Completed -->
+<div class="flex flex-col gap-space-2xs">
+<label class="font-label-md text-label-md text-on-surface" for="shift-date">
+                  Date Completed <span class="text-error">*</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-lg">calendar_month</span>
+<input class="w-full bg-surface-container-low text-on-surface pl-10 pr-4 py-2 rounded-lg font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest shadow-sm transition-all cursor-pointer" id="shift-date" type="date" value="2024-11-02">
+</div>
+</div>
+</div>
+<!-- Duration & Location Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+<!-- Shift Duration -->
+<div class="flex flex-col gap-space-2xs">
+<label class="font-label-md text-label-md text-on-surface flex items-center justify-between" for="shift-duration">
+<span class="">Shift Duration <span class="text-error">*</span></span>
+<span class="font-label-sm text-label-sm text-secondary font-bold">4.0 hrs verified</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-lg">schedule</span>
+<input class="w-full bg-surface-container-low text-on-surface pl-10 pr-4 py-2.5 rounded-lg font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest shadow-sm transition-all" id="shift-duration" type="text" value="14:00 - 18:00 (4.0 hrs)">
+</div>
+</div>
+<!-- Campus Venue / Location -->
+<div class="flex flex-col gap-space-2xs">
+<label class="font-label-md text-label-md text-on-surface" for="venue-location">
+                  Campus Venue / Lab <span class="text-error">*</span>
+</label>
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-lg">location_on</span>
+<input class="w-full bg-surface-container-low text-on-surface pl-10 pr-4 py-2.5 rounded-lg font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest shadow-sm transition-all" id="venue-location" type="text" value="Anna Auditorium / Tech Tower 302">
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Work Summary & Contribution Log -->
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-7 h-7 rounded-lg bg-primary-fixed text-primary flex items-center justify-center font-label-sm text-label-sm font-bold">02</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Contribution Log &amp; Outcomes</h2>
+</div>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline">Section II</span>
+</div>
+<div class="flex flex-col gap-space-2xs">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-label-md text-on-surface" for="work-summary">
+                Detailed Work Synopsis <span class="text-error">*</span>
+</label>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-bold" id="char-counter">184 / 50 min chars</span>
+</div>
+<div class="relative">
+<textarea class="w-full bg-surface-container-low text-on-surface p-space-md rounded-lg font-body-md text-body-md focus:outline-none focus:bg-surface-container-lowest shadow-sm transition-all resize-none" id="work-summary" placeholder="Detail technical assistance provided, attendee counts, infrastructure managed, or deliverables shipped during your shift..." rows="4">Facilitated PyTorch mini-workshops for 140+ student participants. Managed GPU pod instances on campus clusters and resolved 18 runtime configuration issues during the 4-hour slot.</textarea>
+</div>
+</div>
+<!-- Quality Validation Indicator -->
+<div class="flex items-center justify-between bg-surface-container-low p-space-sm rounded-lg">
+<div class="flex items-center gap-space-xs text-on-surface">
+<span class="material-symbols-outlined text-base text-secondary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-sm text-label-sm font-bold">Audit Standard Met:</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Detailed quantitative metrics included for lead validation.</span>
+</div>
+<span class="font-label-sm text-label-sm px-space-xs py-space-2xs rounded bg-secondary-fixed text-on-secondary-fixed-variant font-bold">Passed Threshold</span>
+</div>
+</div>
+<!-- Section 3: Geotagged Photo Upload & GPS Verification -->
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<span class="w-7 h-7 rounded-lg bg-primary-fixed text-primary flex items-center justify-center font-label-sm text-label-sm font-bold">03</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Geotagged Photo Verification</h2>
+</div>
+<div class="flex items-center gap-1 text-secondary font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-sm">my_location</span>
+<span class="">GPS Geofence Enabled</span>
+</div>
+</div>
+<!-- Upload Container with Preview -->
+<div class="flex flex-col gap-space-sm">
+<div class="relative overflow-hidden rounded-xl bg-surface-container-high shadow-inner flex flex-col">
+<!-- Uploaded Image Preview -->
+<div class="relative w-full h-72">
+<img class="w-full h-full object-cover" data-alt="Modern indoor technology auditorium at university with students gathered around laptops running Python code on screens, soft ambient navy blue and warm amber lighting from overhead stage fixtures, sharp documentary photography capture showing collaborative hackathon environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjOg-BzlVtqdOpUVWqfUXnm88o6WXxQCuzSsR2apqj8oqB0bhiiq7_23Xt7iEWAa-lyqbcah2qU-o9xtFr96T0V4AhsvGL4HERHi9dbJua3aU0g6sLZ2jVJT30v_-tlR4wBEihlBt8SIWh3xBHI-1if7HWnk3WcBzbT-FRmjgH-oL_XH4RFiN2q3yHBWPaMJ_jntTuo53WZKgTu8hPYQRcMV_6ERFYq3tPJVElCGI1lx-PbMIhP_Ol">
+<!-- Live GPS Metadata HUD Overlay -->
+<div class="absolute top-space-sm left-space-sm right-space-sm flex flex-wrap items-center justify-between gap-space-xs">
+<div class="backdrop-blur-md bg-surface-container-lowest/90 px-space-sm py-space-2xs rounded-lg shadow-md flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-sm">pin_drop</span>
+<span class="font-label-sm text-label-sm text-on-surface font-bold">12.9698° N, 79.1559° E</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-secondary-fixed-variant font-semibold">Anna Aud., VIT</span>
+</div>
+<div class="backdrop-blur-md bg-secondary-container/95 text-on-secondary-container px-space-sm py-space-2xs rounded-full shadow-md flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-sm text-label-sm font-bold tracking-tight">Geofence Radius Matched (99.4%)</span>
+</div>
+</div>
+<!-- Hardware & Timestamp Bar Bottom Overlay -->
+<div class="absolute bottom-0 left-0 right-0 p-space-sm bg-gradient-to-t from-primary/90 via-primary/60 to-transparent flex items-center justify-between text-on-primary">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-base text-secondary-fixed">photo_camera</span>
+<span class="font-label-sm text-label-sm font-medium">Shot on iPhone 15 Pro • 3:42 PM IST</span>
+</div>
+<div class="flex items-center gap-1 font-label-sm text-label-sm text-primary-fixed">
+<span class="material-symbols-outlined text-xs">shield_with_heart</span>
+<span class="">EXIF Cryptographically Intact</span>
+</div>
+</div>
+</div>
+<!-- Action Rail Below Image -->
+<div class="p-space-sm bg-surface-container flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm text-on-surface font-bold">IMG_4829_VIT_HACK.HEIC</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">(4.2 MB)</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-space-sm py-space-2xs bg-surface-container-lowest text-on-surface hover:bg-surface-bright font-label-sm text-label-sm rounded-lg shadow-sm transition-all flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-sm">sync</span> Change Photo
+                  </button>
+<button class="px-space-sm py-space-2xs bg-surface-container-low text-primary hover:bg-surface-container-lowest font-label-sm text-label-sm rounded-lg transition-all flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-sm">add_photo_alternate</span> Add Secondary Angle
+                  </button>
+</div>
+</div>
+</div>
+<!-- Drag & Drop Alternate Input Notice -->
+<div class="flex items-center justify-center p-space-sm rounded-lg bg-surface-container-low text-on-surface-variant text-center">
+<span class="font-body-sm text-body-sm flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-base text-outline">info</span>
+                Geotag must correlate within 200m of registered venue coordinates during shift hours.
+              </span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: Sticky Preview & Verification Pipeline Summary (5 Cols) -->
+<div class="lg:col-span-5 flex flex-col gap-space-lg lg:sticky lg:top-24">
+<!-- Card 1: Expected Points Calculation Card -->
+<div class="bg-primary text-on-primary rounded-xl p-space-xl shadow-lg relative overflow-hidden flex flex-col gap-space-md">
+<!-- Subtle Decorative Accent Glow -->
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-secondary-container/20 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-start justify-between relative z-10">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary-fixed">Calculated Chapter Reward</span>
+<div class="flex items-baseline gap-space-2xs mt-space-2xs">
+<span class="font-headline-xl text-headline-xl text-on-primary font-bold">+350</span>
+<span class="font-headline-md text-headline-md text-secondary-fixed">Pts</span>
+</div>
+</div>
+<div class="px-space-sm py-space-xs rounded-full bg-secondary-container text-on-secondary-container font-label-sm text-label-sm font-bold shadow-[0_4px_14px_0_rgba(245,158,11,0.25)] flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+<span class="">High-Yield Shift</span>
+</div>
+</div>
+<!-- Points Breakdown Table -->
+<div class="bg-surface-container-lowest/10 backdrop-blur-md rounded-lg p-space-md flex flex-col gap-space-xs text-sm relative z-10">
+<div class="flex items-center justify-between pb-space-2xs">
+<span class="font-body-sm text-body-sm text-primary-fixed flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">timer</span> Base Duration (4.0 hrs @ 50 pts/hr)
+              </span>
+<span class="font-label-md text-label-md text-on-primary font-bold">200 pts</span>
+</div>
+<div class="flex items-center justify-between pb-space-2xs">
+<span class="font-body-sm text-body-sm text-primary-fixed flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">workspace_premium</span> Track Lead / Mentor Role Bonus
+              </span>
+<span class="font-label-md text-label-md text-secondary-fixed font-bold">+100 pts</span>
+</div>
+<div class="flex items-center justify-between pt-space-2xs">
+<span class="font-body-sm text-body-sm text-primary-fixed flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">bolt</span> 48h Expedited Submission Incentive
+              </span>
+<span class="font-label-md text-label-md text-secondary-fixed font-bold">+50 pts</span>
+</div>
+</div>
+<!-- Rank Progress Micro Visualizer -->
+<div class="flex flex-col gap-space-2xs relative z-10 pt-space-2xs">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-primary-fixed">Impact On Standing</span>
+<span class="text-secondary-fixed font-bold">Rank #4 → Rank #3 (Bronze Tier)</span>
+</div>
+<!-- Progress Bar Metric -->
+<div class="w-full h-2 rounded-full bg-surface-container-lowest/20 overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full w-4/5"></div>
+</div>
+<span class="font-body-sm text-body-sm text-primary-fixed-dim text-xs">
+              Requires 150 more verified points to reach Silver Fellow tier status.
+            </span>
+</div>
+</div>
+<!-- Card 2: Verification Pipeline Stepper Card -->
+<div class="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col gap-space-lg">
+<div class="flex items-center justify-between pb-space-xs">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Verification Lifecycle</h3>
+<span class="font-label-sm text-label-sm px-space-xs py-space-2xs rounded bg-surface-container text-on-surface font-semibold">Stage 2 of 4</span>
+</div>
+<!-- Vertical Progress Stepper -->
+<div class="flex flex-col relative">
+<!-- Continuous Stepper Line -->
+<div class="absolute left-4 top-4 bottom-4 w-0.5 bg-surface-container-high"></div>
+<!-- Step 1: Self-Log Entry -->
+<div class="flex items-start gap-space-md relative pb-space-md">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shrink-0 z-10 shadow-sm">
+<span class="material-symbols-outlined text-on-primary text-base" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface font-bold">1. Member Self-Log</span>
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded bg-surface-container text-primary font-bold">Complete</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Activity synopsis and metrics defined by Arjun Verma.</p>
+</div>
+</div>
+<!-- Step 2: Automated Geotag & EXIF Audit -->
+<div class="flex items-start gap-space-md relative pb-space-md">
+<div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center shrink-0 z-10 shadow-[0_4px_14px_0_rgba(245,158,11,0.2)]">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant text-base" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface font-bold">2. GPS Geofence Check</span>
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed-variant font-bold">Pre-Validated</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Hardware coordinates match VIT Anna Auditorium polygon.</p>
+</div>
+</div>
+<!-- Step 3: Department Lead Signoff -->
+<div class="flex items-start gap-space-md relative pb-space-md">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center shrink-0 z-10">
+<span class="material-symbols-outlined text-outline text-base">supervisor_account</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-on-surface font-bold">3. Department Lead Signoff</span>
+<span class="font-label-sm text-label-sm px-space-xs py-0.5 rounded bg-surface-container-high text-outline font-medium">Pending Submission</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Assigned reviewer: Priyanshu Sharma (Exec Lead - AI)</p>
+</div>
+</div>
+<!-- Step 4: Ledger Credit -->
+<div class="flex items-start gap-space-md relative">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center shrink-0 z-10">
+<span class="material-symbols-outlined text-outline text-base">account_balance_wallet</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-outline font-semibold">4. Points Ledger Dispatch</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline">Immutable ledger transaction written upon approval.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3: Final Action Button & Security Assurance -->
+<div class="flex flex-col gap-space-sm">
+<button class="w-full py-3.5 px-space-lg bg-primary hover:bg-primary-container text-on-primary rounded-xl font-label-lg text-label-lg font-bold shadow-md transition-all flex items-center justify-center gap-space-xs group active:scale-[0.99]" id="btn-submit" type="button">
+<span class="">Submit for Lead Review</span>
+<span class="material-symbols-outlined text-base group-hover:translate-x-1 transition-transform">send</span>
+</button>
+<div class="flex items-center justify-between px-space-xs">
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface flex items-center gap-1 transition-colors" type="button">
+<span class="material-symbols-outlined text-sm">bookmark</span> Save Draft Entry
+            </button>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">lock</span> 256-bit Cryptographic Audit
+            </span>
+</div>
+<div class="bg-surface-container p-space-sm rounded-lg flex items-start gap-space-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-sm text-secondary shrink-0 mt-0.5">policy</span>
+<p class="font-body-sm text-body-sm text-xs">
+              Shift entries are tamper-proof and irrevocably signed upon department lead validation. False reporting is subject to Chapter Honor Board review.
+            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Inline Confirmation Toast Notification for submission interaction -->
+<div class="fixed bottom-6 right-6 hidden z-50 bg-surface-container-lowest text-on-surface p-space-md rounded-xl shadow-xl max-w-md items-start gap-space-md" id="submission-toast">
+<div class="w-9 h-9 rounded-lg bg-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-fixed-variant" style="font-variation-settings: 'FILL' 1;">task_alt</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-bold">Shift Submitted for Expedited Review</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Your entry for VIT Hackathon 2024 has been logged into queue. Department lead review ETA: 18 hours.</p>
+</div>
+<button class="text-outline hover:text-on-surface" onclick="document.getElementById('submission-toast').classList.add('hidden')">
+<span class="material-symbols-outlined text-base">close</span>
+</button>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const submitBtn = document.getElementById('btn-submit');
+    const toast = document.getElementById('submission-toast');
+    const textarea = document.getElementById('work-summary');
+    const charCounter = document.getElementById('char-counter');
+
+    if (textarea && charCounter) {
+      textarea.addEventListener('input', (e) => {
+        const len = e.target.value.length;
+        charCounter.textContent = `${len} / 50 min chars`;
+        if (len >= 50) {
+          charCounter.classList.remove('text-error');
+          charCounter.classList.add('text-on-surface-variant');
+        } else {
+          charCounter.classList.add('text-error');
+          charCounter.classList.remove('text-on-surface-variant');
+        }
+      });
+    }
+
+    if (submitBtn && toast) {
+      submitBtn.addEventListener('click', () => {
+        submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-base">progress_activity</span><span>Encrypting & Logging...</span>';
+        submitBtn.disabled = true;
+        
+        setTimeout(() => {
+          submitBtn.innerHTML = '<span>Submitted to Verification Queue</span><span class="material-symbols-outlined text-base" style="font-variation-settings: \'FILL\' 1;">check_circle</span>';
+          submitBtn.classList.remove('bg-primary', 'hover:bg-primary-container');
+          submitBtn.classList.add('bg-secondary-container', 'text-on-secondary-container');
+          toast.classList.remove('hidden');
+          toast.classList.add('flex');
+        }, 800);
+      });
+    }
+  })();
+</script></main></div>
+
+</body></html>

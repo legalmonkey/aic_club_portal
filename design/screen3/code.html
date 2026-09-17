@@ -1,0 +1,451 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      "colors": {
+        "on-primary": "#ffffff",
+        "on-primary-fixed": "#001453",
+        "surface-variant": "#dae2fd",
+        "surface-container-highest": "#dae2fd",
+        "outline-variant": "#c4c5d5",
+        "surface-container": "#eaedff",
+        "surface-container-high": "#e2e7ff",
+        "on-secondary": "#ffffff",
+        "on-error": "#ffffff",
+        "inverse-on-surface": "#eef0ff",
+        "tertiary-fixed": "#dbe1ff",
+        "tertiary": "#002e81",
+        "primary": "#00288e",
+        "on-error-container": "#93000a",
+        "on-tertiary-fixed": "#00174b",
+        "on-tertiary-container": "#a4b9ff",
+        "outline": "#757684",
+        "on-background": "#131b2e",
+        "surface-container-lowest": "#ffffff",
+        "on-secondary-fixed-variant": "#653e00",
+        "secondary": "#855300",
+        "on-tertiary": "#ffffff",
+        "surface-dim": "#d2d9f4",
+        "primary-fixed": "#dde1ff",
+        "surface-tint": "#3755c3",
+        "on-surface": "#131b2e",
+        "on-secondary-fixed": "#2a1700",
+        "inverse-surface": "#283044",
+        "surface": "#faf8ff",
+        "surface-container-low": "#f2f3ff",
+        "surface-bright": "#faf8ff",
+        "error-container": "#ffdad6",
+        "secondary-fixed": "#ffddb8",
+        "secondary-fixed-dim": "#ffb95f",
+        "on-surface-variant": "#444653",
+        "primary-fixed-dim": "#b8c4ff",
+        "background": "#faf8ff",
+        "tertiary-container": "#0042b2",
+        "primary-container": "#1e40af",
+        "inverse-primary": "#b8c4ff",
+        "error": "#ba1a1a",
+        "on-tertiary-fixed-variant": "#003ea8",
+        "secondary-container": "#fea619",
+        "on-primary-fixed-variant": "#173bab",
+        "tertiary-fixed-dim": "#b4c5ff",
+        "on-secondary-container": "#684000",
+        "on-primary-container": "#a8b8ff"
+      },
+      "borderRadius": {
+        "DEFAULT": "0.25rem",
+        "lg": "0.5rem",
+        "xl": "0.75rem",
+        "full": "9999px"
+      },
+      "spacing": {
+        "gutter-desktop": "1.5rem",
+        "margin-desktop": "2.5rem",
+        "gutter-mobile": "1rem",
+        "space-3xl": "3rem",
+        "margin-tablet": "1.5rem",
+        "margin-mobile": "1rem",
+        "margin": "2rem",
+        "space-xl": "2rem",
+        "space-lg": "1.5rem",
+        "space-2xl": "2.5rem",
+        "space-xs": "0.5rem",
+        "space-2xs": "0.25rem",
+        "gutter": "1.5rem",
+        "space-sm": "0.75rem",
+        "space-md": "1rem"
+      },
+      "fontFamily": {
+        "label-md": ["Plus Jakarta Sans"],
+        "headline-xl": ["Plus Jakarta Sans"],
+        "headline-md": ["Plus Jakarta Sans"],
+        "body-md": ["Plus Jakarta Sans"],
+        "headline-xl-mobile": ["Plus Jakarta Sans"],
+        "headline-lg-mobile": ["Plus Jakarta Sans"],
+        "label-sm": ["Plus Jakarta Sans"],
+        "metric-display": ["Plus Jakarta Sans"],
+        "body-sm": ["Plus Jakarta Sans"],
+        "body-lg": ["Plus Jakarta Sans"],
+        "headline-sm": ["Plus Jakarta Sans"],
+        "label-lg": ["Plus Jakarta Sans"],
+        "headline-lg": ["Plus Jakarta Sans"]
+      },
+      "fontSize": {
+        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+        "headline-xl": ["36px", {"lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+        "headline-md": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+        "body-md": ["14px", {"lineHeight": "22px", "fontWeight": "400"}],
+        "headline-xl-mobile": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700"}],
+        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+        "label-sm": ["11px", {"lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700"}],
+        "metric-display": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.025em", "fontWeight": "700"}],
+        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+        "body-lg": ["16px", {"lineHeight": "26px", "fontWeight": "400"}],
+        "headline-sm": ["16px", {"lineHeight": "24px", "letterSpacing": "-0.005em", "fontWeight": "600"}],
+        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+        "headline-lg": ["28px", {"lineHeight": "36px", "letterSpacing": "-0.015em", "fontWeight": "700"}]
+      }
+    }
+  }
+}</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between select-none"><div class="flex flex-col"><div class="h-20 px-space-lg flex items-center justify-between"><div class="flex items-center gap-space-sm"><img alt="AIC Club Portal logo featuring a brain icon split vertically: left half in gray line art, right half in blue circuit line art with nodes, with a dark rounded chip labeled 'AIC' at the center." class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VOTnKeqwY_mwx6F_ZPTOVlIAUuKAimk2fayA7J2x60R0kKMXmKdYiSp_euRmn5qLqzkbbtMJyq88vDpgxdGhpBfBo5vTCBFRsuFqFf0xCDH1kqslKguLXAMKkwEJ7zzj1Hz01evX2zF6K-uJDIBJGn0fnUw7V3NXJgy2F4RMCAzkGoh5NhC1DvRNKM40dbc3bHIvWkb13N1k7ZYZopFKRf6tgYHLaXNk4-dFRVjJO2kc0TMrZDHFOs-w"><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-primary tracking-tight">AIC Portal</span><span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Student Chapter</span></div></div></div><div class="px-space-md py-space-xs"><div class="bg-surface-container-low rounded-lg p-space-xs flex items-center justify-between"><span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-space-2xs"><span class="w-2 h-2 rounded-full bg-secondary"></span>VIT Student Chapter</span></div></div><div class="px-space-md mt-space-sm"><span class="font-label-sm text-label-sm text-outline px-space-sm uppercase tracking-wider block mb-space-xs">Operations &amp; Records</span><nav class="flex flex-col gap-space-2xs" data-active-classes="bg-primary text-on-primary font-bold rounded-lg shadow-sm"><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard-overview" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-outline">dashboard</span><span class="font-label-lg text-label-lg">Overview</span></div></a><a aria-current="page" class="flex items-center justify-between px-space-md py-space-sm transition-colors bg-primary text-on-primary font-bold rounded-lg shadow-sm" data-path="review-queue" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-outline">rate_review</span><span class="font-label-lg text-label-lg">Review Queue</span></div><span class="font-label-sm text-label-sm px-space-xs py-space-2xs rounded-full bg-secondary-container text-on-secondary-container font-bold">12</span></a><a class="flex items-center justify-between px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="new-entry-log-shift" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-outline">add_circle</span><span class="font-label-lg text-label-lg">Log Shift Entry</span></div><span class="material-symbols-outlined text-secondary text-sm">bolt</span></a></nav></div><div class="px-space-md mt-space-lg"><span class="font-label-sm text-label-sm text-outline px-space-sm uppercase tracking-wider block mb-space-xs">Community &amp; Standings</span><nav class="flex flex-col gap-space-2xs" data-active-classes="bg-primary text-on-primary font-bold rounded-lg shadow-sm"><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="leaderboard-standings" href="#"><span class="material-symbols-outlined text-outline">military_tech</span><span class="font-label-lg text-label-lg">Leaderboard</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="members-directory" href="#"><span class="material-symbols-outlined text-outline">group</span><span class="font-label-lg text-label-lg">Members</span></a><a class="flex items-center gap-space-sm px-space-md py-space-sm rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="super-admin" href="#"><span class="material-symbols-outlined text-outline">admin_panel_settings</span><span class="font-label-lg text-label-lg">Super Admin</span></a></nav></div></div><div class="p-space-md bg-surface-container-low"><div class="bg-surface-container-lowest rounded-xl p-space-sm flex items-center justify-between shadow-[0_1px_3px_0_rgba(15,23,42,0.04)]"><div class="flex items-center gap-space-sm overflow-hidden"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida/AEtjO1UcseL6Wos3zOu0hcOvIBjwfObWJ2Gdp17JKb0eXlAgPltXVEpZhOLNYVi0WN2hY8nCDW8uVXvgLh6MaDxLueWoCyqyDBxgyRiAVytM6qqOk9fEnHy1rTo-UpIDVGMFcmWrBOTNUGWMiIhStEHjyMNOnAkJUukrh6XaQIto09WM9X_PJR4HVU1PCF1UV4pUTywIVPS4J_EYlEPXm1GlWASdv6pT3sybHwlxN1NUUodILgggfz8L0TJLeSo"><div class="flex flex-col truncate"><span class="font-label-md text-label-md text-on-surface truncate">Arjun Verma</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Lead - AI &amp; Research</span></div></div><a class="p-space-2xs text-outline hover:text-error transition-colors shrink-0 flex items-center justify-center rounded-lg hover:bg-surface-container" data-path="login" href="#"><span class="material-symbols-outlined text-base">logout</span></a></div></div></aside><div class="pl-72 flex flex-col min-h-screen"><header class="fixed top-0 left-72 right-0 h-20 bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-space-margin-desktop flex items-center justify-between"><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs text-on-surface-variant"><span class="font-label-md text-label-md text-primary font-bold">AIC Portal</span><span class="material-symbols-outlined text-xs text-outline">chevron_right</span><span class="font-label-md text-label-md text-on-surface">Portal Control Hub</span></div><div class="hidden xl:flex items-center bg-surface-container-low rounded-lg px-space-md py-space-xs text-outline hover:text-on-surface w-72 justify-between cursor-pointer"><div class="flex items-center gap-space-xs"><span class="material-symbols-outlined text-sm">search</span><span class="font-body-sm text-body-sm">Search records or members...</span></div><kbd class="bg-surface-container-lowest px-space-2xs rounded text-label-sm font-label-sm text-on-surface-variant shadow-sm">⌘K</kbd></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-space-xs bg-surface-container-high px-space-sm py-space-xs rounded-lg"><span class="material-symbols-outlined text-sm text-primary">calendar_today</span><span class="font-label-md text-label-md text-on-surface font-semibold">Fall 2024 - Active</span></div><div class="flex items-center gap-space-xs bg-secondary-fixed px-space-md py-space-xs rounded-full shadow-[0_4px_14px_0_rgba(245,158,11,0.15)]"><span class="material-symbols-outlined text-sm text-on-secondary-fixed-variant">stars</span><span class="font-label-md text-label-md text-on-secondary-fixed-variant font-bold">2,480 Pts</span></div><button class="relative p-space-xs rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-secondary-container ring-2 ring-surface"></span></button><div class="flex items-center gap-space-xs pl-space-xs"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-2 ring-secondary-fixed" src="https://lh3.googleusercontent.com/aida/AEtjO1UcseL6Wos3zOu0hcOvIBjwfObWJ2Gdp17JKb0eXlAgPltXVEpZhOLNYVi0WN2hY8nCDW8uVXvgLh6MaDxLueWoCyqyDBxgyRiAVytM6qqOk9fEnHy1rTo-UpIDVGMFcmWrBOTNUGWMiIhStEHjyMNOnAkJUukrh6XaQIto09WM9X_PJR4HVU1PCF1UV4pUTywIVPS4J_EYlEPXm1GlWASdv6pT3sybHwlxN1NUUodILgggfz8L0TJLeSo"></div></div></header><main class="w-full pt-20 px-space-margin-desktop pb-space-3xl flex-1 bg-surface"><div class="flex flex-col w-full">
+<div class="flex flex-col gap-space-lg mb-space-xl">
+<div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-space-md">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs mb-space-2xs">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-primary font-bold">Executive Authority Console</span>
+<span class="text-outline text-xs">/</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Chapter Ops</span>
+</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface tracking-tight">Verification &amp; Review Queue</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-space-2xs">Evaluate submitted volunteer work, review geotagged proof, and allocate chapter points with institutional rigor.</p>
+</div>
+<div class="flex items-center gap-space-sm bg-secondary-fixed text-on-secondary-fixed-variant px-space-md py-space-xs rounded-full shadow-[0_4px_14px_0_rgba(245,158,11,0.15)] shrink-0 self-start xl:self-center">
+<span class="material-symbols-outlined text-sm font-bold text-secondary">notification_important</span>
+<span class="font-label-md text-label-md font-bold">3 Pending Shift Verifications Requiring Immediate Lead Action</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-md">
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="px-space-md py-space-xs rounded-lg font-label-md text-label-md bg-primary text-on-primary font-bold shadow-sm transition-all flex items-center gap-space-xs">
+<span class="">Pending Review</span>
+<span class="bg-secondary-container text-on-secondary-container px-space-xs py-0.5 rounded-full text-label-sm font-bold">3</span>
+</button>
+<button class="px-space-md py-space-xs rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors flex items-center gap-space-xs">
+<span class="">Flagged / Escalated</span>
+<span class="bg-error-container text-on-error-container px-space-xs py-0.5 rounded-full text-label-sm font-bold">1</span>
+</button>
+<button class="px-space-md py-space-xs rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors">Approved History</button>
+<button class="px-space-md py-space-xs rounded-lg font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors">All Entries</button>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="relative flex-1 sm:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="w-full h-10 pl-9 pr-space-sm bg-surface-container-low rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary-container transition-all" placeholder="Filter by member or keyword..." type="text">
+</div>
+<div class="relative">
+<select class="h-10 pl-space-md pr-8 bg-surface-container-low rounded-lg font-label-md text-label-md text-on-surface appearance-none focus:outline-none focus:ring-2 focus:ring-primary-container cursor-pointer">
+<option>Machine Learning &amp; Research Dept</option>
+<option>Autonomous Systems Division</option>
+<option>Events &amp; Outreach Wing</option>
+<option>Design &amp; Creative Media</option>
+</select>
+<span class="material-symbols-outlined absolute right-2.5 top-1/2 -translate-y-1/2 text-outline text-sm pointer-events-none">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-space-gutter-desktop items-start">
+<div class="col-span-12 xl:col-span-5 flex flex-col gap-space-md">
+<div class="flex items-center justify-between px-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Priority Triage Queue (3)</span>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-space-2xs cursor-pointer hover:underline">
+<span class="material-symbols-outlined text-xs">tune</span> Sort by Submission Time
+        </span>
+</div>
+<div class="flex flex-col gap-space-sm" id="queue-list">
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-md cursor-pointer transition-all hover:bg-surface-container-low relative overflow-hidden bg-gradient-to-r from-primary/5 to-transparent">
+<div class="absolute left-0 top-0 bottom-0 w-1.5 bg-primary"></div>
+<div class="flex items-start justify-between gap-space-sm mb-space-xs">
+<div class="flex items-center gap-space-sm min-w-0">
+<img class="w-10 h-10 rounded-full object-cover shrink-0 shadow-sm" data-alt="Close-up portrait of Rohan Patel, a third year AI engineering student wearing a smart casual dark blue shirt, well-lit modern university tech interior background with soft amber lighting bokeh." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc1JFDkGtC5O2INFt5VES8AHAs5pZtKegRHIiHRbn20OEziulxoz3QbTdtedhmK5AjfXnVFBBSlu5f_bnBca1NEuDY9Ii8lrKRWHZ_fyp1PrEDjDyg5FvPscMx0b6Qz10rJP3OuYCbZglrobJ-jS2hfDViuPWxv6_hl1vdXve9WJ68SZTWQFk7Ac9ba7tgR0eUzwz93y8wX3R5vJr_fqr9HrpmtfASYFLCosp5CerErQFsC7UgGAUf">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Rohan Patel</span>
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">3rd Year CSE AI • Tech Lead</span>
+</div>
+</div>
+<span class="px-space-xs py-space-2xs rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold shrink-0 shadow-[0_2px_8px_0_rgba(245,158,11,0.2)]">
+              Needs Review
+            </span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg mb-space-sm">
+<div class="flex items-center justify-between text-on-surface mb-space-2xs">
+<span class="font-label-md text-label-md truncate text-primary font-bold">VIT Hackathon 2024 - AI Track Lead</span>
+</div>
+<div class="flex items-center gap-space-md text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-space-2xs"><span class="material-symbols-outlined text-xs text-outline">schedule</span> 4.0 hrs</span>
+<span class="flex items-center gap-space-2xs"><span class="material-symbols-outlined text-xs text-outline">timer</span> Logged 3:42 PM</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-xs text-secondary font-bold font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="">+350 pts requested</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold flex items-center gap-0.5">
+              Inspect Entry <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-low relative overflow-hidden">
+<div class="flex items-start justify-between gap-space-sm mb-space-xs">
+<div class="flex items-center gap-space-sm min-w-0">
+<img class="w-10 h-10 rounded-full object-cover shrink-0 shadow-sm" data-alt="Portrait of Siddharth Rao, a university student organizer with glasses smiling, wearing a chapter polo shirt with minimalist tech lanyard in institutional auditorium setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCof8BmacnhjADuTfGaa6V6rQwrgCu9BH_mUETir2PFmsyhYWqSkVqe6atsPcmnbY9ovIyeWkRmYmpGH8WkFrugBqalKn7x7guBXu-NlCAwZA1zke4DIyk1kwGQNm_Cmcf77-e_5p3EpH6inVFsMmM8ETSy3OKg5VMZlzftRfueWVINaXPz788vTYQRIRJCvmpK8dlY6whdQZp3-aVEjaJOnOpBx4L3KbVdCO-6q8I6YBjCasscCLiN">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Siddharth Rao</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">4th Year EEE • Corporate Liaison</span>
+</div>
+</div>
+<span class="px-space-xs py-space-2xs rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold shrink-0">
+              Pending Verification
+            </span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg mb-space-sm">
+<div class="flex items-center justify-between text-on-surface mb-space-2xs">
+<span class="font-label-md text-label-md truncate text-on-surface font-semibold">Tech Industry Mixer Corporate Relations</span>
+</div>
+<div class="flex items-center gap-space-md text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-space-2xs"><span class="material-symbols-outlined text-xs text-outline">schedule</span> 3.0 hrs</span>
+<span class="flex items-center gap-space-2xs"><span class="material-symbols-outlined text-xs text-outline">timer</span> Logged 1:15 PM</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-xs text-secondary font-bold font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="">+400 pts requested</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline font-semibold">Submitted 4h ago</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm cursor-pointer transition-all hover:bg-surface-container-low relative overflow-hidden">
+<div class="flex items-start justify-between gap-space-sm mb-space-xs">
+<div class="flex items-center gap-space-sm min-w-0">
+<img class="w-10 h-10 rounded-full object-cover shrink-0 shadow-sm" data-alt="Portrait of Priya Sharma, a female computing researcher student with tied-back hair in a campus high-performance computer lab, confident expression, soft cool natural daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFt6-kjX-wJQDeeacNc4Z1BFMeN53hiyGBxE46vTIXbwDmexZ6iabrESSJ3_mOaYcf-5AlFGPwxOy9JkiT5me3Ck_8wQxrEvi2MJWgqQ5X9OT4pG0dn9_NU47IFESpHXMpf4CJQbtuTD2zEFfTddX4KRJbq6vTiSyvDrV7S5VIm9lRKncvwk6Ygf2DCR7wwm7TDldYEa8Z0gQDoFP0zo6N7zZTCGUiPV8UqYmtbmVw2VJJ_v7SlZPK">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface truncate">Priya Sharma</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">2nd Year AI &amp; DS • Core Team</span>
+</div>
+</div>
+<span class="px-space-xs py-space-2xs rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold shrink-0">
+              Needs Review
+            </span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg mb-space-sm">
+<div class="flex items-center justify-between text-on-surface mb-space-2xs">
+<span class="font-label-md text-label-md truncate text-on-surface font-semibold">PyTorch Neural Networks Workshop</span>
+</div>
+<div class="flex items-center gap-space-md text-on-surface-variant font-body-sm text-body-sm">
+<span class="flex items-center gap-space-2xs"><span class="material-symbols-outlined text-xs text-outline">schedule</span> 2.5 hrs</span>
+<span class="flex items-center gap-space-2xs"><span class="material-symbols-outlined text-xs text-outline">timer</span> Logged 11:30 AM</span>
+</div>
+</div>
+<div class="flex items-center justify-between pt-space-xs">
+<div class="flex items-center gap-space-xs text-secondary font-bold font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="">+250 pts requested</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline font-semibold">Submitted 6h ago</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-sm">
+<span class="material-symbols-outlined text-base">auto_awesome</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Auto-Geofence Audit Engine</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">All 3 queue records pass GPS perimeter constraints</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">check_circle</span>
+</div>
+</div>
+<div class="col-span-12 xl:col-span-7 flex flex-col gap-space-lg">
+<div class="bg-surface-container-lowest rounded-xl shadow-md p-space-xl flex flex-col gap-space-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between pb-space-md bg-surface-container-low -mx-space-xl -mt-space-xl px-space-xl pt-space-xl rounded-t-xl gap-space-md">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative shrink-0">
+<img class="w-14 h-14 rounded-full object-cover shadow-md" data-alt="Rohan Patel portrait showing him in professional lighting with an institutional navy blazer and white club ID lanyard, crisp clean focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzkgs-Xs9KAw3ivlSvtEJ0uUrOEOwf1TMEf2YRpWINiZrHcEPQDTiO6dD7Qg3_i7pxgISTnrNvGo2eWlQei62-ocUEEtutzEPWblTSd3_60YbK8YPR5rNA1xgnF6c9MmQ64F85nCXk87wRMqyZN2FhkN2h7-pL-J9BKVNxjHZFF5TPosOeg0zeuM0gQit7i8ScbiApO6dhZaRKK1EDNkv9GpO57JpAMt8xET2g1Q50T0PhC5MjN6ZD">
+<span class="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container text-label-sm font-bold shadow-sm">★</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-md text-headline-md text-on-surface">Rohan Patel</span>
+<span class="px-space-xs py-space-2xs rounded-full bg-secondary-fixed text-on-secondary-fixed-variant font-label-sm text-label-sm font-bold flex items-center gap-1 shadow-[0_2px_8px_0_rgba(245,158,11,0.2)]">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">military_tech</span> Rank #1 Gold Member
+                </span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">3rd Year CSE AI (Reg: 22BCE1042) • 1,850 Lifetime Pts</span>
+</div>
+</div>
+<div class="flex flex-col items-start sm:items-end shrink-0">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Submitted via Mobile GPS</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Today at 15:42 IST</span>
+<span class="font-label-sm text-label-sm text-primary font-medium">Machine Learning Dept</span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-sm">
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline block mb-space-2xs">Date of Execution</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-xs text-primary">calendar_month</span> Nov 02, 2024
+            </span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline block mb-space-2xs">Logged Duration</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-xs text-primary">timer</span> 14:00 – 18:00 (4.0 hrs)
+            </span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline block mb-space-2xs">Designated Venue</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-xs text-primary">location_on</span> Anna Auditorium / TT 302
+            </span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline block mb-space-2xs">Assigned Capacity</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-xs text-primary">badge</span> Workshop Mentor &amp; Lead
+            </span>
+</div>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Volunteer Work Contribution Statement</span>
+<span class="font-label-sm text-label-sm text-secondary font-bold flex items-center gap-1 bg-secondary-fixed px-space-xs py-0.5 rounded-full">
+<span class="material-symbols-outlined text-xs">verified_user</span> 184 Characters • Detailed
+            </span>
+</div>
+<div class="bg-surface-container-low p-space-md rounded-lg text-on-surface font-body-md text-body-md leading-relaxed relative">
+<span class="material-symbols-outlined absolute top-2 right-2 text-outline/30 text-2xl">format_quote</span>
+            “Facilitated PyTorch mini-workshops for 140+ student participants during Track 1. Managed GPU pod instances on campus clusters, oversaw model deployment sessions, and resolved 18 runtime configuration issues during the 4-hour slot.”
+          </div>
+</div>
+<div class="flex flex-col gap-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Geotagged Photo &amp; Hardware Proof Verification</span>
+<div class="relative rounded-xl overflow-hidden shadow-sm aspect-video sm:aspect-[21/9] bg-inverse-surface group">
+<img class="w-full h-full object-cover" data-alt="Wide-angle photograph of college students crowded around laptops inside Anna Auditorium computer laboratory at VIT, vibrant blue LED ambient lighting on workstation monitors, students wearing hackathon tags, photo captured with slight wide-angle perspective." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDqbHCXO-65KBQ_wHFnRS2zbk8LF1j26cIKUZiIrB7ph342l2ZsMT8Ld6CHwVHphIWMYiEF5qt85o0d27dOLXbkHJ0CYL6izdd34R6HDIvQr7ZafpqEIX7m8h5HDoR88XY1_-o15-h_Qj3uB94ijss_DCbeS3UylPOiDPQVxvxXIQGgEcHYQJ4OtqgXB2ja6LSTgcGyC25WRsKqmI4SYlqRE2qAojBHoye4k3YBa_4uwb9G_5lnQhk">
+<div class="absolute inset-0 bg-gradient-to-t from-on-background/90 via-transparent to-black/30"></div>
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-space-sm py-space-2xs rounded-lg text-on-surface flex items-center gap-space-xs shadow-sm">
+<span class="material-symbols-outlined text-xs text-primary font-bold">photo_camera</span>
+<span class="font-label-sm text-label-sm font-bold">Live Camera Capture (In-App)</span>
+</div>
+<div class="absolute top-3 right-3 bg-primary-container text-on-primary px-space-sm py-space-2xs rounded-lg font-label-sm text-label-sm font-bold flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-xs text-secondary-fixed">shield</span>
+<span class="">Anti-Spoof Hash: Valid</span>
+</div>
+<div class="absolute bottom-3 left-3 right-3 flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs text-on-primary bg-on-background/60 backdrop-blur-md p-space-sm rounded-lg">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-secondary-container shrink-0">pin_drop</span>
+<span class="font-label-md text-label-md truncate">12.9698° N, 79.1559° E • VIT Main Campus Anna Auditorium</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary-fixed shrink-0 font-bold">Delta: 4.2m from Geofence Target</span>
+</div>
+</div>
+<div class="bg-secondary-fixed text-on-secondary-fixed-variant p-space-md rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm shadow-[0_4px_14px_0_rgba(245,158,11,0.15)]">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold shrink-0">
+<span class="material-symbols-outlined text-lg">verified</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md font-bold">Campus GPS Match 100% Confirmed</span>
+<span class="font-body-sm text-body-sm">Hardware EXIF integrity score: 99.8% • Timestamp matches biometric gate logs</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs self-start sm:self-center">
+<span class="material-symbols-outlined text-xs">fingerprint</span>
+<span class="font-label-sm text-label-sm font-bold">SHA-256 Validated</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-space-lg rounded-xl flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary font-bold">stars</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Points Allocation &amp; Decision</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Tier 1 Standard: 75-100 pts/hr</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md items-end">
+<div class="md:col-span-5 flex flex-col gap-space-2xs">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Chapter Points to Credit</label>
+<div class="flex items-center bg-surface-container-lowest rounded-lg h-10 px-space-xs shadow-sm">
+<button class="w-8 h-8 rounded text-outline hover:text-on-surface hover:bg-surface-container flex items-center justify-center transition-colors" id="btn-minus" type="button">
+<span class="material-symbols-outlined text-sm">remove</span>
+</button>
+<div class="flex-1 flex items-center justify-center gap-space-2xs">
+<span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings: 'FILL' 1;">stars</span>
+<input class="w-16 text-center font-headline-sm text-headline-sm text-on-surface bg-transparent focus:outline-none font-bold" id="pts-input" type="number" value="350">
+<span class="font-label-sm text-label-sm text-outline">pts</span>
+</div>
+<button class="w-8 h-8 rounded text-outline hover:text-on-surface hover:bg-surface-container flex items-center justify-center transition-colors" id="btn-plus" type="button">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<div class="md:col-span-7 flex flex-col gap-space-2xs">
+<label class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Lead Audit Note (Optional)</label>
+<input class="w-full h-10 px-space-md bg-surface-container-lowest rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container shadow-sm" placeholder="e.g., Outstanding facilitation on GPU allocation." type="text">
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs">
+<button class="px-space-md py-space-xs rounded-lg font-label-md text-label-md text-error hover:bg-error-container hover:text-on-error-container transition-colors flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-sm">cancel</span>
+<span class="">Reject Submission</span>
+</button>
+<div class="flex items-center gap-space-sm">
+<button class="px-space-md py-space-xs rounded-lg font-label-md text-label-md bg-surface-container-lowest text-on-surface hover:bg-surface-container transition-colors shadow-sm flex items-center gap-space-2xs">
+<span class="material-symbols-outlined text-sm text-outline">help_outline</span>
+<span class="">Request Clarification</span>
+</button>
+<button class="px-space-lg py-space-xs rounded-lg font-label-md text-label-md bg-primary-container text-on-primary hover:bg-primary transition-all shadow-[0_4px_14px_0_rgba(30,64,175,0.25)] flex items-center gap-space-xs group">
+<span class="material-symbols-outlined text-secondary-fixed-dim group-hover:rotate-12 transition-transform" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-bold">Approve &amp; Credit 350 Pts</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+  (function() {
+    const ptsInput = document.getElementById('pts-input');
+    const btnMinus = document.getElementById('btn-minus');
+    const btnPlus = document.getElementById('btn-plus');
+
+    if (btnMinus && btnPlus && ptsInput) {
+      btnMinus.addEventListener('click', function() {
+        let val = parseInt(ptsInput.value, 10) || 0;
+        if (val >= 50) {
+          ptsInput.value = val - 25;
+        }
+      });
+      btnPlus.addEventListener('click', function() {
+        let val = parseInt(ptsInput.value, 10) || 0;
+        ptsInput.value = val + 25;
+      });
+    }
+  })();
+</script></main></div>
+
+</body></html>
