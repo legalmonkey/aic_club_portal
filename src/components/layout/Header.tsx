@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useSession, signIn } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { NotificationDropdown } from './NotificationDropdown';
 
 interface HeaderProps {
@@ -12,7 +12,7 @@ interface HeaderProps {
 export function Header({ pageTitle = 'Portal Control Hub', userPoints }: HeaderProps) {
   const { data: session } = useSession();
   const role = session?.user?.role || 'member';
-  const [showPersonaMenu, setShowPersonaMenu] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [livePoints, setLivePoints] = useState<number>(userPoints ?? 0);
 
   React.useEffect(() => {
@@ -32,33 +32,6 @@ export function Header({ pageTitle = 'Portal Control Hub', userPoints }: HeaderP
         .catch(() => {});
     }
   }, [userPoints, role]);
-
-  const personas = [
-    { name: 'Arjun Verma', email: 'arjun.verma@vitstudent.ac.in', role: 'lead', title: 'Lead — Technical' },
-    { name: 'Vikram Malhotra', email: 'vikram.malhotra@vitstudent.ac.in', role: 'lead', title: 'Lead — Visual Media' },
-    { name: 'Tanvi Sharma', email: 'tanvi.sharma@vitstudent.ac.in', role: 'lead', title: 'Lead — Creative' },
-    { name: 'Neha Kapoor', email: 'neha.kapoor@vitstudent.ac.in', role: 'lead', title: 'Lead — Outreach' },
-    { name: 'Aditya Singh', email: 'aditya.singh@vitstudent.ac.in', role: 'lead', title: 'Lead — Operations' },
-    { name: 'Rohan Patel', email: 'rohan.patel@vitstudent.ac.in', role: 'member', title: 'Member — Technical (350+ pts)' },
-    { name: 'Dr. K. Swaminathan', email: 'k.swaminathan@vitstudent.ac.in', role: 'board', title: 'Board — Faculty Sponsor' },
-    { name: 'Ritvik Arun Bhat', email: 'ritvik.arunbhat2025@vitstudent.ac.in', role: 'super_admin', title: 'Super Admin — Governance' },
-  ];
-
-  const handleSwitchPersona = async (persona: typeof personas[0]) => {
-    setShowPersonaMenu(false);
-    await signIn('credentials', {
-      email: persona.email,
-      role: persona.role,
-      callbackUrl:
-        persona.role === 'super_admin'
-          ? '/admin'
-          : persona.role === 'board'
-          ? '/board/dashboard'
-          : persona.role === 'lead'
-          ? '/lead/dashboard'
-          : '/member/dashboard',
-    });
-  };
 
   return (
     <header className="fixed top-0 left-64 right-0 h-16 bg-white/90 backdrop-blur-xl shadow-sm z-40 px-6 sm:px-8 flex items-center justify-between border-b border-light-grey">
@@ -119,58 +92,83 @@ export function Header({ pageTitle = 'Portal Control Hub', userPoints }: HeaderP
         {/* Notifications Popover */}
         <NotificationDropdown />
 
-        {/* Persona Switcher / Profile Dropdown */}
+        {/* User Profile / Sign Out Dropdown */}
         <div className="relative">
           <button
-            onClick={() => setShowPersonaMenu(!showPersonaMenu)}
+            onClick={() => setShowProfileMenu(!showProfileMenu)}
             className="flex items-center gap-1.5 pl-1 focus:outline-none group"
-            title="Switch User Role / Persona"
+            title="Account Options"
           >
-            <img
-              alt="Profile"
-              className="w-8 h-8 rounded-full object-cover ring-2 ring-electric-blue/30 shadow-sm group-hover:scale-105 transition-transform"
-              src={
-                session?.user?.image ||
-                '/brand/logo-icon.png'
-              }
-            />
+            {session?.user?.image ? (
+              <img
+                alt="Profile"
+                className="w-8 h-8 rounded-full object-cover ring-2 ring-electric-blue/30 shadow-sm group-hover:scale-105 transition-transform"
+                src={session.user.image}
+              />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-off-white border border-light-grey flex items-center justify-center text-tech-grey ring-2 ring-electric-blue/30 shadow-sm group-hover:scale-105 transition-transform">
+                <span className="material-symbols-outlined text-base">person</span>
+              </div>
+            )}
             <span className="material-symbols-outlined text-sm text-tech-grey group-hover:text-deep-navy transition-colors">
               arrow_drop_down
             </span>
           </button>
 
-          {showPersonaMenu && (
+          {showProfileMenu && (
             <>
-              <div className="fixed inset-0 z-40" onClick={() => setShowPersonaMenu(false)} />
-              <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-light-grey z-50 overflow-hidden py-2">
-                <div className="px-4 py-2 border-b border-light-grey">
-                  <span className="text-[10px] font-mono text-tech-grey uppercase tracking-wider block font-semibold">
-                    Simulate Chapter Persona
-                  </span>
-                  <p className="text-xs font-bold text-deep-navy mt-0.5">
-                    {session?.user?.name} ({session?.user?.role?.toUpperCase()})
-                  </p>
+              <div className="fixed inset-0 z-40" onClick={() => setShowProfileMenu(false)} />
+              <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-light-grey z-50 overflow-hidden p-4 flex flex-col gap-3">
+                <div className="flex items-center gap-3 pb-3 border-b border-light-grey">
+                  {session?.user?.image ? (
+                    <img
+                      alt={session?.user?.name || 'User'}
+                      src={session.user.image}
+                      className="w-10 h-10 rounded-full object-cover ring-1 ring-light-grey shrink-0"
+                    />
+                  ) : (
+                    <div className="w-10 h-10 rounded-full bg-off-white border border-light-grey flex items-center justify-center text-tech-grey shrink-0">
+                      <span className="material-symbols-outlined text-lg">person</span>
+                    </div>
+                  )}
+                  <div className="flex flex-col min-w-0">
+                    <span className="font-heading text-sm font-bold text-deep-navy truncate">
+                      {session?.user?.name || 'Chapter User'}
+                    </span>
+                    <span className="font-mono text-[11px] text-tech-grey truncate">
+                      {session?.user?.email}
+                    </span>
+                  </div>
                 </div>
 
-                <div className="flex flex-col py-1">
-                  {personas.map((p, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => handleSwitchPersona(p)}
-                      className="px-4 py-2 text-left hover:bg-off-white flex flex-col transition-colors group"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-deep-navy group-hover:text-electric-blue transition-colors">
-                          {p.name}
-                        </span>
-                        <span className="text-[9px] uppercase font-mono font-bold bg-off-white text-tech-grey px-1.5 py-0.5 rounded border border-light-grey">
-                          {p.role}
-                        </span>
-                      </div>
-                      <span className="text-[11px] text-tech-grey">{p.title}</span>
-                    </button>
-                  ))}
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-mono text-tech-grey uppercase tracking-wider text-[10px] font-semibold">
+                    ROLE PERMISSIONS
+                  </span>
+                  <span className="px-2 py-0.5 rounded font-mono text-[10px] font-bold uppercase bg-deep-navy text-white">
+                    {session?.user?.role?.replace('_', ' ') || 'MEMBER'}
+                  </span>
                 </div>
+
+                {session?.user?.departmentName && (
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-mono text-tech-grey uppercase tracking-wider text-[10px] font-semibold">
+                      DIVISION
+                    </span>
+                    <span className="font-sans font-medium text-electric-blue">
+                      {session.user.departmentName}
+                    </span>
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => signOut({ callbackUrl: '/login' })}
+                  className="w-full mt-1 px-3 py-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 font-sans text-xs font-bold flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <span className="material-symbols-outlined text-base">logout</span>
+                  Sign Out of Chapter Portal
+                </button>
               </div>
             </>
           )}

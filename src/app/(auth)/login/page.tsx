@@ -7,10 +7,8 @@ type PortalRole = 'member' | 'lead' | 'board' | 'super_admin';
 
 export default function LoginPage() {
   const [selectedPortal, setSelectedPortal] = useState<PortalRole | null>(null);
-  const [emailInput, setEmailInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [activeLaunchingEmail, setActiveLaunchingEmail] = useState<string | null>(null);
 
   React.useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -28,35 +26,6 @@ export default function LoginPage() {
     setLoading(true);
     // Let root page route directly based on database role
     signIn('google', { callbackUrl: '/' });
-  };
-
-  const handleCredentialsLogin = async (email: string) => {
-    setLoading(true);
-    setActiveLaunchingEmail(email);
-    setErrorMsg('');
-
-    try {
-      const res = await signIn('credentials', {
-        email,
-        portalRole: selectedPortal || 'member',
-        callbackUrl: '/',
-        redirect: false,
-      });
-
-      if (res?.error) {
-        setErrorMsg(res.error || 'Authentication failed. Please check credentials.');
-        setLoading(false);
-        setActiveLaunchingEmail(null);
-      } else {
-        // Direct to root where database role determines the destination
-        window.location.replace('/');
-      }
-    } catch (err) {
-      console.error('Sign-in error:', err);
-      setErrorMsg('Login connection failed. Please try again.');
-      setLoading(false);
-      setActiveLaunchingEmail(null);
-    }
   };
 
   return (
@@ -271,38 +240,8 @@ export default function LoginPage() {
                   <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
                     <path d="M12.24 10.285V13.4h6.887C18.2 16.14 15.645 18 12.24 18c-3.315 0-6-2.685-6-6s2.685-6 6-6c1.625 0 3.09.625 4.195 1.645l2.36-2.36C17.155 3.655 14.83 2.75 12.24 2.75 7.135 2.75 3 6.885 3 12s4.135 9.25 9.24 9.25c5.34 0 8.875-3.75 8.875-9.035 0-.61-.065-1.2-.175-1.93H12.24z" />
                   </svg>
-                  {loading && !activeLaunchingEmail ? 'Connecting Google OAuth...' : 'Sign in with VIT Student Google'}
+                  {loading ? 'Connecting Google OAuth...' : 'Sign in with VIT Student Google'}
                 </button>
-
-                {/* Direct Email or Demo Persona Trigger */}
-                <div className="border-t border-light-grey pt-space-md flex flex-col gap-space-sm">
-                  <span className="font-mono text-xs text-tech-grey uppercase tracking-wider font-bold">
-                    Or Sign In with University Email
-                  </span>
-
-                  <div className="flex gap-space-xs">
-                    <input
-                      type="email"
-                      placeholder="your.name@vitstudent.ac.in"
-                      value={emailInput}
-                      onChange={e => setEmailInput(e.target.value)}
-                      onKeyDown={e => {
-                        if (e.key === 'Enter' && emailInput && !loading) {
-                          handleCredentialsLogin(emailInput);
-                        }
-                      }}
-                      className="flex-1 bg-off-white px-space-md py-2.5 rounded-lg font-sans text-xs text-deep-navy border border-light-grey focus:outline-none focus:ring-2 focus:ring-electric-blue"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => handleCredentialsLogin(emailInput)}
-                      disabled={!emailInput || loading}
-                      className="px-space-lg bg-deep-navy hover:bg-navy-surface text-white font-heading text-xs font-bold rounded-lg disabled:opacity-50 transition-colors"
-                    >
-                      Enter
-                    </button>
-                  </div>
-                </div>
               </div>
             )}
           </div>
