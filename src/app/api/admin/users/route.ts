@@ -145,3 +145,145 @@ export async function POST(request: Request) {
     }
   );
 }
+
+export async function PATCH(request: Request) {
+  const session = await getServerSession(authOptions);
+  if (session?.user?.role !== 'super_admin') {
+    return NextResponse.json({ error: 'Super Admin only' }, { status: 403 });
+  }
+
+  const body = await request.json();
+  const { id, name, email, role, departmentId } = body;
+
+  if (!id && !email) {
+    return NextResponse.json({ error: 'User identifier (id or email) is required' }, { status: 400 });
+  }
+
+  const cleanEmail = email ? email.toLowerCase().trim() : undefined;
+  if (cleanEmail && !cleanEmail.endsWith('@vitstudent.ac.in')) {
+    return NextResponse.json({ error: 'Valid @vitstudent.ac.in institutional email required' }, { status: 400 });
+  }
+
+  const cleanRole = role ? (role as 'member' | 'lead' | 'board' | 'super_admin') : undefined;
+  const cleanDeptId =
+    cleanRole === 'super_admin' || cleanRole === 'board'
+      ? null
+      : departmentId !== undefined
+      ? departmentId || null
+      : undefined;
+
+  // 1. Update in Prisma
+  let updatedUser: any = null;
+  try {
+    const targetUser = id
+      ? await prisma.user.findUnique({ where: { id } })
+      : (cleanEmail ? await prisma.user.findUnique({ where: { email: cleanEmail } }) : null);
+
+    if (targetUser) {
+      updatedUser = await prisma.user.update({
+        where: { id: targetUser.id },
+        data: {
+          name: name ? name.trim() : undefined,
+          email: cleanEmail || undefined,
+          role: cleanRole,
+          departmentId: cleanDeptId,
+        },
+      });
+    }
+  } catch (err: any) {
+    console.error('Prisma user update error:', err);
+    return NextResponse.json(
+      { error: `Database error updating user: ${err?.message || 'Check database connection'}` },
+      { status: 500 }
+    );
+  }
+
+  // 2. Keep in-memory store in sync
+  const storeUser = id ? store.getUserById(id) : (cleanEmail ? store.getUserByEmail(cleanEmail) : null);
+  if (storeUser) {
+    if (name) storeUser.name = name.trim();
+    if (cleanEmail) storeUser.email = cleanEmail;
+    if (cleanRole) storeUser.role = cleanRole;
+    if (cleanDeptId !== undefined) storeUser.departmentId = cleanDeptId;
+  }
+
+  return NextResponse.json(
+    { success: true, user: updatedUser || storeUser },
+    {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      },
+    }
+  );
+}
+
+export async function DELETE(request: Request) {
+  const session = await getServerSession(authOptions);
+  if (session?.user?.role !== 'super_admin') {
+    return NextResponse.json({ error: 'Super Admin only' }, { status: 403 });
+  }
+
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get('id');
+  const email = searchParams.get('email');
+
+  if (!id && !email) {
+    return NextResponse.json({ error: 'User identifier (id or email) is required' }, { status: 400 });
+  }
+
+  const targetEmail = email ? email.toLowerCase().trim() : '';
+
+  // Prevent super admin from deleting their own active account
+  if (session.user?.email && (session.user.email.toLowerCase() === targetEmail || session.user?.id === id)) {
+    return NextResponse.json(
+      { error: 'Self-deletion restricted: You cannot remove your own active administrator account.' },
+      { status: 400 }
+    );
+  }
+
+  // 1. Delete from Prisma
+  try {
+    const userToDelete = id
+      ? await prisma.user.findUnique({ where: { id } })
+      : (email ? await prisma.user.findUnique({ where: { email: targetEmail } }) : null);
+
+    if (userToDelete) {
+      if (session.user?.email && userToDelete.email.toLowerCase() === session.user.email.toLowerCase()) {
+        return NextResponse.json(
+          { error: 'Self-deletion restricted: You cannot remove your own active administrator account.' },
+          { status: 400 }
+        );
+      }
+
+      // Cleanup foreign key dependencies
+      await prisma.notification.deleteMany({ where: { userId: userToDelete.id } });
+      await prisma.submission.updateMany({ where: { reviewedById: userToDelete.id }, data: { reviewedById: null } });
+      await prisma.submission.deleteMany({ where: { memberId: userToDelete.id } });
+      await prisma.pointsLedger.deleteMany({ where: { memberId: userToDelete.id } });
+      await prisma.user.delete({ where: { id: userToDelete.id } });
+    }
+  } catch (err: any) {
+    console.error('Prisma user deletion error:', err);
+    return NextResponse.json(
+      { error: `Database error removing user: ${err?.message || 'Check database connection'}` },
+      { status: 500 }
+    );
+  }
+
+  // 2. Remove from store
+  const targetIdx = store.users.findIndex(
+    u => (id && u.id === id) || (targetEmail && u.email.toLowerCase() === targetEmail)
+  );
+  if (targetIdx !== -1) {
+    store.users.splice(targetIdx, 1);
+  }
+
+  return NextResponse.json(
+    { success: true, message: 'User removed successfully.' },
+    {
+      headers: {
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      },
+    }
+  );
+}
