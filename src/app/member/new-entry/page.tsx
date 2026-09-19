@@ -7,6 +7,7 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { BackButton } from '@/components/ui/BackButton';
 import { extractGeotagFromImage, GeotagResult } from '@/lib/exif';
+import { DurationWheelPicker } from '@/components/ui/DurationWheelPicker';
 
 export default function NewShiftEntryPage() {
   const router = useRouter();
@@ -24,27 +25,26 @@ export default function NewShiftEntryPage() {
     }
   }, [session, status, router]);
 
-  // Form State
-  const [eventName, setEventName] = useState('VIT Hackathon 2024 - AI Track Coordination');
-  const [roleInEvent, setRoleInEvent] = useState('Workshop Mentor / Track Lead');
-  const [shiftDate, setShiftDate] = useState(new Date().toISOString().split('T')[0]);
-  const [shiftDuration, setShiftDuration] = useState('14:00 - 18:00 (4.0 hrs)');
-  const [durationHours, setDurationHours] = useState(4.0);
-  const [venue, setVenue] = useState('Anna Auditorium / Tech Tower 302');
-  const [comments, setComments] = useState(
-    'Facilitated PyTorch mini-workshops for 140+ student participants during Track 1. Managed GPU pod instances on campus clusters, oversaw model deployment sessions, and resolved 18 runtime configuration issues during the 4-hour slot.'
-  );
+  // Form State - Cleared for genuine member entry
+  const [eventName, setEventName] = useState('');
+  const [roleInEvent, setRoleInEvent] = useState('');
+  const [shiftDate, setShiftDate] = useState('');
+  const [shiftDuration, setShiftDuration] = useState('');
+  const [durationHours, setDurationHours] = useState(0);
+  const [venue, setVenue] = useState('');
+  const [comments, setComments] = useState('');
+
+  // Duration Wheel Picker Modal
+  const [showDurationPicker, setShowDurationPicker] = useState(false);
 
   // Photo & EXIF State
-  const [photoPreview, setPhotoPreview] = useState<string>(
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuCDqbHCXO-65KBQ_wHFnRS2zbk8LF1j26cIKUZiIrB7ph342l2ZsMT8Ld6CHwVHphIWMYiEF5qt85o0d27dOLXbkHJ0CYL6izdd34R6HDIvQr7ZafpqEIX7m8h5HDoR88XY1_-o15-h_Qj3uB94ijss_DCbeS3UylPOiDPQVxvxXIQGgEcHYQJ4OtqgXB2ja6LSTgcGyC25WRsKqmI4SYlqRE2qAojBHoye4k3YBa_4uwb9G_5lnQhk'
-  );
+  const [photoPreview, setPhotoPreview] = useState<string>('');
   const [geotagInfo, setGeotagInfo] = useState<GeotagResult>({
-    latitude: 12.9698,
-    longitude: 79.1559,
-    hasGeotag: true,
-    distanceFromCampusMeters: 4.2,
-    isInCampusBounds: true,
+    latitude: null,
+    longitude: null,
+    hasGeotag: false,
+    distanceFromCampusMeters: undefined,
+    isInCampusBounds: false,
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -66,8 +66,32 @@ export default function NewShiftEntryPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (comments.length < 50) {
+    if (!eventName.trim()) {
+      setSubmitError('Please enter the event or chapter activity title.');
+      return;
+    }
+    if (!roleInEvent) {
+      setSubmitError('Please select your assigned role in the event.');
+      return;
+    }
+    if (!shiftDate) {
+      setSubmitError('Please select the date completed.');
+      return;
+    }
+    if (durationHours <= 0) {
+      setSubmitError('Please select your shift duration using the scroll wheel.');
+      return;
+    }
+    if (!venue.trim()) {
+      setSubmitError('Please write the campus venue or lab.');
+      return;
+    }
+    if (comments.trim().length < 50) {
       setSubmitError('Work synopsis must be at least 50 characters.');
+      return;
+    }
+    if (!photoPreview) {
+      setSubmitError('Please upload an in-venue shift photo proof.');
       return;
     }
 
@@ -79,13 +103,13 @@ export default function NewShiftEntryPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          eventName,
+          eventName: eventName.trim(),
           roleInEvent,
           date: shiftDate,
-          venue,
+          venue: venue.trim(),
           durationHours,
           durationLabel: shiftDuration,
-          comments,
+          comments: comments.trim(),
           photoUrl: photoPreview,
           geoLat: geotagInfo.latitude,
           geoLng: geotagInfo.longitude,
@@ -183,6 +207,7 @@ export default function NewShiftEntryPage() {
                           id="event-title"
                           type="text"
                           required
+                          placeholder="e.g. AI Track Hackathon 2026 - Mentor Coordination"
                           value={eventName}
                           onChange={e => setEventName(e.target.value)}
                           className="w-full bg-off-white text-deep-navy pl-10 pr-4 py-2.5 rounded-lg font-sans text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-electric-blue border border-light-grey shadow-sm transition-all"
@@ -201,15 +226,19 @@ export default function NewShiftEntryPage() {
                           <span className="material-symbols-outlined absolute left-3 text-tech-grey text-lg">badge</span>
                           <select
                             id="role-select"
+                            required
                             value={roleInEvent}
                             onChange={e => setRoleInEvent(e.target.value)}
                             className="w-full bg-off-white text-deep-navy pl-10 pr-9 py-2.5 rounded-lg font-sans text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-electric-blue appearance-none shadow-sm transition-all cursor-pointer border border-light-grey"
                           >
+                            <option value="" disabled>Select assigned role...</option>
                             <option value="Workshop Mentor / Track Lead">Workshop Mentor / Track Lead</option>
                             <option value="General Event Facilitator">General Event Facilitator</option>
                             <option value="Compute & Infra Logistics">Compute &amp; Infra Logistics</option>
                             <option value="Judging & Evaluation Desk">Judging &amp; Evaluation Desk</option>
                             <option value="Media & Documentation">Media &amp; Documentation</option>
+                            <option value="Registration & Desk Operations">Registration &amp; Desk Operations</option>
+                            <option value="Speaker & Guest Hospitality">Speaker &amp; Guest Hospitality</option>
                           </select>
                           <span className="material-symbols-outlined absolute right-3 text-tech-grey pointer-events-none text-base">
                             expand_more
@@ -238,30 +267,45 @@ export default function NewShiftEntryPage() {
 
                     {/* Duration & Location Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
-                      {/* Shift Duration */}
+                      {/* Shift Duration - Scroll Wheel Selector */}
                       <div className="flex flex-col gap-space-2xs">
                         <label className="font-sans text-sm font-semibold text-deep-navy flex items-center justify-between" htmlFor="shift-duration">
                           <span>Shift Duration <span className="text-red-500">*</span></span>
-                          <span className="font-mono text-xs text-electric-blue font-bold">{durationHours}.0 HRS VERIFIED</span>
+                          <span className="font-mono text-xs text-electric-blue font-bold">
+                            {durationHours > 0 ? `${durationHours.toFixed(1)} HRS VERIFIED` : 'SCROLL WHEEL'}
+                          </span>
                         </label>
-                        <div className="relative flex items-center">
-                          <span className="material-symbols-outlined absolute left-3 text-tech-grey text-lg">schedule</span>
+                        <div
+                          onClick={() => setShowDurationPicker(true)}
+                          className="relative flex items-center cursor-pointer group"
+                        >
+                          <span className="material-symbols-outlined absolute left-3 text-tech-grey group-hover:text-electric-blue text-lg transition-colors">
+                            schedule
+                          </span>
                           <input
                             id="shift-duration"
                             type="text"
+                            readOnly
                             required
+                            placeholder="Click to scroll wheel duration..."
                             value={shiftDuration}
-                            onChange={e => {
-                              setShiftDuration(e.target.value);
-                              const match = e.target.value.match(/(\d+(\.\d+)?)\s*hr/);
-                              if (match) setDurationHours(parseFloat(match[1]));
-                            }}
-                            className="w-full bg-off-white text-deep-navy pl-10 pr-4 py-2.5 rounded-lg font-sans text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-electric-blue shadow-sm transition-all border border-light-grey"
+                            className="w-full bg-off-white text-deep-navy pl-10 pr-24 py-2.5 rounded-lg font-sans text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-electric-blue shadow-sm transition-all border border-light-grey cursor-pointer select-none"
                           />
+                          <button
+                            type="button"
+                            onClick={e => {
+                              e.stopPropagation();
+                              setShowDurationPicker(true);
+                            }}
+                            className="absolute right-2 px-2.5 py-1 rounded-md bg-electric-blue/10 hover:bg-electric-blue/20 text-electric-blue font-mono text-xs font-semibold flex items-center gap-1 transition-colors"
+                          >
+                            <span className="material-symbols-outlined text-sm">tune</span>
+                            <span>Wheel</span>
+                          </button>
                         </div>
                       </div>
 
-                      {/* Campus Venue / Lab */}
+                      {/* Campus Venue / Lab - Free Text Entry */}
                       <div className="flex flex-col gap-space-2xs">
                         <label className="font-sans text-sm font-semibold text-deep-navy" htmlFor="venue-location">
                           Campus Venue / Lab <span className="text-red-500">*</span>
@@ -272,10 +316,24 @@ export default function NewShiftEntryPage() {
                             id="venue-location"
                             type="text"
                             required
+                            list="campus-venue-suggestions"
+                            placeholder="Write campus venue or lab..."
                             value={venue}
                             onChange={e => setVenue(e.target.value)}
                             className="w-full bg-off-white text-deep-navy pl-10 pr-4 py-2.5 rounded-lg font-sans text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-electric-blue shadow-sm transition-all border border-light-grey"
                           />
+                          <datalist id="campus-venue-suggestions">
+                            <option value="Anna Auditorium" />
+                            <option value="Tech Tower (TT) 302" />
+                            <option value="Tech Tower (TT) 412" />
+                            <option value="SJT (Silver Jubilee Tower) Lab 102" />
+                            <option value="SJT (Silver Jubilee Tower) Audi" />
+                            <option value="SMV (Sir M. Visvesvaraya) Hall" />
+                            <option value="MB (Main Building) 204" />
+                            <option value="Delta Block AI Lab" />
+                            <option value="Academic Block 1" />
+                            <option value="Netaji Subhas Chandra Bose Stadium" />
+                          </datalist>
                         </div>
                       </div>
                     </div>
@@ -551,6 +609,17 @@ export default function NewShiftEntryPage() {
           </div>
         </main>
       </div>
+
+      {/* Duration Scroll Wheel Picker Modal */}
+      <DurationWheelPicker
+        isOpen={showDurationPicker}
+        onClose={() => setShowDurationPicker(false)}
+        initialHours={durationHours}
+        onSelect={(hrs, label) => {
+          setDurationHours(hrs);
+          setShiftDuration(label);
+        }}
+      />
     </div>
   );
 }
