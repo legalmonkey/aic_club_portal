@@ -295,14 +295,17 @@ export default function LeadReviewQueuePage() {
 
                           <div className="flex items-start justify-between gap-space-sm mb-space-xs">
                             <div className="flex items-center gap-space-sm min-w-0">
-                              <img
-                                alt={sub.memberName}
-                                className="w-10 h-10 rounded-full object-cover shrink-0 shadow-sm ring-2 ring-electric-blue/30"
-                                src={
-                                  sub.memberAvatar ||
-                                  'https://lh3.googleusercontent.com/aida-public/AB6AXuBzkgs-Xs9KAw3ivlSvtEJ0uUrOEOwf1TMEf2YRpWINiZrHcEPQDTiO6dD7Qg3_i7pxgISTnrNvGo2eWlQei62-ocUEEtutzEPWblTSd3_60YbK8YPR5rNA1xgnF6c9MmQ64F85nCXk87wRMqyZN2FhkN2h7-pL-J9BKVNxjHZFF5TPosOeg0zeuM0gQit7i8ScbiApO6dhZaRKK1EDNkv9GpO57JpAMt8xET2g1Q50T0PhC5MjN6ZD'
-                                }
-                              />
+                              {sub.memberAvatar ? (
+                                <img
+                                  alt={sub.memberName}
+                                  className="w-10 h-10 rounded-full object-cover shrink-0 shadow-sm ring-2 ring-electric-blue/30"
+                                  src={sub.memberAvatar}
+                                />
+                              ) : (
+                                <div className="w-10 h-10 rounded-full bg-off-white border border-light-grey flex items-center justify-center text-tech-grey shrink-0">
+                                  <span className="material-symbols-outlined text-xl text-tech-grey">person</span>
+                                </div>
+                              )}
                               <div className="flex flex-col min-w-0">
                                 <div className="flex items-center gap-space-xs">
                                   <span className="font-heading text-sm text-deep-navy font-bold truncate">
@@ -398,14 +401,17 @@ export default function LeadReviewQueuePage() {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-space-md bg-off-white -mx-space-xl -mt-space-xl px-space-xl pt-space-xl rounded-t-xl gap-space-md border-b border-light-grey">
                       <div className="flex items-center gap-space-md min-w-0">
                         <div className="relative shrink-0">
-                          <img
-                            alt={selectedSubmission.memberName}
-                            className="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-electric-blue/40"
-                            src={
-                              selectedSubmission.memberAvatar ||
-                              'https://lh3.googleusercontent.com/aida-public/AB6AXuBzkgs-Xs9KAw3ivlSvtEJ0uUrOEOwf1TMEf2YRpWINiZrHcEPQDTiO6dD7Qg3_i7pxgISTnrNvGo2eWlQei62-ocUEEtutzEPWblTSd3_60YbK8YPR5rNA1xgnF6c9MmQ64F85nCXk87wRMqyZN2FhkN2h7-pL-J9BKVNxjHZFF5TPosOeg0zeuM0gQit7i8ScbiApO6dhZaRKK1EDNkv9GpO57JpAMt8xET2g1Q50T0PhC5MjN6ZD'
-                            }
-                          />
+                          {selectedSubmission.memberAvatar ? (
+                            <img
+                              alt={selectedSubmission.memberName}
+                              className="w-14 h-14 rounded-full object-cover shadow-md ring-2 ring-electric-blue/40"
+                              src={selectedSubmission.memberAvatar}
+                            />
+                          ) : (
+                            <div className="w-14 h-14 rounded-full bg-off-white border border-light-grey flex items-center justify-center text-tech-grey shrink-0">
+                              <span className="material-symbols-outlined text-2xl text-tech-grey">person</span>
+                            </div>
+                          )}
                           <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full gradient-electric flex items-center justify-center text-white text-[10px] font-bold shadow-sm">
                             ★
                           </span>

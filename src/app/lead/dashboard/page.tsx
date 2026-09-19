@@ -351,14 +351,17 @@ export default function LeadDashboardPage() {
                           <tr key={sub.id} className="hover:bg-off-white/80 transition-colors">
                             <td className="py-2.5 px-3">
                               <div className="flex items-center gap-2.5 min-w-0">
-                                <img
-                                  alt={sub.memberName}
-                                  src={
-                                    sub.memberAvatar ||
-                                    'https://lh3.googleusercontent.com/aida-public/AB6AXuA-utP92fCeCV5lVbHBJa4RISIH_UKyL2hywRuxhCNRPnhy0XJaDNUjOUwGSCflUP0XXvj_PpoVkwhjZsPWh2nFcT7HaWgLSrbMuXd010gaBjQFjImoJhuB4vHSdLEOn7eEgkSS5j8FvH5oqyxGyd6qACe3uP2QnJbHOqkvJSffVlUtXHMkWre99eJ-wNUSS0vujpCKaMqicEVhVaDW_-BdjYE6qliWI12IdXBuoZ7wrz4fPxuNhcB7'
-                                  }
-                                  className="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-electric-blue/30"
-                                />
+                                {sub.memberAvatar ? (
+                                  <img
+                                    alt={sub.memberName}
+                                    src={sub.memberAvatar}
+                                    className="w-8 h-8 rounded-full object-cover shrink-0 ring-1 ring-electric-blue/30"
+                                  />
+                                ) : (
+                                  <div className="w-8 h-8 rounded-full bg-off-white border border-light-grey flex items-center justify-center text-tech-grey shrink-0">
+                                    <span className="material-symbols-outlined text-base">person</span>
+                                  </div>
+                                )}
                                 <div className="flex flex-col min-w-0">
                                   <span className="font-heading text-xs text-deep-navy font-bold truncate">
                                     {sub.memberName}
@@ -463,14 +466,17 @@ export default function LeadDashboardPage() {
                       </div>
 
                       <div className="flex items-center gap-space-md my-space-xs">
-                        <img
-                          alt={leaderboard[0].name}
-                          src={
-                            leaderboard[0].avatarUrl ||
-                            'https://lh3.googleusercontent.com/aida-public/AB6AXuBzkgs-Xs9KAw3ivlSvtEJ0uUrOEOwf1TMEf2YRpWINiZrHcEPQDTiO6dD7Qg3_i7pxgISTnrNvGo2eWlQei62-ocUEEtutzEPWblTSd3_60YbK8YPR5rNA1xgnF6c9MmQ64F85nCXk87wRMqyZN2FhkN2h7-pL-J9BKVNxjHZFF5TPosOeg0zeuM0gQit7i8ScbiApO6dhZaRKK1EDNkv9GpO57JpAMt8xET2g1Q50T0PhC5MjN6ZD'
-                          }
-                          className="w-12 h-12 rounded-full object-cover ring-2 ring-electric-blue shadow-md"
-                        />
+                        {leaderboard[0].avatarUrl ? (
+                          <img
+                            alt={leaderboard[0].name}
+                            src={leaderboard[0].avatarUrl}
+                            className="w-12 h-12 rounded-full object-cover ring-2 ring-electric-blue shadow-md"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 rounded-full bg-off-white border border-light-grey flex items-center justify-center text-tech-grey shrink-0">
+                            <span className="material-symbols-outlined text-2xl">person</span>
+                          </div>
+                        )}
                         <div className="flex flex-col">
                           <span className="font-heading text-base text-deep-navy font-bold">
                             {leaderboard[0].name}

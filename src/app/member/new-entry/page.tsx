@@ -417,10 +417,6 @@ export default function NewShiftEntryPage() {
                     </span>
                   </div>
 
-                  <p className="font-sans text-sm text-tech-grey">
-                    Upload an in-venue photograph taken during the shift. EXIF GPS coordinates will be extracted automatically to cross-reference against chapter venue boundaries.
-                  </p>
-
                   <input
                     type="file"
                     ref={fileInputRef}

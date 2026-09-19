@@ -96,7 +96,7 @@ export async function POST(request: Request) {
       memberId: session.user.id,
       memberName: session.user.name || 'Student Member',
       memberEmail: session.user.email || '',
-      memberAvatar: session.user.image || 'https://lh3.googleusercontent.com/aida-public/AB6AXuBzkgs-Xs9KAw3ivlSvtEJ0uUrOEOwf1TMEf2YRpWINiZrHcEPQDTiO6dD7Qg3_i7pxgISTnrNvGo2eWlQei62-ocUEEtutzEPWblTSd3_60YbK8YPR5rNA1xgnF6c9MmQ64F85nCXk87wRMqyZN2FhkN2h7-pL-J9BKVNxjHZFF5TPosOeg0zeuM0gQit7i8ScbiApO6dhZaRKK1EDNkv9GpO57JpAMt8xET2g1Q50T0PhC5MjN6ZD',
+      memberAvatar: session.user.image || undefined,
       memberYearDept: session.user.yearDept || 'Student Chapter Member',
       memberRegNo: session.user.regNo || '22BCE1042',
       departmentId,
