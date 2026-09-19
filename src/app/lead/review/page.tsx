@@ -44,6 +44,11 @@ export default function LeadReviewQueuePage() {
   const [filterTab, setFilterTab] = useState<'pending' | 'rejected' | 'approved' | 'all'>('pending');
   const [searchQuery, setSearchQuery] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  useEffect(() => {
+    setImageError(false);
+  }, [selectedId]);
 
   // Reject Modal State
   const [showRejectModal, setShowRejectModal] = useState(false);
@@ -522,11 +527,28 @@ export default function LeadReviewQueuePage() {
                         Shift Photo Evidence Proof
                       </span>
                       <div className="relative rounded-xl overflow-hidden shadow-sm aspect-video sm:aspect-[21/9] bg-deep-navy group border border-light-grey">
-                        <img
-                          src={selectedSubmission.photoUrl}
-                          alt="Verification Evidence"
-                          className="w-full h-full object-cover"
-                        />
+                        {!imageError && selectedSubmission.photoUrl && !selectedSubmission.photoUrl.startsWith('blob:') ? (
+                          <img
+                            src={selectedSubmission.photoUrl}
+                            alt="Verification Evidence"
+                            className="w-full h-full object-cover"
+                            onError={() => setImageError(true)}
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center bg-gradient-to-br from-deep-navy to-slate-900 text-white">
+                            <div className="w-12 h-12 rounded-full bg-electric-blue/15 border border-electric-blue/30 flex items-center justify-center mb-2">
+                              <span className="material-symbols-outlined text-2xl text-electric-blue">photo_camera</span>
+                            </div>
+                            <span className="font-heading text-sm font-bold text-white">
+                              Shift Photo Proof Registered
+                            </span>
+                            <p className="font-sans text-xs text-tech-grey mt-1 max-w-sm">
+                              {selectedSubmission.photoUrl?.startsWith('blob:')
+                                ? 'Notice: This shift proof was uploaded before base64 persistence was enabled. Please ask the member to re-upload or approve based on verified venue logs.'
+                                : 'Shift evidence attached for direct lead verification.'}
+                            </p>
+                          </div>
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-deep-navy/90 via-transparent to-black/30 pointer-events-none" />
 
                         <div className="absolute top-3 left-3 bg-deep-navy/80 backdrop-blur-md px-3 py-1 rounded-lg text-white flex items-center gap-1.5 shadow-sm border border-white/10">

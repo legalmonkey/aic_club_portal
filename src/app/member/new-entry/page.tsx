@@ -7,6 +7,7 @@ import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { BackButton } from '@/components/ui/BackButton';
 import { DurationWheelPicker } from '@/components/ui/DurationWheelPicker';
+import { compressImageFile } from '@/lib/image';
 
 export default function NewShiftEntryPage() {
   const router = useRouter();
@@ -39,18 +40,32 @@ export default function NewShiftEntryPage() {
 
   // Photo State
   const [photoPreview, setPhotoPreview] = useState<string>('');
+  const [photoCompressing, setPhotoCompressing] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Create local preview
-    const previewUrl = URL.createObjectURL(file);
-    setPhotoPreview(previewUrl);
+    try {
+      setPhotoCompressing(true);
+      const compressedDataUrl = await compressImageFile(file);
+      setPhotoPreview(compressedDataUrl);
+    } catch (err) {
+      console.error('Error compressing photo:', err);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          setPhotoPreview(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setPhotoCompressing(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -78,6 +93,10 @@ export default function NewShiftEntryPage() {
     }
     if (comments.trim().length < 50) {
       setSubmitError('Work synopsis must be at least 50 characters.');
+      return;
+    }
+    if (photoCompressing) {
+      setSubmitError('Photo is still optimizing. Please wait a moment.');
       return;
     }
     if (!photoPreview) {

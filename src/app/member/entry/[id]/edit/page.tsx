@@ -5,6 +5,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { BackButton } from '@/components/ui/BackButton';
+import { compressImageFile } from '@/lib/image';
 
 export default function EditRejectedSubmissionPage() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function EditRejectedSubmissionPage() {
   const [comments, setComments] = useState('');
   const [rejectionReason, setRejectionReason] = useState('');
   const [photoPreview, setPhotoPreview] = useState('');
+  const [photoCompressing, setPhotoCompressing] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -47,16 +49,34 @@ export default function EditRejectedSubmissionPage() {
       .finally(() => setLoading(false));
   }, [submissionId]);
 
-  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const previewUrl = URL.createObjectURL(file);
-    setPhotoPreview(previewUrl);
+    try {
+      setPhotoCompressing(true);
+      const compressedDataUrl = await compressImageFile(file);
+      setPhotoPreview(compressedDataUrl);
+    } catch (err) {
+      console.error('Error compressing photo:', err);
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === 'string') {
+          setPhotoPreview(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    } finally {
+      setPhotoCompressing(false);
+    }
   };
 
   const handleResubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (photoCompressing) {
+      setErrorMsg('Photo is still optimizing. Please wait a moment.');
+      return;
+    }
     if (comments.length < 50) {
       setErrorMsg('Work synopsis must be at least 50 characters.');
       return;
