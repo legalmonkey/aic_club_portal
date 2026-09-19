@@ -134,6 +134,16 @@ class PortalStoreManager {
       isOnboarded: true,
       createdAt: new Date(),
     },
+    {
+      id: 'member-ritvik-gmail',
+      name: 'Ritvik Arun Bhat',
+      email: 'ritvikarunbhat@gmail.com',
+      role: 'member',
+      departmentId: 'dept-tech',
+      yearDept: 'Technical Department Member',
+      isOnboarded: true,
+      createdAt: new Date(),
+    },
   ];
   submissions: SubmissionData[] = [];
   ledger: PointsLedgerData[] = [];

@@ -62,8 +62,11 @@ export const authOptions: NextAuthOptions = {
 
         const email = credentials.email.toLowerCase().trim();
 
-        // 1. Strict domain restriction check (allowing authorized super admin)
-        const isAllowedDomain = email.endsWith('@vitstudent.ac.in') || email === 'iamsanthosh2425@gmail.com';
+        // 1. Strict domain restriction check (allowing authorized test accounts)
+        const isAllowedDomain =
+          email.endsWith('@vitstudent.ac.in') ||
+          email === 'iamsanthosh2425@gmail.com' ||
+          email === 'ritvikarunbhat@gmail.com';
         if (!isAllowedDomain) {
           throw new Error('Only @vitstudent.ac.in accounts allowed');
         }
@@ -107,7 +110,10 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ user }) {
       const email = user.email ? user.email.toLowerCase().trim() : '';
-      const isAllowedDomain = email.endsWith('@vitstudent.ac.in') || email === 'iamsanthosh2425@gmail.com';
+      const isAllowedDomain =
+        email.endsWith('@vitstudent.ac.in') ||
+        email === 'iamsanthosh2425@gmail.com' ||
+        email === 'ritvikarunbhat@gmail.com';
       if (!isAllowedDomain) {
         return false;
       }
@@ -129,6 +135,42 @@ export const authOptions: NextAuthOptions = {
               name: user.name || 'Santhosh',
               role: 'super_admin',
               departmentId: null,
+            },
+          });
+        } else if (email === 'ritvikarunbhat@gmail.com') {
+          // Guarantee member record in Technical department in PostgreSQL
+          let techDept = await prisma.department.findFirst({
+            where: {
+              OR: [
+                { name: 'Technical' },
+                { id: 'dept-tech' },
+              ],
+            },
+          });
+          if (!techDept) {
+            try {
+              techDept = await prisma.department.create({
+                data: {
+                  id: 'dept-tech',
+                  name: 'Technical',
+                },
+              });
+            } catch {
+              techDept = await prisma.department.findUnique({ where: { name: 'Technical' } });
+            }
+          }
+
+          dbUser = await prisma.user.upsert({
+            where: { email },
+            update: {
+              role: 'member',
+              departmentId: techDept?.id || 'dept-tech',
+            },
+            create: {
+              email,
+              name: user.name || 'Ritvik Arun Bhat',
+              role: 'member',
+              departmentId: techDept?.id || 'dept-tech',
             },
           });
         } else {

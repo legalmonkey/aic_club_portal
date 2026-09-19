@@ -80,7 +80,10 @@ export async function POST(request: Request) {
   const { name, email, role, departmentId, yearDept, regNo } = body;
 
   const cleanEmail = email ? email.toLowerCase().trim() : '';
-  const isAllowedEmail = cleanEmail.endsWith('@vitstudent.ac.in') || cleanEmail === 'iamsanthosh2425@gmail.com';
+  const isAllowedEmail =
+    cleanEmail.endsWith('@vitstudent.ac.in') ||
+    cleanEmail === 'iamsanthosh2425@gmail.com' ||
+    cleanEmail === 'ritvikarunbhat@gmail.com';
   if (!cleanEmail || !isAllowedEmail) {
     return NextResponse.json({ error: 'Valid institutional email required' }, { status: 400 });
   }
@@ -160,7 +163,11 @@ export async function PATCH(request: Request) {
   }
 
   const cleanEmail = email ? email.toLowerCase().trim() : undefined;
-  const isAllowedEmail = !cleanEmail || cleanEmail.endsWith('@vitstudent.ac.in') || cleanEmail === 'iamsanthosh2425@gmail.com';
+  const isAllowedEmail =
+    !cleanEmail ||
+    cleanEmail.endsWith('@vitstudent.ac.in') ||
+    cleanEmail === 'iamsanthosh2425@gmail.com' ||
+    cleanEmail === 'ritvikarunbhat@gmail.com';
   if (cleanEmail && !isAllowedEmail) {
     return NextResponse.json({ error: 'Valid institutional email required' }, { status: 400 });
   }
