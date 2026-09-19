@@ -188,6 +188,7 @@ class PortalStoreManager {
         avatarUrl: member.avatarUrl,
         yearDept: member.yearDept || dept?.name || 'AIC Member',
         regNo: member.regNo || '22BCE0000',
+        departmentId: member.departmentId || '',
         departmentName: dept?.name || 'General',
         points: pts,
         totalHours,

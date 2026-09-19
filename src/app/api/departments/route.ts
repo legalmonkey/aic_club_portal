@@ -54,7 +54,19 @@ export async function GET() {
         }
       }
 
-      const memberCount = dbUsers.filter(u => u.role === 'member' && u.departmentId === dept.id).length;
+      // Count unique members across DB and Store
+      const memberEmails = new Set<string>();
+      for (const u of dbUsers) {
+        if (u.role === 'member' && u.departmentId === dept.id) {
+          memberEmails.add(u.email.toLowerCase());
+        }
+      }
+      for (const u of store.users) {
+        if (u.role === 'member' && u.departmentId === dept.id) {
+          memberEmails.add(u.email.toLowerCase());
+        }
+      }
+      const memberCount = memberEmails.size;
       const storeDept = store.getDepartmentById(dept.id);
       const code = storeDept?.code || dept.name.slice(0, 4).toUpperCase();
 

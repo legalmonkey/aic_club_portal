@@ -28,7 +28,7 @@ interface Department {
 
 export default function LeaderboardPage() {
   const { data: session } = useSession();
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [allLeaderboard, setAllLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [selectedDept, setSelectedDept] = useState<string>('all');
   const [search, setSearch] = useState<string>('');
@@ -47,13 +47,12 @@ export default function LeaderboardPage() {
     fetchLeaderboard();
   }, []);
 
-  const fetchLeaderboard = (deptId?: string) => {
+  const fetchLeaderboard = () => {
     setLoading(true);
-    const url = deptId && deptId !== 'all' ? `/api/leaderboard?departmentId=${deptId}` : '/api/leaderboard';
-    fetch(url)
+    fetch('/api/leaderboard')
       .then(res => res.json())
       .then(data => {
-        if (data.leaderboard) setLeaderboard(data.leaderboard);
+        if (data.leaderboard) setAllLeaderboard(data.leaderboard);
       })
       .catch(() => {})
       .finally(() => setLoading(false));
@@ -61,10 +60,12 @@ export default function LeaderboardPage() {
 
   const handleDeptChange = (deptId: string) => {
     setSelectedDept(deptId);
-    fetchLeaderboard(deptId);
   };
 
-  const filtered = leaderboard.filter(user => {
+  const filtered = allLeaderboard.filter(user => {
+    if (selectedDept !== 'all' && user.departmentId !== selectedDept) {
+      return false;
+    }
     if (!search) return true;
     const query = search.toLowerCase();
     return (
@@ -112,7 +113,7 @@ export default function LeaderboardPage() {
                 </div>
                 <div className="bg-electric-blue/10 border border-electric-blue/20 text-electric-blue font-mono text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5">
                   <span className="material-symbols-outlined text-sm">groups</span>
-                  {leaderboard.length} ACTIVE MEMBERS
+                  {allLeaderboard.length} ACTIVE MEMBERS
                 </div>
               </div>
             </div>
@@ -130,10 +131,10 @@ export default function LeaderboardPage() {
                       : 'bg-off-white text-tech-grey hover:text-deep-navy border border-light-grey'
                   }`}
                 >
-                  All Divisions ({leaderboard.length})
+                  All Divisions ({allLeaderboard.length})
                 </button>
                 {departments.map(dept => {
-                  const count = leaderboard.filter(u => u.departmentId === dept.id).length;
+                  const count = allLeaderboard.filter(u => u.departmentId === dept.id).length;
                   const isSelected = selectedDept === dept.id;
                   return (
                     <button
