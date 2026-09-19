@@ -6,7 +6,6 @@ import { useSession } from 'next-auth/react';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { BackButton } from '@/components/ui/BackButton';
-import { extractGeotagFromImage, GeotagResult } from '@/lib/exif';
 import { DurationWheelPicker } from '@/components/ui/DurationWheelPicker';
 
 export default function NewShiftEntryPage() {
@@ -38,31 +37,20 @@ export default function NewShiftEntryPage() {
   // Duration Wheel Picker Modal
   const [showDurationPicker, setShowDurationPicker] = useState(false);
 
-  // Photo & EXIF State
+  // Photo State
   const [photoPreview, setPhotoPreview] = useState<string>('');
-  const [geotagInfo, setGeotagInfo] = useState<GeotagResult>({
-    latitude: null,
-    longitude: null,
-    hasGeotag: false,
-    distanceFromCampusMeters: undefined,
-    isInCampusBounds: false,
-  });
 
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     // Create local preview
     const previewUrl = URL.createObjectURL(file);
     setPhotoPreview(previewUrl);
-
-    // Extract EXIF Geotags
-    const geotag = await extractGeotagFromImage(file);
-    setGeotagInfo(geotag);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -113,8 +101,8 @@ export default function NewShiftEntryPage() {
           durationLabel: shiftDuration,
           comments: comments.trim(),
           photoUrl: photoPreview,
-          geoLat: geotagInfo.latitude,
-          geoLng: geotagInfo.longitude,
+          geoLat: null,
+          geoLng: null,
           requestedPoints: 0,
         }),
       });
@@ -401,7 +389,7 @@ export default function NewShiftEntryPage() {
                   </div>
                 </div>
 
-                {/* Section 3: Geotagged Photo Verification */}
+                {/* Section 3: Shift Photo Evidence */}
                 <div className="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm flex flex-col gap-space-md border border-light-grey">
                   <div className="flex items-center justify-between pb-space-xs border-b border-light-grey/60">
                     <div className="flex items-center gap-space-sm">
@@ -409,11 +397,11 @@ export default function NewShiftEntryPage() {
                         03
                       </span>
                       <h2 className="font-heading text-xl text-deep-navy font-bold">
-                        Geotagged Photo Verification
+                        Shift Photo Evidence
                       </h2>
                     </div>
                     <span className="font-mono text-xs uppercase tracking-wider text-tech-grey">
-                      SEC-03 // EXIF AUDIT
+                      SEC-03 // PHOTO PROOF
                     </span>
                   </div>
 
@@ -425,7 +413,7 @@ export default function NewShiftEntryPage() {
                     onChange={handlePhotoSelect}
                   />
 
-                  {/* Photo Preview & Geotag Card */}
+                  {/* Photo Preview Card */}
                   {photoPreview ? (
                     <div className="flex flex-col gap-space-sm">
                       <div className="relative rounded-xl overflow-hidden shadow-sm aspect-video sm:aspect-[21/9] bg-deep-navy group border border-light-grey">
@@ -450,58 +438,35 @@ export default function NewShiftEntryPage() {
                           Change Photo
                         </button>
 
-                        <div className="absolute bottom-3 left-3 right-3 flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs text-white bg-deep-navy/85 backdrop-blur-md p-3 rounded-lg border border-white/10">
+                        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white bg-deep-navy/85 backdrop-blur-md p-3 rounded-lg border border-white/10">
                           <div className="flex items-center gap-space-xs min-w-0">
-                            <span className="material-symbols-outlined text-electric-blue shrink-0 text-base">pin_drop</span>
+                            <span className="material-symbols-outlined text-electric-blue shrink-0 text-base">location_on</span>
                             <span className="font-mono text-xs truncate">
-                              {geotagInfo.hasGeotag && geotagInfo.latitude !== null && geotagInfo.longitude !== null
-                                ? `${geotagInfo.latitude.toFixed(4)}° N, ${geotagInfo.longitude.toFixed(4)}° E • ${venue}`
-                                : 'No EXIF GPS Geotag Detected'}
+                              {venue ? `Venue: ${venue}` : 'Shift Photo Attached'}
                             </span>
                           </div>
-                          {geotagInfo.hasGeotag && (
-                            <span className="font-mono text-xs text-light-blue shrink-0 font-bold">
-                              DELTA: {geotagInfo.distanceFromCampusMeters}M FROM VIT GEOFENCE
-                            </span>
-                          )}
+                          <span className="font-mono text-xs text-light-blue shrink-0 font-bold">
+                            READY FOR REVIEW
+                          </span>
                         </div>
                       </div>
 
-                      {geotagInfo.hasGeotag ? (
-                        <div className="bg-electric-blue/10 border border-electric-blue/30 text-deep-navy p-space-md rounded-xl flex items-center justify-between shadow-sm">
-                          <div className="flex items-center gap-space-sm">
-                            <span className="material-symbols-outlined text-lg text-electric-blue">verified</span>
-                            <div className="flex flex-col">
-                              <span className="font-heading text-sm text-deep-navy font-bold">
-                                Campus GPS Match Confirmed
-                              </span>
-                              <span className="font-sans text-xs text-tech-grey">
-                                Geotag is within VIT campus perimeter boundary.
-                              </span>
-                            </div>
+                      <div className="bg-electric-blue/10 border border-electric-blue/30 text-deep-navy p-space-md rounded-xl flex items-center justify-between shadow-sm">
+                        <div className="flex items-center gap-space-sm">
+                          <span className="material-symbols-outlined text-lg text-electric-blue">check_circle</span>
+                          <div className="flex flex-col">
+                            <span className="font-heading text-sm text-deep-navy font-bold">
+                              Photo Proof Attached
+                            </span>
+                            <span className="font-sans text-xs text-tech-grey">
+                              Image evidence attached and ready for department lead review.
+                            </span>
                           </div>
-                          <span className="font-mono text-xs font-bold uppercase bg-white border border-electric-blue/30 text-electric-blue px-2.5 py-1 rounded-lg">
-                            VALIDATED
-                          </span>
                         </div>
-                      ) : (
-                        <div className="bg-amber-500/10 border border-amber-500/30 text-deep-navy p-space-md rounded-xl flex items-center justify-between">
-                          <div className="flex items-center gap-space-sm">
-                            <span className="material-symbols-outlined text-base text-amber-600">info</span>
-                            <div className="flex flex-col">
-                              <span className="font-heading text-sm text-deep-navy font-bold">
-                                No Geotag Found in Image
-                              </span>
-                              <span className="font-sans text-xs text-tech-grey">
-                                Submission will proceed but will be flagged for lead review.
-                              </span>
-                            </div>
-                          </div>
-                          <span className="font-mono text-xs font-bold uppercase bg-white border border-amber-500/30 text-amber-600 px-2.5 py-1 rounded-lg">
-                            FLAGGED
-                          </span>
-                        </div>
-                      )}
+                        <span className="font-mono text-xs font-bold uppercase bg-white border border-electric-blue/30 text-electric-blue px-2.5 py-1 rounded-lg">
+                          ATTACHED
+                        </span>
+                      </div>
                     </div>
                   ) : (
                     <div
@@ -516,7 +481,7 @@ export default function NewShiftEntryPage() {
                           Click to upload shift photo proof
                         </span>
                         <p className="font-sans text-xs text-tech-grey mt-0.5">
-                          Supports JPG/PNG from mobile camera with embedded location data
+                          Supports JPG, PNG from mobile camera or event photo evidence
                         </p>
                       </div>
                     </div>
@@ -583,7 +548,7 @@ export default function NewShiftEntryPage() {
                           Department Co-Lead Verification
                         </span>
                         <p className="font-sans text-xs text-tech-grey mt-0.5">
-                          Leads inspect geotag coordinates, verified hours, and work output before signing off.
+                          Leads inspect shift photo proof, verified hours, and work output before signing off.
                         </p>
                       </div>
                     </div>

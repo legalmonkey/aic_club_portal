@@ -5,7 +5,6 @@ import { authOptions } from '@/lib/auth';
 import { store, SubmissionData } from '@/lib/store';
 import { createNotification } from '@/lib/notifications';
 import { sendEmail } from '@/lib/email';
-import { calculateDistanceMeters, VIT_CAMPUS_LAT, VIT_CAMPUS_LNG } from '@/lib/exif';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -78,19 +77,6 @@ export async function POST(request: Request) {
     const departmentId = explicitDeptId || session.user.departmentId || 'dept-1';
     const dept = store.getDepartmentById(departmentId);
 
-    // Evaluate geotag status
-    let geoStatus: 'verified' | 'remote' | 'missing' | 'flagged' = 'missing';
-    let distanceMeters: number | undefined;
-
-    if (geoLat && geoLng) {
-      distanceMeters = calculateDistanceMeters(geoLat, geoLng, VIT_CAMPUS_LAT, VIT_CAMPUS_LNG);
-      if (distanceMeters <= 1500) {
-        geoStatus = 'verified';
-      } else {
-        geoStatus = 'flagged'; // flagged for lead attention
-      }
-    }
-
     const newSubmission: SubmissionData = {
       id: `sub-${Date.now()}`,
       memberId: session.user.id,
@@ -109,10 +95,9 @@ export async function POST(request: Request) {
       eventName,
       comments,
       photoUrl,
-      geoLat: geoLat ? Number(geoLat) : null,
-      geoLng: geoLng ? Number(geoLng) : null,
-      geoStatus,
-      geoDistanceMeters: distanceMeters,
+      geoLat: null,
+      geoLng: null,
+      geoStatus: 'verified',
       status: 'pending',
       pointsAwarded: null,
       requestedPoints: Number(requestedPoints),
@@ -143,7 +128,7 @@ export async function POST(request: Request) {
             <p><strong>Activity:</strong> ${eventName}</p>
             <p><strong>Venue:</strong> ${venue}</p>
             <p><strong>Duration:</strong> ${durationLabel}</p>
-            <p><strong>Geotag Status:</strong> ${geoStatus.toUpperCase()}</p>
+            <p><strong>Photo Evidence:</strong> Shift Proof Attached</p>
             <p><a href="${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/lead/review" style="background-color: #00288e; color: white; padding: 8px 16px; text-decoration: none; border-radius: 6px;">Open Verification Queue</a></p>
           </div>
         `,

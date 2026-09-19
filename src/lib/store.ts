@@ -40,9 +40,9 @@ export interface SubmissionData {
   eventName: string;
   comments: string;
   photoUrl: string;
-  geoLat: number | null;
-  geoLng: number | null;
-  geoStatus: 'verified' | 'remote' | 'missing' | 'flagged';
+  geoLat?: number | null;
+  geoLng?: number | null;
+  geoStatus?: 'verified' | 'remote' | 'missing' | 'flagged';
   geoDistanceMeters?: number;
   status: 'pending' | 'approved' | 'rejected' | 'resubmitted';
   pointsAwarded: number | null;

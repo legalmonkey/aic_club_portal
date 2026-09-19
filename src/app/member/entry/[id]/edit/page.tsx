@@ -5,7 +5,6 @@ import { useRouter, useParams } from 'next/navigation';
 import { Sidebar } from '@/components/layout/Sidebar';
 import { Header } from '@/components/layout/Header';
 import { BackButton } from '@/components/ui/BackButton';
-import { extractGeotagFromImage } from '@/lib/exif';
 
 export default function EditRejectedSubmissionPage() {
   const router = useRouter();
@@ -24,8 +23,6 @@ export default function EditRejectedSubmissionPage() {
   const [comments, setComments] = useState('');
   const [rejectionReason, setRejectionReason] = useState('');
   const [photoPreview, setPhotoPreview] = useState('');
-  const [geoLat, setGeoLat] = useState<number | null>(null);
-  const [geoLng, setGeoLng] = useState<number | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -44,26 +41,18 @@ export default function EditRejectedSubmissionPage() {
           setComments(s.comments);
           setRejectionReason(s.rejectionReason || 'No specific reason provided.');
           setPhotoPreview(s.photoUrl);
-          setGeoLat(s.geoLat);
-          setGeoLng(s.geoLng);
         }
       })
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, [submissionId]);
 
-  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const previewUrl = URL.createObjectURL(file);
     setPhotoPreview(previewUrl);
-
-    const geotag = await extractGeotagFromImage(file);
-    if (geotag.hasGeotag) {
-      setGeoLat(geotag.latitude);
-      setGeoLng(geotag.longitude);
-    }
   };
 
   const handleResubmit = async (e: React.FormEvent) => {
@@ -88,8 +77,8 @@ export default function EditRejectedSubmissionPage() {
           venue,
           comments,
           photoUrl: photoPreview,
-          geoLat,
-          geoLng,
+          geoLat: null,
+          geoLng: null,
         }),
       });
 
@@ -232,7 +221,7 @@ export default function EditRejectedSubmissionPage() {
               <div className="bg-surface-container-lowest rounded-xl p-space-xl shadow-sm border border-light-grey flex flex-col gap-space-md">
                 <div className="flex items-center justify-between border-b border-light-grey/60 pb-space-xs">
                   <h2 className="font-heading text-xl text-deep-navy font-bold">
-                    Geotagged Photo Verification Proof
+                    Shift Photo Evidence Proof
                   </h2>
                   <button
                     type="button"
@@ -256,10 +245,10 @@ export default function EditRejectedSubmissionPage() {
                   <img src={photoPreview} alt="Proof" className="w-full h-full object-cover" />
                   <div className="absolute bottom-3 left-3 right-3 bg-deep-navy/85 backdrop-blur-md p-space-xs px-space-sm rounded-lg text-white flex items-center justify-between border border-white/10 text-xs">
                     <span className="font-mono">
-                      {geoLat && geoLng ? `${geoLat.toFixed(4)}° N, ${geoLng.toFixed(4)}° E (Campus Geotag Attached)` : 'No Geotag'}
+                      {venue ? `Venue: ${venue}` : 'Shift Photo Attached'}
                     </span>
                     <span className="font-mono text-light-blue font-bold">
-                      {geoLat ? 'VALIDATED' : 'FLAGGED'}
+                      READY FOR REVIEW
                     </span>
                   </div>
                 </div>

@@ -391,7 +391,7 @@ export default function LeadDashboardPage() {
                                 </span>
                                 <span className="inline-flex items-center gap-1 font-mono text-[10px] text-electric-blue font-semibold">
                                   <span className="w-1.5 h-1.5 rounded-full bg-electric-blue"></span>
-                                  {sub.geoStatus === 'verified' ? 'GPS VERIFIED' : 'REMOTE'}
+                                  {sub.status === 'resubmitted' ? 'RESUBMITTED' : sub.status === 'approved' ? 'APPROVED' : sub.status === 'rejected' ? 'REVISION' : 'NEEDS REVIEW'}
                                 </span>
                               </div>
                             </td>

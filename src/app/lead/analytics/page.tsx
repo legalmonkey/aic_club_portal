@@ -47,10 +47,10 @@ export default function AnalyticsPage() {
   const totalDisbursed = approved.reduce((sum, s) => sum + (s.pointsAwarded || 0), 0);
   const verificationRate =
     submissions.length > 0 ? ((approved.length / submissions.length) * 100).toFixed(1) : '100.0';
-  const geotagCompliance =
+  const avgShiftHours =
     submissions.length > 0
-      ? ((submissions.filter(s => s.geoStatus === 'verified').length / submissions.length) * 100).toFixed(1)
-      : '100.0';
+      ? (submissions.reduce((sum, s) => sum + (s.durationHours || 0), 0) / submissions.length).toFixed(1)
+      : '0.0';
 
   // Submissions volume by week (dynamic relative aggregation)
   const volumeData = (() => {
@@ -167,13 +167,13 @@ export default function AnalyticsPage() {
                 <div className="absolute top-0 right-0 w-24 h-24 bg-electric-blue/5 rounded-bl-full pointer-events-none" />
                 <div className="relative z-10 flex flex-col">
                   <span className="font-mono text-[11px] text-tech-grey uppercase tracking-wider font-semibold">
-                    Geotag Compliance
+                    Avg Shift Duration
                   </span>
                   <div className="font-heading text-3xl font-bold text-deep-navy mt-1 tracking-tight">
-                    {geotagCompliance}%
+                    {avgShiftHours} <span className="font-sans text-sm font-normal text-tech-grey">hrs</span>
                   </div>
                   <span className="font-mono text-xs text-tech-grey mt-2 inline-block">
-                    VIT Chennai Geo-polygon
+                    Logged Work per Entry
                   </span>
                 </div>
               </div>

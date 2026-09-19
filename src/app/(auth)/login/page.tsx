@@ -120,7 +120,7 @@ export default function LoginPage() {
                         </span>
                       </div>
                       <p className="font-sans text-xs text-on-surface-variant mt-0.5">
-                        Log volunteer shifts, upload geotagged proof, earn verified points, and view rankings.
+                        Log volunteer shifts, upload shift photo proof, earn verified points, and view rankings.
                       </p>
                     </div>
                   </button>
@@ -144,7 +144,7 @@ export default function LoginPage() {
                         </span>
                       </div>
                       <p className="font-sans text-xs text-on-surface-variant mt-0.5">
-                        Review verification queues, audit campus GPS bounds, award ledger points, and issue revision notices.
+                        Review verification queues, evaluate shift photo evidence, award ledger points, and issue revision notices.
                       </p>
                     </div>
                   </button>

@@ -41,14 +41,14 @@ export default function LeadReviewQueuePage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [selectedId, setSelectedId] = useState<string>('');
   const [currentPoints, setCurrentPoints] = useState<number>(350);
-  const [filterTab, setFilterTab] = useState<'pending' | 'flagged' | 'approved' | 'all'>('pending');
+  const [filterTab, setFilterTab] = useState<'pending' | 'rejected' | 'approved' | 'all'>('pending');
   const [searchQuery, setSearchQuery] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
 
   // Reject Modal State
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectReason, setRejectReason] = useState(
-    'Missing verifiable on-campus geotag proof. Please attach in-venue photograph from the workshop.'
+    'Please attach a clearer in-venue shift photograph showing your activity or task completed.'
   );
 
   const fetchQueue = async () => {
@@ -141,11 +141,12 @@ export default function LeadReviewQueuePage() {
   };
 
   const pendingCount = submissions.filter(s => s.status === 'pending' || s.status === 'resubmitted').length;
-  const flaggedCount = submissions.filter(s => s.geoStatus === 'flagged' || s.geoStatus === 'missing').length;
+  const rejectedCount = submissions.filter(s => s.status === 'rejected').length;
+  const approvedCount = submissions.filter(s => s.status === 'approved').length;
 
   const filteredQueue = submissions.filter(sub => {
     if (filterTab === 'pending' && sub.status !== 'pending' && sub.status !== 'resubmitted') return false;
-    if (filterTab === 'flagged' && sub.geoStatus !== 'flagged' && sub.geoStatus !== 'missing') return false;
+    if (filterTab === 'rejected' && sub.status !== 'rejected') return false;
     if (filterTab === 'approved' && sub.status !== 'approved') return false;
     if (
       searchQuery &&
@@ -174,7 +175,7 @@ export default function LeadReviewQueuePage() {
                   Verification &amp; Review Queue
                 </h1>
                 <p className="font-sans text-base text-tech-grey mt-1">
-                  Evaluate submitted volunteer work, review geotagged proof, and allocate chapter points for the {session?.user?.departmentName || 'Technical'} division.
+                  Evaluate submitted volunteer work, verify shift photo proof, and allocate chapter points for the {session?.user?.departmentName || 'Technical'} division.
                 </p>
               </div>
 
@@ -208,39 +209,45 @@ export default function LeadReviewQueuePage() {
                 </button>
 
                 <button
-                  onClick={() => setFilterTab('flagged')}
+                  onClick={() => setFilterTab('rejected')}
                   className={`px-4 py-2 rounded-xl font-heading text-xs font-bold transition-all flex items-center gap-2 ${
-                    filterTab === 'flagged'
+                    filterTab === 'rejected'
                       ? 'gradient-electric text-white shadow-sm'
                       : 'bg-off-white border border-light-grey text-deep-navy hover:border-electric-blue'
                   }`}
                 >
-                  <span>Flagged / Escalated</span>
-                  <span className={`px-2 py-0.5 rounded-full font-mono text-xs font-bold ${filterTab === 'flagged' ? 'bg-white/20 text-white' : 'bg-red-50 text-red-600 border border-red-200'}`}>
-                    {flaggedCount}
+                  <span>Needs Revision</span>
+                  <span className={`px-2 py-0.5 rounded-full font-mono text-xs font-bold ${filterTab === 'rejected' ? 'bg-white/20 text-white' : 'bg-red-50 text-red-600 border border-red-200'}`}>
+                    {rejectedCount}
                   </span>
                 </button>
 
                 <button
                   onClick={() => setFilterTab('approved')}
-                  className={`px-4 py-2 rounded-xl font-heading text-xs font-bold transition-all ${
+                  className={`px-4 py-2 rounded-xl font-heading text-xs font-bold transition-all flex items-center gap-2 ${
                     filterTab === 'approved'
                       ? 'gradient-electric text-white shadow-sm'
                       : 'bg-off-white border border-light-grey text-deep-navy hover:border-electric-blue'
                   }`}
                 >
-                  Approved History
+                  <span>Approved History</span>
+                  <span className={`px-2 py-0.5 rounded-full font-mono text-xs font-bold ${filterTab === 'approved' ? 'bg-white/20 text-white' : 'bg-electric-blue/10 text-electric-blue'}`}>
+                    {approvedCount}
+                  </span>
                 </button>
 
                 <button
                   onClick={() => setFilterTab('all')}
-                  className={`px-4 py-2 rounded-xl font-heading text-xs font-bold transition-all ${
+                  className={`px-4 py-2 rounded-xl font-heading text-xs font-bold transition-all flex items-center gap-2 ${
                     filterTab === 'all'
                       ? 'gradient-electric text-white shadow-sm'
                       : 'bg-off-white border border-light-grey text-deep-navy hover:border-electric-blue'
                   }`}
                 >
-                  All Entries
+                  <span>All Entries</span>
+                  <span className={`px-2 py-0.5 rounded-full font-mono text-xs font-bold ${filterTab === 'all' ? 'bg-white/20 text-white' : 'bg-tech-grey/10 text-tech-grey'}`}>
+                    {submissions.length}
+                  </span>
                 </button>
               </div>
 
@@ -374,18 +381,18 @@ export default function LeadReviewQueuePage() {
                   )}
                 </div>
 
-                {/* Auto Geofence Status Callout */}
+                {/* Direct Department Dispatch Status Callout */}
                 <div className="bg-surface-container-lowest p-space-md rounded-xl flex items-center justify-between border border-light-grey shadow-sm">
                   <div className="flex items-center gap-space-sm">
                     <div className="w-8 h-8 rounded-lg bg-electric-blue/10 text-electric-blue flex items-center justify-center font-bold">
-                      <span className="material-symbols-outlined text-base">auto_awesome</span>
+                      <span className="material-symbols-outlined text-base">verified_user</span>
                     </div>
                     <div className="flex flex-col">
                       <span className="font-heading text-xs text-deep-navy font-bold">
-                        Auto-Geofence Audit Engine
+                        Direct Department Queue
                       </span>
                       <span className="font-sans text-xs text-tech-grey">
-                        All active queue records cross-referenced against campus geofence constraints.
+                        Member shift logs route directly to department co-leads for verification.
                       </span>
                     </div>
                   </div>
@@ -436,7 +443,7 @@ export default function LeadReviewQueuePage() {
 
                       <div className="flex flex-col items-start sm:items-end shrink-0">
                         <span className="font-mono text-xs text-tech-grey uppercase tracking-wider">
-                          MOBILE GPS TELEMETRY
+                          SUBMISSION TIMELINE
                         </span>
                         <span className="font-mono text-xs text-deep-navy font-semibold">
                           {selectedSubmission.date}
@@ -509,10 +516,10 @@ export default function LeadReviewQueuePage() {
                       </div>
                     </div>
 
-                    {/* Geotagged Photo & Proof Verification */}
+                    {/* Shift Photo Evidence Proof */}
                     <div className="flex flex-col gap-space-sm">
                       <span className="font-heading text-xs uppercase tracking-wider text-deep-navy font-bold">
-                        Geotagged Photo &amp; Hardware Proof Verification
+                        Shift Photo Evidence Proof
                       </span>
                       <div className="relative rounded-xl overflow-hidden shadow-sm aspect-video sm:aspect-[21/9] bg-deep-navy group border border-light-grey">
                         <img
@@ -527,74 +534,39 @@ export default function LeadReviewQueuePage() {
                           <span className="font-mono text-xs font-bold uppercase">Captured Evidence</span>
                         </div>
 
-                        <div className="absolute top-3 right-3 bg-deep-navy/80 text-light-blue px-3 py-1 rounded-lg font-mono text-xs font-bold flex items-center gap-1.5 shadow-sm border border-white/10">
-                          <span className="material-symbols-outlined text-xs text-electric-blue">shield</span>
-                          <span>ANTI-SPOOF: VALID</span>
-                        </div>
-
-                        <div className="absolute bottom-3 left-3 right-3 flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs text-white bg-deep-navy/85 backdrop-blur-md p-3 rounded-lg border border-white/10">
+                        <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between text-white bg-deep-navy/85 backdrop-blur-md p-3 rounded-lg border border-white/10">
                           <div className="flex items-center gap-space-xs min-w-0">
-                            <span className="material-symbols-outlined text-electric-blue shrink-0 text-base">pin_drop</span>
+                            <span className="material-symbols-outlined text-electric-blue shrink-0 text-base">location_on</span>
                             <span className="font-mono text-xs truncate">
-                              {selectedSubmission.geoLat && selectedSubmission.geoLng
-                                ? `${selectedSubmission.geoLat.toFixed(4)}° N, ${selectedSubmission.geoLng.toFixed(4)}° E • ${selectedSubmission.venue}`
-                                : 'No Location Tag Available'}
+                              Venue: {selectedSubmission.venue}
                             </span>
                           </div>
                           <span className="font-mono text-xs text-light-blue shrink-0 font-bold">
-                            {selectedSubmission.geoDistanceMeters
-                              ? `DELTA: ${selectedSubmission.geoDistanceMeters}M FROM TARGET`
-                              : 'CAMPUS NETWORK VERIFIED'}
+                            {selectedSubmission.status === 'resubmitted' ? 'RESUBMITTED' : selectedSubmission.status.toUpperCase()}
                           </span>
                         </div>
                       </div>
 
-                      {/* GPS Confirmation Banner */}
-                      <div
-                        className={`p-space-md rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm shadow-sm border ${
-                          selectedSubmission.geoStatus === 'verified'
-                            ? 'bg-electric-blue/10 border-electric-blue/30 text-deep-navy'
-                            : selectedSubmission.geoStatus === 'remote'
-                            ? 'bg-amber-500/10 border-amber-500/30 text-deep-navy'
-                            : 'bg-red-500/10 border-red-500/30 text-deep-navy'
-                        }`}
-                      >
+                      {/* Shift Evidence Lead Review Status Banner */}
+                      <div className="bg-electric-blue/10 border border-electric-blue/30 text-deep-navy p-space-md rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm shadow-sm">
                         <div className="flex items-center gap-space-sm">
-                          <div
-                            className={`w-9 h-9 rounded-lg text-white flex items-center justify-center font-bold shrink-0 shadow-sm ${
-                              selectedSubmission.geoStatus === 'verified'
-                                ? 'gradient-electric'
-                                : selectedSubmission.geoStatus === 'remote'
-                                ? 'bg-amber-600'
-                                : 'bg-red-600'
-                            }`}
-                          >
+                          <div className="w-9 h-9 rounded-lg text-white flex items-center justify-center font-bold shrink-0 shadow-sm gradient-electric">
                             <span className="material-symbols-outlined text-lg">
-                              {selectedSubmission.geoStatus === 'verified'
-                                ? 'verified'
-                                : selectedSubmission.geoStatus === 'remote'
-                                ? 'cloud'
-                                : 'warning'}
+                              fact_check
                             </span>
                           </div>
                           <div className="flex flex-col">
                             <span className="font-heading text-sm text-deep-navy font-bold">
-                              {selectedSubmission.geoStatus === 'verified'
-                                ? 'Campus GPS Match 100% Confirmed'
-                                : selectedSubmission.geoStatus === 'remote'
-                                ? 'Remote / Virtual Session Logged'
-                                : 'Geotag Coordinates Missing or Out of Bounds'}
+                              Shift Photo Evidence Attached
                             </span>
                             <span className="font-sans text-xs text-tech-grey">
-                              {selectedSubmission.geoLat && selectedSubmission.geoLng
-                                ? `Lat: ${selectedSubmission.geoLat.toFixed(4)}, Lng: ${selectedSubmission.geoLng.toFixed(4)} • ${selectedSubmission.geoDistanceMeters ? `${selectedSubmission.geoDistanceMeters.toFixed(1)}m from center` : 'Within campus bounds'}`
-                                : 'No EXIF GPS metadata embedded in upload'}
+                              Review volunteer output and venue context against logged duration before awarding points.
                             </span>
                           </div>
                         </div>
                         <div className="flex items-center gap-1 font-mono text-xs font-bold self-start sm:self-center text-electric-blue">
-                          <span className="material-symbols-outlined text-xs">fingerprint</span>
-                          <span>{selectedSubmission.geoStatus.toUpperCase()}</span>
+                          <span className="material-symbols-outlined text-xs">verified</span>
+                          <span>READY FOR EVALUATION</span>
                         </div>
                       </div>
                     </div>
