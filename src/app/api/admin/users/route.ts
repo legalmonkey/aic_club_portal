@@ -36,6 +36,7 @@ export async function GET() {
       name: u.name,
       email: u.email,
       role: u.role,
+      regNo: u.regNo || null,
       departmentId: isSuperOrBoard ? null : u.departmentId,
       departmentName: isSuperOrBoard ? null : (u.department?.name || 'Unassigned'),
       points,
@@ -52,6 +53,7 @@ export async function GET() {
       const points = store.getMemberPoints(u.id);
       userMap.set(emailKey, {
         ...u,
+        regNo: u.regNo || null,
         departmentId: isSuperOrBoard ? null : u.departmentId,
         departmentName: isSuperOrBoard ? null : (dept?.name || 'Unassigned'),
         points,
@@ -91,6 +93,7 @@ export async function POST(request: Request) {
   const cleanRole = (role as 'member' | 'lead' | 'board' | 'super_admin') || 'member';
   // Super admin and board oversee all divisions; they never have a single assigned division
   const cleanDeptId = (cleanRole === 'super_admin' || cleanRole === 'board') ? null : (departmentId || null);
+  const cleanRegNo = regNo ? regNo.trim().toUpperCase() : null;
 
   // 1. Persist directly to live PostgreSQL via Prisma
   let savedUser: any = null;
@@ -101,12 +104,14 @@ export async function POST(request: Request) {
         name: name || undefined,
         role: cleanRole,
         departmentId: cleanDeptId,
+        regNo: cleanRegNo || undefined,
       },
       create: {
         name: name || cleanEmail.split('@')[0],
         email: cleanEmail,
         role: cleanRole,
         departmentId: cleanDeptId,
+        regNo: cleanRegNo,
       },
     });
   } catch (err: any) {
@@ -124,7 +129,7 @@ export async function POST(request: Request) {
     existing.role = cleanRole;
     existing.departmentId = cleanDeptId;
     if (yearDept) existing.yearDept = yearDept;
-    if (regNo) existing.regNo = regNo;
+    if (cleanRegNo) existing.regNo = cleanRegNo;
   } else {
     store.users.push({
       id: savedUser?.id || `user-${Date.now()}`,
@@ -133,7 +138,7 @@ export async function POST(request: Request) {
       role: cleanRole,
       departmentId: cleanDeptId,
       yearDept: yearDept || (cleanRole === 'super_admin' ? 'Chapter Governance & Super Admin' : 'Student Member'),
-      regNo: regNo || '22BCE1000',
+      regNo: cleanRegNo || '22BCE1000',
       avatarUrl: undefined,
       createdAt: new Date(),
     });
@@ -156,7 +161,7 @@ export async function PATCH(request: Request) {
   }
 
   const body = await request.json();
-  const { id, name, email, role, departmentId } = body;
+  const { id, name, email, role, departmentId, regNo } = body;
 
   if (!id && !email) {
     return NextResponse.json({ error: 'User identifier (id or email) is required' }, { status: 400 });
@@ -179,6 +184,7 @@ export async function PATCH(request: Request) {
       : departmentId !== undefined
       ? departmentId || null
       : undefined;
+  const cleanRegNo = regNo !== undefined ? (regNo ? regNo.trim().toUpperCase() : null) : undefined;
 
   // 1. Update in Prisma
   let updatedUser: any = null;
@@ -195,6 +201,7 @@ export async function PATCH(request: Request) {
           email: cleanEmail || undefined,
           role: cleanRole,
           departmentId: cleanDeptId,
+          regNo: cleanRegNo,
         },
       });
     }
@@ -213,6 +220,7 @@ export async function PATCH(request: Request) {
     if (cleanEmail) storeUser.email = cleanEmail;
     if (cleanRole) storeUser.role = cleanRole;
     if (cleanDeptId !== undefined) storeUser.departmentId = cleanDeptId;
+    if (cleanRegNo !== undefined) storeUser.regNo = cleanRegNo || undefined;
   }
 
   return NextResponse.json(

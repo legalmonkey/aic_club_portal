@@ -30,6 +30,7 @@ model User {
   googleId       String?        @unique
   role           Role           @default(member)
   departmentId   String?
+  regNo          String?
   department     Department?    @relation("MemberDepartment", fields: [departmentId], references: [id])
   ledDepartments Department[]   @relation("DepartmentLeads")
   submissions    Submission[]   @relation("SubmittedBy")
@@ -106,3 +107,12 @@ model EmailLog {
   status        String // sent | failed | queued
   sentAt        DateTime @default(now())
 }
+
+model PortalOption {
+  id        String   @id @default(cuid())
+  type      String   // role | venue
+  label     String
+  value     String
+  createdAt DateTime @default(now())
+}
+

@@ -15,6 +15,7 @@ export default function AdminUsersPage() {
   // Form State - Add User
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [regNo, setRegNo] = useState('');
   const [role, setRole] = useState('lead');
   const [deptId, setDeptId] = useState('');
   const [isSaving, setIsSaving] = useState(false);
@@ -25,6 +26,7 @@ export default function AdminUsersPage() {
   const [editingUser, setEditingUser] = useState<any>(null);
   const [editName, setEditName] = useState('');
   const [editEmail, setEditEmail] = useState('');
+  const [editRegNo, setEditRegNo] = useState('');
   const [editRole, setEditRole] = useState('lead');
   const [editDeptId, setEditDeptId] = useState('');
   const [isSavingEdit, setIsSavingEdit] = useState(false);
@@ -70,6 +72,7 @@ export default function AdminUsersPage() {
         body: JSON.stringify({
           name: name.trim(),
           email: cleanEmail,
+          regNo: regNo.trim().toUpperCase(),
           role,
           departmentId: (role === 'lead' || role === 'member') ? deptId : null,
         }),
@@ -84,6 +87,7 @@ export default function AdminUsersPage() {
       setShowAddModal(false);
       setName('');
       setEmail('');
+      setRegNo('');
       setModalError('');
       fetchUsers();
     } catch (err: any) {
@@ -98,6 +102,7 @@ export default function AdminUsersPage() {
     setEditingUser(user);
     setEditName(user.name || '');
     setEditEmail(user.email || '');
+    setEditRegNo(user.regNo || '');
     setEditRole(user.role || 'lead');
     setEditDeptId(user.departmentId || (departments[0]?.id || ''));
     setEditError('');
@@ -119,6 +124,7 @@ export default function AdminUsersPage() {
           id: editingUser.id,
           name: editName.trim(),
           email: cleanEmail,
+          regNo: editRegNo.trim().toUpperCase(),
           role: editRole,
           departmentId: (editRole === 'lead' || editRole === 'member') ? editDeptId : null,
         }),
@@ -247,10 +253,15 @@ export default function AdminUsersPage() {
                               </div>
                             )}
                             <div className="flex flex-col min-w-0">
-                              <div className="flex items-center gap-1.5">
+                              <div className="flex items-center gap-1.5 flex-wrap">
                                 <span className="font-sans font-bold text-deep-navy">
                                   {u.name}
                                 </span>
+                                {u.regNo && (
+                                  <span className="px-1.5 py-0.5 rounded bg-electric-blue/10 border border-electric-blue/20 text-electric-blue font-mono text-[10px] font-bold">
+                                    {u.regNo}
+                                  </span>
+                                )}
                                 {isSelf && (
                                   <span className="px-1.5 py-0.2 rounded bg-electric-blue/10 text-electric-blue font-mono text-[9px] font-bold uppercase">
                                     You
@@ -391,6 +402,19 @@ export default function AdminUsersPage() {
               </div>
 
               <div className="flex flex-col gap-1.5">
+                <label className="font-sans text-xs font-semibold text-deep-navy">
+                  Student Registration Number <span className="text-tech-grey font-normal font-mono">(e.g. 22BCE1042)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 22BCE1042"
+                  value={regNo}
+                  onChange={e => setRegNo(e.target.value)}
+                  className="bg-off-white px-3 py-2 rounded-lg font-sans text-xs text-deep-navy border border-light-grey focus:outline-none focus:ring-1 focus:ring-electric-blue uppercase font-mono"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
                 <label className="font-sans text-xs font-semibold text-deep-navy">System Role</label>
                 <select
                   value={role}
@@ -495,6 +519,19 @@ export default function AdminUsersPage() {
                   value={editEmail}
                   onChange={e => setEditEmail(e.target.value)}
                   className="bg-off-white px-3 py-2 rounded-lg font-sans text-xs text-deep-navy border border-light-grey focus:outline-none focus:ring-1 focus:ring-electric-blue"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1.5">
+                <label className="font-sans text-xs font-semibold text-deep-navy">
+                  Student Registration Number <span className="text-tech-grey font-normal font-mono">(e.g. 22BCE1042)</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 22BCE1042"
+                  value={editRegNo}
+                  onChange={e => setEditRegNo(e.target.value)}
+                  className="bg-off-white px-3 py-2 rounded-lg font-sans text-xs text-deep-navy border border-light-grey focus:outline-none focus:ring-1 focus:ring-electric-blue uppercase font-mono"
                 />
               </div>
 

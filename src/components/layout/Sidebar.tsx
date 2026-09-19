@@ -113,7 +113,13 @@ export function Sidebar({ pendingReviewCount }: SidebarProps) {
                 label: 'Super Admin',
                 href: '/admin',
                 icon: 'admin_panel_settings',
-                active: pathname.startsWith('/admin'),
+                active: pathname === '/admin',
+              },
+              {
+                label: 'Shift Dropdowns',
+                href: '/admin/options',
+                icon: 'tune',
+                active: pathname === '/admin/options',
               },
             ]
           : []),

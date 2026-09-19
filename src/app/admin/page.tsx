@@ -30,7 +30,7 @@ export default function SuperAdminPage() {
             </div>
 
             {/* Quick Action Navigation Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               <Link
                 href="/admin/users"
                 className="bg-white p-6 rounded-xl border border-light-grey shadow-sm hover:border-electric-blue/40 hover:shadow-md transition-all flex flex-col gap-4 group"
@@ -43,7 +43,7 @@ export default function SuperAdminPage() {
                     User &amp; Role Management
                   </h3>
                   <p className="font-sans text-xs text-tech-grey mt-1">
-                    Promote members to Department Leads or Board, assign co-leads, and provision accounts.
+                    Provision accounts with registration numbers, promote members, and assign co-leads.
                   </p>
                 </div>
                 <span className="font-sans text-xs text-electric-blue font-bold flex items-center gap-1 mt-auto">
@@ -68,6 +68,26 @@ export default function SuperAdminPage() {
                 </div>
                 <span className="font-sans text-xs text-electric-blue font-bold flex items-center gap-1 mt-auto">
                   Manage Departments →
+                </span>
+              </Link>
+
+              <Link
+                href="/admin/options"
+                className="bg-white p-6 rounded-xl border border-light-grey shadow-sm hover:border-electric-blue/40 hover:shadow-md transition-all flex flex-col gap-4 group"
+              >
+                <div className="w-12 h-12 rounded-xl bg-electric-blue/10 text-electric-blue flex items-center justify-center font-bold">
+                  <span className="material-symbols-outlined text-2xl">tune</span>
+                </div>
+                <div>
+                  <h3 className="font-heading text-lg text-deep-navy font-bold group-hover:text-electric-blue transition-colors">
+                    Roles &amp; Campus Venues
+                  </h3>
+                  <p className="font-sans text-xs text-tech-grey mt-1">
+                    Customize the assigned shift roles and campus venue/lab options that appear in member forms.
+                  </p>
+                </div>
+                <span className="font-sans text-xs text-electric-blue font-bold flex items-center gap-1 mt-auto">
+                  Configure Dropdowns →
                 </span>
               </Link>
 

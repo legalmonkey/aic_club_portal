@@ -26,7 +26,21 @@ export default function EditRejectedSubmissionPage() {
   const [photoPreview, setPhotoPreview] = useState('');
   const [photoCompressing, setPhotoCompressing] = useState(false);
 
+  // Dynamic Options
+  const [roles, setRoles] = useState<string[]>([]);
+  const [venues, setVenues] = useState<string[]>([]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    fetch(`/api/options?_t=${Date.now()}`, { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        if (data.roles && Array.isArray(data.roles)) setRoles(data.roles);
+        if (data.venues && Array.isArray(data.venues)) setVenues(data.venues);
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!submissionId) return;
@@ -191,10 +205,16 @@ export default function EditRejectedSubmissionPage() {
                     <input
                       type="text"
                       required
+                      list="edit-role-suggestions"
                       value={roleInEvent}
                       onChange={e => setRoleInEvent(e.target.value)}
                       className="bg-off-white text-deep-navy px-space-md py-2.5 rounded-lg font-sans text-sm border border-light-grey focus:outline-none focus:ring-2 focus:ring-electric-blue"
                     />
+                    <datalist id="edit-role-suggestions">
+                      {roles.map(r => (
+                        <option key={r} value={r} />
+                      ))}
+                    </datalist>
                   </div>
 
                   <div className="flex flex-col gap-space-2xs">
@@ -214,10 +234,16 @@ export default function EditRejectedSubmissionPage() {
                   <input
                     type="text"
                     required
+                    list="edit-venue-suggestions"
                     value={venue}
                     onChange={e => setVenue(e.target.value)}
                     className="bg-off-white text-deep-navy px-space-md py-2.5 rounded-lg font-sans text-sm border border-light-grey focus:outline-none focus:ring-2 focus:ring-electric-blue"
                   />
+                  <datalist id="edit-venue-suggestions">
+                    {venues.map(v => (
+                      <option key={v} value={v} />
+                    ))}
+                  </datalist>
                 </div>
 
                 <div className="flex flex-col gap-space-2xs">

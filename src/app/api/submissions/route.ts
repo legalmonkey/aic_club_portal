@@ -227,7 +227,7 @@ export async function POST(request: Request) {
       memberEmail: session.user.email || '',
       memberAvatar: session.user.image || undefined,
       memberYearDept: session.user.yearDept || 'Student Chapter Member',
-      memberRegNo: session.user.regNo || '22BCE1042',
+      memberRegNo: dbUser?.regNo || session.user.regNo || '22BCE1042',
       departmentId,
       departmentName: dept?.name || 'General Department',
       date: date || new Date().toISOString().split('T')[0],

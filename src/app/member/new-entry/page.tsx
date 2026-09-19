@@ -35,6 +35,44 @@ export default function NewShiftEntryPage() {
   const [venue, setVenue] = useState('');
   const [comments, setComments] = useState('');
 
+  // Dynamic Options from Super Admin
+  const [roles, setRoles] = useState<string[]>([
+    'Workshop Mentor / Track Lead',
+    'General Event Facilitator',
+    'Compute & Infra Logistics',
+    'Judging & Evaluation Desk',
+    'Media & Documentation',
+    'Registration & Desk Operations',
+    'Speaker & Guest Hospitality',
+  ]);
+
+  const [venues, setVenues] = useState<string[]>([
+    'Anna Auditorium',
+    'Tech Tower (TT) 302',
+    'Tech Tower (TT) 412',
+    'SJT (Silver Jubilee Tower) Lab 102',
+    'SJT (Silver Jubilee Tower) Audi',
+    'SMV (Sir M. Visvesvaraya) Hall',
+    'MB (Main Building) 204',
+    'Delta Block AI Lab',
+    'Academic Block 1',
+    'Netaji Subhas Chandra Bose Stadium',
+  ]);
+
+  useEffect(() => {
+    fetch(`/api/options?_t=${Date.now()}`, { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        if (data.roles && Array.isArray(data.roles) && data.roles.length > 0) {
+          setRoles(data.roles);
+        }
+        if (data.venues && Array.isArray(data.venues) && data.venues.length > 0) {
+          setVenues(data.venues);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Duration Wheel Picker Modal
   const [showDurationPicker, setShowDurationPicker] = useState(false);
 
@@ -241,13 +279,9 @@ export default function NewShiftEntryPage() {
                             className="w-full bg-off-white text-deep-navy pl-10 pr-9 py-2.5 rounded-lg font-sans text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-electric-blue appearance-none shadow-sm transition-all cursor-pointer border border-light-grey"
                           >
                             <option value="" disabled>Select assigned role...</option>
-                            <option value="Workshop Mentor / Track Lead">Workshop Mentor / Track Lead</option>
-                            <option value="General Event Facilitator">General Event Facilitator</option>
-                            <option value="Compute & Infra Logistics">Compute &amp; Infra Logistics</option>
-                            <option value="Judging & Evaluation Desk">Judging &amp; Evaluation Desk</option>
-                            <option value="Media & Documentation">Media &amp; Documentation</option>
-                            <option value="Registration & Desk Operations">Registration &amp; Desk Operations</option>
-                            <option value="Speaker & Guest Hospitality">Speaker &amp; Guest Hospitality</option>
+                            {roles.map(r => (
+                              <option key={r} value={r}>{r}</option>
+                            ))}
                             <option value="Other">Other (Specify Custom Role)</option>
                           </select>
                           <span className="material-symbols-outlined absolute right-3 text-tech-grey pointer-events-none text-base">
@@ -348,16 +382,9 @@ export default function NewShiftEntryPage() {
                             className="w-full bg-off-white text-deep-navy pl-10 pr-4 py-2.5 rounded-lg font-sans text-sm focus:outline-none focus:bg-white focus:ring-2 focus:ring-electric-blue shadow-sm transition-all border border-light-grey"
                           />
                           <datalist id="campus-venue-suggestions">
-                            <option value="Anna Auditorium" />
-                            <option value="Tech Tower (TT) 302" />
-                            <option value="Tech Tower (TT) 412" />
-                            <option value="SJT (Silver Jubilee Tower) Lab 102" />
-                            <option value="SJT (Silver Jubilee Tower) Audi" />
-                            <option value="SMV (Sir M. Visvesvaraya) Hall" />
-                            <option value="MB (Main Building) 204" />
-                            <option value="Delta Block AI Lab" />
-                            <option value="Academic Block 1" />
-                            <option value="Netaji Subhas Chandra Bose Stadium" />
+                            {venues.map(v => (
+                              <option key={v} value={v} />
+                            ))}
                           </datalist>
                         </div>
                       </div>
