@@ -2,22 +2,88 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
-import { store } from '@/lib/store';
+import { prisma } from '@/lib/prisma';
+import { store, SubmissionData } from '@/lib/store';
 import { createNotification } from '@/lib/notifications';
 import { sendEmail } from '@/lib/email';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
+const NO_CACHE_HEADERS = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+};
 
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const submission = store.submissions.find(s => s.id === id);
 
-  if (!submission) {
-    return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
+  let dbSub: any = null;
+  try {
+    dbSub = await prisma.submission.findUnique({
+      where: { id },
+      include: {
+        member: {
+          include: {
+            department: true,
+          },
+        },
+        reviewedBy: true,
+      },
+    });
+  } catch (err) {
+    console.error('Error fetching submission from prisma:', err);
   }
 
-  return NextResponse.json({ submission });
+  if (dbSub) {
+    const metaMatch = dbSub.comments?.match(/\n?\[META:([^|]+)\|([^\]]+)\]/);
+    const durationHours = metaMatch ? Number(metaMatch[1]) : 4;
+    const durationLabel = metaMatch ? metaMatch[2] : '14:00 - 18:00 (4.0 hrs)';
+    const cleanComments = dbSub.comments?.replace(/\n?\[META:([^|]+)\|([^\]]+)\]/, '').trim() || dbSub.comments || '';
+    const dept = dbSub.member?.department || store.getDepartmentById(dbSub.departmentId);
+
+    const submission: SubmissionData = {
+      id: dbSub.id,
+      memberId: dbSub.memberId,
+      memberName: dbSub.member?.name || 'Student Member',
+      memberEmail: dbSub.member?.email || '',
+      memberAvatar: (dbSub.member as any)?.avatarUrl || undefined,
+      memberYearDept: (dbSub.member as any)?.yearDept || (dept?.name ? `${dept.name} Member` : 'Chapter Member'),
+      memberRegNo: (dbSub.member as any)?.regNo || '22BCE1042',
+      departmentId: dbSub.departmentId,
+      departmentName: dept?.name || 'General Department',
+      date: dbSub.date ? new Date(dbSub.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+      venue: dbSub.venue,
+      durationHours,
+      durationLabel,
+      roleInEvent: dbSub.roleInEvent,
+      eventName: dbSub.eventName,
+      comments: cleanComments,
+      photoUrl: dbSub.photoUrl,
+      geoLat: dbSub.geoLat,
+      geoLng: dbSub.geoLng,
+      geoStatus: 'verified',
+      status: dbSub.status,
+      pointsAwarded: dbSub.pointsAwarded,
+      requestedPoints: dbSub.pointsAwarded || 350,
+      rejectionReason: dbSub.rejectionReason,
+      reviewedById: dbSub.reviewedById,
+      reviewedByName: dbSub.reviewedBy?.name || null,
+      reviewedAt: dbSub.reviewedAt ? new Date(dbSub.reviewedAt).toISOString() : null,
+      createdAt: dbSub.createdAt ? new Date(dbSub.createdAt).toISOString() : new Date().toISOString(),
+    };
+
+    return NextResponse.json({ submission }, { headers: NO_CACHE_HEADERS });
+  }
+
+  const submission = store.submissions.find(s => s.id === id);
+  if (!submission) {
+    return NextResponse.json({ error: 'Submission not found' }, { status: 404, headers: NO_CACHE_HEADERS });
+  }
+
+  return NextResponse.json({ submission }, { headers: NO_CACHE_HEADERS });
 }
 
 export async function PATCH(
@@ -27,15 +93,82 @@ export async function PATCH(
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401, headers: NO_CACHE_HEADERS });
     }
 
     const { id } = await params;
-    const submission = store.submissions.find(s => s.id === id);
+    let submission = store.submissions.find(s => s.id === id);
+
+    // If not in store, try fetching from prisma
+    if (!submission) {
+      try {
+        const dbSub = await prisma.submission.findUnique({
+          where: { id },
+          include: { member: { include: { department: true } }, reviewedBy: true },
+        });
+        if (dbSub) {
+          const metaMatch = dbSub.comments?.match(/\n?\[META:([^|]+)\|([^\]]+)\]/);
+          const durationHours = metaMatch ? Number(metaMatch[1]) : 4;
+          const durationLabel = metaMatch ? metaMatch[2] : '14:00 - 18:00 (4.0 hrs)';
+          const cleanComments = dbSub.comments?.replace(/\n?\[META:([^|]+)\|([^\]]+)\]/, '').trim() || dbSub.comments || '';
+          const dept = dbSub.member?.department || store.getDepartmentById(dbSub.departmentId);
+
+          submission = {
+            id: dbSub.id,
+            memberId: dbSub.memberId,
+            memberName: dbSub.member?.name || 'Student Member',
+            memberEmail: dbSub.member?.email || '',
+            memberAvatar: (dbSub.member as any)?.avatarUrl || undefined,
+            memberYearDept: (dbSub.member as any)?.yearDept || (dept?.name ? `${dept.name} Member` : 'Chapter Member'),
+            memberRegNo: (dbSub.member as any)?.regNo || '22BCE1042',
+            departmentId: dbSub.departmentId,
+            departmentName: dept?.name || 'General Department',
+            date: dbSub.date ? new Date(dbSub.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+            venue: dbSub.venue,
+            durationHours,
+            durationLabel,
+            roleInEvent: dbSub.roleInEvent,
+            eventName: dbSub.eventName,
+            comments: cleanComments,
+            photoUrl: dbSub.photoUrl,
+            geoLat: dbSub.geoLat,
+            geoLng: dbSub.geoLng,
+            geoStatus: 'verified',
+            status: dbSub.status,
+            pointsAwarded: dbSub.pointsAwarded,
+            requestedPoints: dbSub.pointsAwarded || 350,
+            rejectionReason: dbSub.rejectionReason,
+            reviewedById: dbSub.reviewedById,
+            reviewedByName: dbSub.reviewedBy?.name || null,
+            reviewedAt: dbSub.reviewedAt ? new Date(dbSub.reviewedAt).toISOString() : null,
+            createdAt: dbSub.createdAt ? new Date(dbSub.createdAt).toISOString() : new Date().toISOString(),
+          };
+          store.submissions.unshift(submission);
+        }
+      } catch (err) {
+        console.error('Error querying submission in patch:', err);
+      }
+    }
 
     if (!submission) {
-      return NextResponse.json({ error: 'Submission not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Submission not found' }, { status: 404, headers: NO_CACHE_HEADERS });
     }
+
+    // Resolve reviewer DB user
+    let reviewerDbUser: any = null;
+    try {
+      const reviewerEmail = session.user.email?.toLowerCase().trim();
+      if (reviewerEmail) {
+        reviewerDbUser = await prisma.user.findUnique({ where: { email: reviewerEmail } });
+      }
+      if (!reviewerDbUser && session.user.id) {
+        reviewerDbUser = await prisma.user.findUnique({ where: { id: session.user.id } });
+      }
+    } catch (err) {
+      console.error('Failed to lookup reviewer in DB:', err);
+    }
+
+    const reviewerId = reviewerDbUser?.id || session.user.id;
 
     const body = await request.json();
     const { action, points, reason, ...editFields } = body;
@@ -50,7 +183,7 @@ export async function PATCH(
       if (!isAuthorizedLead) {
         return NextResponse.json(
           { error: 'Forbidden: Only co-leads of this department or super_admin may approve' },
-          { status: 403 }
+          { status: 403, headers: NO_CACHE_HEADERS }
         );
       }
 
@@ -58,11 +191,34 @@ export async function PATCH(
 
       submission.status = 'approved';
       submission.pointsAwarded = pointsToAward;
-      submission.reviewedById = session.user.id;
+      submission.reviewedById = reviewerId;
       submission.reviewedByName = session.user.name || 'Department Lead';
       submission.reviewedAt = new Date().toISOString();
 
-      // Add to PointsLedger
+      // Persist to Prisma
+      try {
+        await prisma.submission.update({
+          where: { id },
+          data: {
+            status: 'approved',
+            pointsAwarded: pointsToAward,
+            reviewedById: reviewerId,
+            reviewedAt: new Date(),
+          },
+        });
+
+        await prisma.pointsLedger.create({
+          data: {
+            memberId: submission.memberId,
+            submissionId: submission.id,
+            points: pointsToAward,
+          },
+        });
+      } catch (err) {
+        console.error('Error persisting approval to PostgreSQL:', err);
+      }
+
+      // Add to PointsLedger in store
       store.ledger.push({
         id: `ledg-${Date.now()}`,
         memberId: submission.memberId,
@@ -92,7 +248,7 @@ export async function PATCH(
         type: 'submission_approved',
       });
 
-      return NextResponse.json({ success: true, submission });
+      return NextResponse.json({ success: true, submission }, { headers: NO_CACHE_HEADERS });
     }
 
     // 2. Lead / Super Admin Review Action: REJECT
@@ -105,15 +261,30 @@ export async function PATCH(
       if (!isAuthorizedLead) {
         return NextResponse.json(
           { error: 'Forbidden: Only co-leads of this department or super_admin may reject' },
-          { status: 403 }
+          { status: 403, headers: NO_CACHE_HEADERS }
         );
       }
 
       submission.status = 'rejected';
       submission.rejectionReason = reason || 'Shift details could not be verified.';
-      submission.reviewedById = session.user.id;
+      submission.reviewedById = reviewerId;
       submission.reviewedByName = session.user.name || 'Department Lead';
       submission.reviewedAt = new Date().toISOString();
+
+      // Persist to Prisma
+      try {
+        await prisma.submission.update({
+          where: { id },
+          data: {
+            status: 'rejected',
+            rejectionReason: submission.rejectionReason,
+            reviewedById: reviewerId,
+            reviewedAt: new Date(),
+          },
+        });
+      } catch (err) {
+        console.error('Error persisting rejection to PostgreSQL:', err);
+      }
 
       // Notify Member
       await createNotification({
@@ -137,23 +308,28 @@ export async function PATCH(
         type: 'submission_rejected',
       });
 
-      return NextResponse.json({ success: true, submission });
+      return NextResponse.json({ success: true, submission }, { headers: NO_CACHE_HEADERS });
     }
 
     // 3. Member Action: EDIT & RESUBMIT (Section 6.3)
     if (action === 'resubmit') {
       // Must be owner and submission must be rejected
-      if (submission.memberId !== session.user.id && session.user.role !== 'super_admin') {
+      const sessionEmail = session.user.email?.toLowerCase();
+      const isOwner =
+        submission.memberId === session.user.id ||
+        (sessionEmail && submission.memberEmail.toLowerCase() === sessionEmail);
+
+      if (!isOwner && session.user.role !== 'super_admin') {
         return NextResponse.json(
           { error: 'Forbidden: Only the author may edit this submission' },
-          { status: 403 }
+          { status: 403, headers: NO_CACHE_HEADERS }
         );
       }
 
       if (submission.status !== 'rejected' && session.user.role !== 'super_admin') {
         return NextResponse.json(
           { error: 'Only rejected submissions can be edited and resubmitted' },
-          { status: 400 }
+          { status: 400, headers: NO_CACHE_HEADERS }
         );
       }
 
@@ -170,6 +346,31 @@ export async function PATCH(
       submission.status = 'resubmitted';
       submission.rejectionReason = null;
 
+      // Persist to Prisma
+      try {
+        const durationHours = editFields.durationHours || submission.durationHours || 4;
+        const durationLabel = editFields.durationLabel || submission.durationLabel || '14:00 - 18:00 (4.0 hrs)';
+        const commentsToSave = editFields.comments
+          ? `${editFields.comments}\n[META:${durationHours}|${durationLabel}]`
+          : undefined;
+
+        await prisma.submission.update({
+          where: { id },
+          data: {
+            status: 'resubmitted',
+            rejectionReason: null,
+            eventName: editFields.eventName || undefined,
+            venue: editFields.venue || undefined,
+            comments: commentsToSave,
+            photoUrl: editFields.photoUrl || undefined,
+            roleInEvent: editFields.roleInEvent || undefined,
+            date: editFields.date ? new Date(editFields.date) : undefined,
+          },
+        });
+      } catch (err) {
+        console.error('Error persisting resubmission to PostgreSQL:', err);
+      }
+
       // Notify leads again
       const leads = store.users.filter(
         u => (u.role === 'lead' && u.departmentId === submission.departmentId) || u.role === 'super_admin'
@@ -183,12 +384,12 @@ export async function PATCH(
         });
       }
 
-      return NextResponse.json({ success: true, submission });
+      return NextResponse.json({ success: true, submission }, { headers: NO_CACHE_HEADERS });
     }
 
-    return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid action' }, { status: 400, headers: NO_CACHE_HEADERS });
   } catch (error) {
     console.error('Error updating submission:', error);
-    return NextResponse.json({ error: 'Failed to update submission' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to update submission' }, { status: 500, headers: NO_CACHE_HEADERS });
   }
 }

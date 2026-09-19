@@ -19,7 +19,7 @@ export function Header({ pageTitle = 'Portal Control Hub', userPoints }: HeaderP
     if (userPoints !== undefined) {
       setLivePoints(userPoints);
     } else if (role === 'member') {
-      fetch('/api/submissions')
+      fetch(`/api/submissions?_t=${Date.now()}`, { cache: 'no-store' })
         .then(res => res.json())
         .then(data => {
           if (data.submissions) {

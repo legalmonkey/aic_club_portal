@@ -36,7 +36,7 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     // Fetch departments
-    fetch('/api/departments')
+    fetch(`/api/departments?_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.departments) setDepartments(data.departments);
@@ -49,7 +49,7 @@ export default function LeaderboardPage() {
 
   const fetchLeaderboard = () => {
     setLoading(true);
-    fetch('/api/leaderboard')
+    fetch(`/api/leaderboard?_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.leaderboard) setAllLeaderboard(data.leaderboard);

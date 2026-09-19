@@ -10,14 +10,16 @@ export default function BoardSubmissionsPage() {
   const [submissions, setSubmissions] = useState<any[]>([]);
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('all');
   const [search, setSearch] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/submissions?status=all')
+    fetch(`/api/submissions?status=all&_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.submissions) setSubmissions(data.submissions);
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
 
   const filtered = submissions.filter(s => {

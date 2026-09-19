@@ -42,19 +42,24 @@ export default function LeadDashboardPage() {
   const [searchFilter, setSearchFilter] = useState('');
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/submissions')
-      .then(res => res.json())
-      .then(data => {
-        if (data.submissions) setSubmissions(data.submissions);
-      });
+    Promise.all([
+      fetch(`/api/submissions?_t=${Date.now()}`, { cache: 'no-store' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.submissions) setSubmissions(data.submissions);
+        })
+        .catch(err => console.error('Error fetching submissions:', err)),
 
-    fetch('/api/leaderboard')
-      .then(res => res.json())
-      .then(data => {
-        if (data.leaderboard) setLeaderboard(data.leaderboard);
-      });
+      fetch(`/api/leaderboard?_t=${Date.now()}`, { cache: 'no-store' })
+        .then(res => res.json())
+        .then(data => {
+          if (data.leaderboard) setLeaderboard(data.leaderboard);
+        })
+        .catch(err => console.error('Error fetching leaderboard:', err)),
+    ]).finally(() => setLoading(false));
   }, []);
 
   const approvedSubmissions = submissions.filter(s => s.status === 'approved');

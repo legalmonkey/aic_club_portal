@@ -19,7 +19,7 @@ export function Sidebar({ pendingReviewCount }: SidebarProps) {
     if (pendingReviewCount !== undefined) {
       setLivePendingCount(pendingReviewCount);
     } else if (role === 'lead' || role === 'super_admin') {
-      fetch('/api/submissions')
+      fetch(`/api/submissions?_t=${Date.now()}`, { cache: 'no-store' })
         .then(res => res.json())
         .then(data => {
           if (data.submissions) {

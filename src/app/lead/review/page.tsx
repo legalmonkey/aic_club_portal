@@ -45,6 +45,7 @@ export default function LeadReviewQueuePage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
   const [imageError, setImageError] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setImageError(false);
@@ -58,19 +59,24 @@ export default function LeadReviewQueuePage() {
 
   const fetchQueue = async () => {
     try {
-      const res = await fetch('/api/submissions');
+      const res = await fetch(`/api/submissions?_t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
         const subs: Submission[] = data.submissions || [];
         setSubmissions(subs);
-        if (subs.length > 0 && !selectedId) {
-          const firstPending = subs.find(s => s.status === 'pending' || s.status === 'resubmitted') || subs[0];
-          setSelectedId(firstPending.id);
-          setCurrentPoints(firstPending.pointsAwarded ?? 100);
+        if (subs.length > 0) {
+          setSelectedId(prev => {
+            if (prev && subs.some(s => s.id === prev)) return prev;
+            const firstPending = subs.find(s => s.status === 'pending' || s.status === 'resubmitted') || subs[0];
+            setCurrentPoints(firstPending.pointsAwarded ?? 100);
+            return firstPending.id;
+          });
         }
       }
-    } catch {
-      // fallback
+    } catch (err) {
+      console.error('Failed to fetch review queue:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -209,7 +215,7 @@ export default function LeadReviewQueuePage() {
                 >
                   <span>Pending Review</span>
                   <span className={`px-2 py-0.5 rounded-full font-mono text-xs font-bold ${filterTab === 'pending' ? 'bg-white/20 text-white' : 'bg-electric-blue/10 text-electric-blue'}`}>
-                    {pendingCount}
+                    {loading ? '...' : pendingCount}
                   </span>
                 </button>
 
@@ -223,7 +229,7 @@ export default function LeadReviewQueuePage() {
                 >
                   <span>Needs Revision</span>
                   <span className={`px-2 py-0.5 rounded-full font-mono text-xs font-bold ${filterTab === 'rejected' ? 'bg-white/20 text-white' : 'bg-red-50 text-red-600 border border-red-200'}`}>
-                    {rejectedCount}
+                    {loading ? '...' : rejectedCount}
                   </span>
                 </button>
 
@@ -237,7 +243,7 @@ export default function LeadReviewQueuePage() {
                 >
                   <span>Approved History</span>
                   <span className={`px-2 py-0.5 rounded-full font-mono text-xs font-bold ${filterTab === 'approved' ? 'bg-white/20 text-white' : 'bg-electric-blue/10 text-electric-blue'}`}>
-                    {approvedCount}
+                    {loading ? '...' : approvedCount}
                   </span>
                 </button>
 
@@ -251,7 +257,7 @@ export default function LeadReviewQueuePage() {
                 >
                   <span>All Entries</span>
                   <span className={`px-2 py-0.5 rounded-full font-mono text-xs font-bold ${filterTab === 'all' ? 'bg-white/20 text-white' : 'bg-tech-grey/10 text-tech-grey'}`}>
-                    {submissions.length}
+                    {loading ? '...' : submissions.length}
                   </span>
                 </button>
               </div>
@@ -278,7 +284,7 @@ export default function LeadReviewQueuePage() {
               <div className="col-span-12 xl:col-span-5 flex flex-col gap-space-md">
                 <div className="flex items-center justify-between px-space-xs">
                   <span className="font-mono text-xs uppercase tracking-wider text-tech-grey font-bold">
-                    PENDING REVIEW QUEUE ({filteredQueue.length})
+                    PENDING REVIEW QUEUE ({loading ? '...' : filteredQueue.length})
                   </span>
                   <span className="font-heading text-xs text-electric-blue font-bold flex items-center gap-1 cursor-pointer hover:underline">
                     <span className="material-symbols-outlined text-xs">tune</span> Sort by Submission Time
@@ -286,7 +292,22 @@ export default function LeadReviewQueuePage() {
                 </div>
 
                 <div className="flex flex-col gap-space-sm">
-                  {filteredQueue.length === 0 ? (
+                  {loading ? (
+                    <div className="flex flex-col gap-space-sm animate-pulse">
+                      {[1, 2, 3].map(i => (
+                        <div key={i} className="bg-surface-container-lowest rounded-xl p-space-lg border border-light-grey flex flex-col gap-3">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-light-grey/60 shrink-0" />
+                            <div className="flex-1 space-y-2">
+                              <div className="h-3 bg-light-grey/60 rounded w-1/2" />
+                              <div className="h-2 bg-light-grey/40 rounded w-1/3" />
+                            </div>
+                          </div>
+                          <div className="h-4 bg-light-grey/40 rounded w-3/4" />
+                        </div>
+                      ))}
+                    </div>
+                  ) : filteredQueue.length === 0 ? (
                     <div className="bg-surface-container-lowest rounded-xl p-space-xl text-center text-tech-grey text-xs border border-light-grey">
                       No shift records in this view.
                     </div>
@@ -407,7 +428,23 @@ export default function LeadReviewQueuePage() {
 
               {/* RIGHT: Detailed Submission Review Panel (7 Cols) */}
               <div className="col-span-12 xl:col-span-7 flex flex-col gap-space-lg">
-                {selectedSubmission ? (
+                {loading ? (
+                  <div className="bg-surface-container-lowest rounded-xl shadow-sm p-space-xl flex flex-col gap-6 border border-light-grey animate-pulse">
+                    <div className="flex items-center gap-4">
+                      <div className="w-14 h-14 rounded-full bg-light-grey/60 shrink-0" />
+                      <div className="flex-1 space-y-2">
+                        <div className="h-4 bg-light-grey/60 rounded w-1/3" />
+                        <div className="h-3 bg-light-grey/40 rounded w-1/4" />
+                      </div>
+                    </div>
+                    <div className="h-64 bg-light-grey/30 rounded-xl" />
+                    <div className="space-y-3">
+                      <div className="h-4 bg-light-grey/50 rounded w-1/2" />
+                      <div className="h-3 bg-light-grey/30 rounded w-full" />
+                      <div className="h-3 bg-light-grey/30 rounded w-4/5" />
+                    </div>
+                  </div>
+                ) : selectedSubmission ? (
                   <div className="bg-surface-container-lowest rounded-xl shadow-sm p-space-xl flex flex-col gap-space-lg border border-light-grey">
                     {/* Member Details Top Bar */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-space-md bg-off-white -mx-space-xl -mt-space-xl px-space-xl pt-space-xl rounded-t-xl gap-space-md border-b border-light-grey">

@@ -26,14 +26,14 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     setMounted(true);
-    fetch('/api/submissions?status=all')
+    fetch(`/api/submissions?status=all&_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.submissions) setSubmissions(data.submissions);
       })
       .catch(() => {});
 
-    fetch('/api/leaderboard')
+    fetch(`/api/leaderboard?_t=${Date.now()}`, { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if (data.leaderboard) setLeaderboard(data.leaderboard);

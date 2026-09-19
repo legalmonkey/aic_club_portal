@@ -32,7 +32,7 @@ export default function MemberDashboardPage() {
 
   const fetchSubmissions = async () => {
     try {
-      const res = await fetch('/api/submissions');
+      const res = await fetch(`/api/submissions?_t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
         setSubmissions(data.submissions || []);

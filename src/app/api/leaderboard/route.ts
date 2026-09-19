@@ -29,16 +29,71 @@ export async function GET(request: Request) {
     console.error('Failed to fetch departments from prisma:', err);
   }
 
+  // 3. Fetch live points ledger from Prisma
+  let dbLedger: any[] = [];
+  try {
+    dbLedger = await prisma.pointsLedger.findMany();
+  } catch (err) {
+    console.error('Failed to fetch pointsLedger from prisma:', err);
+  }
+
+  // 4. Fetch live approved submissions from Prisma
+  let dbApprovedSubs: any[] = [];
+  try {
+    dbApprovedSubs = await prisma.submission.findMany({
+      where: { status: 'approved' },
+      include: { member: true },
+    });
+  } catch (err) {
+    console.error('Failed to fetch approved submissions from prisma:', err);
+  }
+
   // Map to deduplicate members by email
   const memberMap = new Map<string, any>();
 
+  // Helper to compute user stats combining DB and store
+  const computeMemberStats = (u: any, userEmail: string, userId: string) => {
+    const userDbLedger = dbLedger.filter(l => l.memberId === userId);
+    const dbPts = userDbLedger.reduce((sum, l) => sum + (l.points || 0), 0);
+
+    const userStoreLedger = store.ledger.filter(
+      l => l.memberId === userId && !userDbLedger.some(dl => dl.submissionId === l.submissionId)
+    );
+    const storePts = userStoreLedger.reduce((sum, l) => sum + (l.points || 0), 0);
+    const totalPoints = dbPts + storePts;
+
+    // Deduplicate approved submissions by id
+    const approvedMap = new Map<string, { durationHours: number }>();
+    for (const s of dbApprovedSubs) {
+      if (s.memberId === userId || s.member?.email?.toLowerCase() === userEmail) {
+        const metaMatch = s.comments?.match(/\n?\[META:([^|]+)\|([^\]]+)\]/);
+        const durationHours = metaMatch ? Number(metaMatch[1]) : 4;
+        approvedMap.set(s.id, { durationHours });
+      }
+    }
+    for (const s of store.submissions) {
+      if (
+        (s.memberId === userId || s.memberEmail.toLowerCase() === userEmail) &&
+        s.status === 'approved' &&
+        !approvedMap.has(s.id)
+      ) {
+        approvedMap.set(s.id, { durationHours: s.durationHours || 0 });
+      }
+    }
+
+    const shiftsCount = approvedMap.size;
+    let totalHours = 0;
+    approvedMap.forEach(v => {
+      totalHours += v.durationHours;
+    });
+
+    return { totalPoints, totalHours, shiftsCount };
+  };
+
   // Add DB members
   for (const u of dbUsers) {
-    const pts = store.getMemberPoints(u.id);
-    const approvedSubs = store.submissions.filter(
-      s => (s.memberId === u.id || s.memberEmail.toLowerCase() === u.email.toLowerCase()) && s.status === 'approved'
-    );
-    const totalHours = approvedSubs.reduce((sum, s) => sum + (s.durationHours || 0), 0);
+    const userEmail = u.email.toLowerCase();
+    const { totalPoints, totalHours, shiftsCount } = computeMemberStats(u, userEmail, u.id);
     const dept =
       u.department ||
       dbDepts.find(d => d.id === u.departmentId) ||
@@ -47,7 +102,7 @@ export async function GET(request: Request) {
     const regNo = (u as any).regNo || '22BCE0000';
     const yearDept = (u as any).yearDept || (dept?.name ? `${dept.name} Department Member` : 'Technical Department Member');
 
-    memberMap.set(u.email.toLowerCase(), {
+    memberMap.set(userEmail, {
       memberId: u.id,
       name: u.name,
       email: u.email,
@@ -56,9 +111,9 @@ export async function GET(request: Request) {
       departmentId: u.departmentId || 'dept-tech',
       departmentName: dept?.name || 'Technical',
       yearDept,
-      points: pts,
+      points: totalPoints,
       totalHours,
-      shiftsCount: approvedSubs.length,
+      shiftsCount,
     });
   }
 
@@ -67,11 +122,7 @@ export async function GET(request: Request) {
   for (const u of storeMembers) {
     const emailKey = u.email.toLowerCase();
     if (!memberMap.has(emailKey)) {
-      const pts = store.getMemberPoints(u.id);
-      const approvedSubs = store.submissions.filter(
-        s => (s.memberId === u.id || s.memberEmail.toLowerCase() === u.email.toLowerCase()) && s.status === 'approved'
-      );
-      const totalHours = approvedSubs.reduce((sum, s) => sum + (s.durationHours || 0), 0);
+      const { totalPoints, totalHours, shiftsCount } = computeMemberStats(u, emailKey, u.id);
       const dept =
         store.getDepartmentById(u.departmentId || '') ||
         dbDepts.find(d => d.id === u.departmentId);
@@ -85,9 +136,9 @@ export async function GET(request: Request) {
         departmentId: u.departmentId || 'dept-tech',
         departmentName: dept?.name || 'Technical',
         yearDept: u.yearDept || (dept?.name ? `${dept.name} Department Member` : 'Technical Department Member'),
-        points: pts,
+        points: totalPoints,
         totalHours,
-        shiftsCount: approvedSubs.length,
+        shiftsCount,
       });
     }
   }
