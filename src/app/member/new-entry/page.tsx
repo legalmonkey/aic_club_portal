@@ -28,6 +28,7 @@ export default function NewShiftEntryPage() {
   // Form State - Cleared for genuine member entry
   const [eventName, setEventName] = useState('');
   const [roleInEvent, setRoleInEvent] = useState('');
+  const [customRole, setCustomRole] = useState('');
   const [shiftDate, setShiftDate] = useState('');
   const [shiftDuration, setShiftDuration] = useState('');
   const [durationHours, setDurationHours] = useState(0);
@@ -70,8 +71,9 @@ export default function NewShiftEntryPage() {
       setSubmitError('Please enter the event or chapter activity title.');
       return;
     }
-    if (!roleInEvent) {
-      setSubmitError('Please select your assigned role in the event.');
+    const finalRole = roleInEvent === 'Other' ? customRole.trim() : roleInEvent;
+    if (!finalRole) {
+      setSubmitError(roleInEvent === 'Other' ? 'Please specify your custom role.' : 'Please select your assigned role in the event.');
       return;
     }
     if (!shiftDate) {
@@ -104,7 +106,7 @@ export default function NewShiftEntryPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           eventName: eventName.trim(),
-          roleInEvent,
+          roleInEvent: finalRole,
           date: shiftDate,
           venue: venue.trim(),
           durationHours,
@@ -239,11 +241,27 @@ export default function NewShiftEntryPage() {
                             <option value="Media & Documentation">Media &amp; Documentation</option>
                             <option value="Registration & Desk Operations">Registration &amp; Desk Operations</option>
                             <option value="Speaker & Guest Hospitality">Speaker &amp; Guest Hospitality</option>
+                            <option value="Other">Other (Specify Custom Role)</option>
                           </select>
                           <span className="material-symbols-outlined absolute right-3 text-tech-grey pointer-events-none text-base">
                             expand_more
                           </span>
                         </div>
+
+                        {roleInEvent === 'Other' && (
+                          <div className="relative flex items-center mt-2 animate-fadeIn">
+                            <span className="material-symbols-outlined absolute left-3 text-electric-blue text-base">edit_note</span>
+                            <input
+                              type="text"
+                              required
+                              placeholder="Write your custom role..."
+                              value={customRole}
+                              onChange={e => setCustomRole(e.target.value)}
+                              className="w-full bg-white text-deep-navy pl-9 pr-4 py-2 rounded-lg font-sans text-xs focus:outline-none focus:ring-2 focus:ring-electric-blue border border-electric-blue/40 shadow-xs"
+                              autoFocus
+                            />
+                          </div>
+                        )}
                       </div>
 
                       {/* Date Completed */}
