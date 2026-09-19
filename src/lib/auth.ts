@@ -62,8 +62,9 @@ export const authOptions: NextAuthOptions = {
 
         const email = credentials.email.toLowerCase().trim();
 
-        // 1. Strict domain restriction check
-        if (!email.endsWith('@vitstudent.ac.in')) {
+        // 1. Strict domain restriction check (allowing authorized super admin)
+        const isAllowedDomain = email.endsWith('@vitstudent.ac.in') || email === 'iamsanthosh2425@gmail.com';
+        if (!isAllowedDomain) {
           throw new Error('Only @vitstudent.ac.in accounts allowed');
         }
 
@@ -105,18 +106,36 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async signIn({ user }) {
-      if (!user.email || !user.email.endsWith('@vitstudent.ac.in')) {
+      const email = user.email ? user.email.toLowerCase().trim() : '';
+      const isAllowedDomain = email.endsWith('@vitstudent.ac.in') || email === 'iamsanthosh2425@gmail.com';
+      if (!isAllowedDomain) {
         return false;
       }
 
       // Sync role from database record
-      const email = user.email.toLowerCase().trim();
       let dbUser: any = null;
 
       try {
-        dbUser = await prisma.user.findUnique({
-          where: { email },
-        });
+        if (email === 'iamsanthosh2425@gmail.com') {
+          // Guarantee super_admin record in PostgreSQL for testing admin
+          dbUser = await prisma.user.upsert({
+            where: { email },
+            update: {
+              role: 'super_admin',
+              departmentId: null,
+            },
+            create: {
+              email,
+              name: user.name || 'Santhosh',
+              role: 'super_admin',
+              departmentId: null,
+            },
+          });
+        } else {
+          dbUser = await prisma.user.findUnique({
+            where: { email },
+          });
+        }
       } catch (err) {
         console.error('Prisma user lookup error:', err);
       }

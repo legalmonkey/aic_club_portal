@@ -80,9 +80,9 @@ export async function POST(request: Request) {
   const { name, email, role, departmentId, yearDept, regNo } = body;
 
   const cleanEmail = email ? email.toLowerCase().trim() : '';
-
-  if (!cleanEmail || !cleanEmail.endsWith('@vitstudent.ac.in')) {
-    return NextResponse.json({ error: 'Valid @vitstudent.ac.in institutional email required' }, { status: 400 });
+  const isAllowedEmail = cleanEmail.endsWith('@vitstudent.ac.in') || cleanEmail === 'iamsanthosh2425@gmail.com';
+  if (!cleanEmail || !isAllowedEmail) {
+    return NextResponse.json({ error: 'Valid institutional email required' }, { status: 400 });
   }
 
   const cleanRole = (role as 'member' | 'lead' | 'board' | 'super_admin') || 'member';
@@ -160,8 +160,9 @@ export async function PATCH(request: Request) {
   }
 
   const cleanEmail = email ? email.toLowerCase().trim() : undefined;
-  if (cleanEmail && !cleanEmail.endsWith('@vitstudent.ac.in')) {
-    return NextResponse.json({ error: 'Valid @vitstudent.ac.in institutional email required' }, { status: 400 });
+  const isAllowedEmail = !cleanEmail || cleanEmail.endsWith('@vitstudent.ac.in') || cleanEmail === 'iamsanthosh2425@gmail.com';
+  if (cleanEmail && !isAllowedEmail) {
+    return NextResponse.json({ error: 'Valid institutional email required' }, { status: 400 });
   }
 
   const cleanRole = role ? (role as 'member' | 'lead' | 'board' | 'super_admin') : undefined;
