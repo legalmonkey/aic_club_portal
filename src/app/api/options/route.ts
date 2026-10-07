@@ -146,10 +146,10 @@ export async function PATCH(request: Request) {
 
   try {
     const body = await request.json();
-    const { id, label } = body;
+    const { id, label, oldLabel, type } = body;
 
-    if (!id) {
-      return NextResponse.json({ error: 'Option ID is required' }, { status: 400, headers: NO_CACHE_HEADERS });
+    if (!id && !oldLabel) {
+      return NextResponse.json({ error: 'Option ID or label is required' }, { status: 400, headers: NO_CACHE_HEADERS });
     }
 
     const cleanLabel = (label || '').trim();
@@ -157,18 +157,39 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: 'Label is required' }, { status: 400, headers: NO_CACHE_HEADERS });
     }
 
-    const updated = await prisma.portalOption.update({
-      where: { id },
+    const whereConditions: any[] = [];
+    if (id) whereConditions.push({ id });
+    if (oldLabel) {
+      whereConditions.push({ label: oldLabel.trim() });
+      whereConditions.push({ value: oldLabel.trim() });
+    }
+
+    const updated = await prisma.portalOption.updateMany({
+      where: {
+        OR: whereConditions,
+      },
       data: {
         label: cleanLabel,
         value: cleanLabel,
       },
     });
 
-    return NextResponse.json({ success: true, option: updated }, { headers: NO_CACHE_HEADERS });
+    // If no existing record was updated, insert it to keep DB consistent
+    if (updated.count === 0 && type) {
+      await prisma.portalOption.create({
+        data: {
+          id: id || `opt-${type}-${Date.now()}`,
+          type,
+          label: cleanLabel,
+          value: cleanLabel,
+        },
+      });
+    }
+
+    return NextResponse.json({ success: true }, { headers: NO_CACHE_HEADERS });
   } catch (err: any) {
     console.error('Failed to update option:', err);
-    return NextResponse.json({ error: 'Failed to update option' }, { status: 500, headers: NO_CACHE_HEADERS });
+    return NextResponse.json({ error: err?.message || 'Failed to update option' }, { status: 500, headers: NO_CACHE_HEADERS });
   }
 }
 
@@ -180,18 +201,30 @@ export async function DELETE(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
+  const label = searchParams.get('label');
 
-  if (!id) {
-    return NextResponse.json({ error: 'Option ID is required' }, { status: 400, headers: NO_CACHE_HEADERS });
+  if (!id && !label) {
+    return NextResponse.json({ error: 'Option ID or label is required' }, { status: 400, headers: NO_CACHE_HEADERS });
   }
 
   try {
-    await prisma.portalOption.delete({
-      where: { id },
+    const whereConditions: any[] = [];
+    if (id) whereConditions.push({ id });
+    if (label) {
+      whereConditions.push({ label: label.trim() });
+      whereConditions.push({ value: label.trim() });
+    }
+
+    // deleteMany safely removes records without throwing P2025 error if already deleted
+    await prisma.portalOption.deleteMany({
+      where: {
+        OR: whereConditions,
+      },
     });
+
     return NextResponse.json({ success: true }, { headers: NO_CACHE_HEADERS });
   } catch (err: any) {
     console.error('Failed to delete option:', err);
-    return NextResponse.json({ error: 'Failed to delete option' }, { status: 500, headers: NO_CACHE_HEADERS });
+    return NextResponse.json({ error: err?.message || 'Failed to delete option' }, { status: 500, headers: NO_CACHE_HEADERS });
   }
 }

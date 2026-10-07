@@ -112,6 +112,8 @@ export default function AdminOptionsPage() {
         body: JSON.stringify({
           id: editingOption.id,
           label: editLabel.trim(),
+          oldLabel: editingOption.label,
+          type: editingOption.type,
         }),
       });
 
@@ -144,9 +146,12 @@ export default function AdminOptionsPage() {
     setDeleteError('');
 
     try {
-      const res = await fetch(`/api/options?id=${deletingOption.id}`, {
-        method: 'DELETE',
-      });
+      const res = await fetch(
+        `/api/options?id=${encodeURIComponent(deletingOption.id)}&label=${encodeURIComponent(deletingOption.label)}`,
+        {
+          method: 'DELETE',
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) {
