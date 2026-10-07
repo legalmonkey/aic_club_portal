@@ -80,14 +80,14 @@ export default function SuperAdminPage() {
                 </div>
                 <div>
                   <h3 className="font-heading text-lg text-deep-navy font-bold group-hover:text-electric-blue transition-colors">
-                    Roles &amp; Campus Venues
+                    Event Venues &amp; Roles
                   </h3>
                   <p className="font-sans text-xs text-tech-grey mt-1">
                     Customize the assigned shift roles and campus venue/lab options that appear in member forms.
                   </p>
                 </div>
                 <span className="font-sans text-xs text-electric-blue font-bold flex items-center gap-1 mt-auto">
-                  Configure Dropdowns →
+                  Configure Venues &amp; Roles →
                 </span>
               </Link>
 

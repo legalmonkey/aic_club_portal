@@ -179,7 +179,7 @@ export default function AdminOptionsPage() {
       <Sidebar />
 
       <div className="pl-64 flex flex-col flex-1 min-h-screen">
-        <Header pageTitle="Shift Dropdowns & Campus Venues" />
+        <Header pageTitle="Event Venues & Roles" />
 
         <main className="w-full pt-20 px-6 sm:px-8 pb-16 flex-1">
           <div className="flex flex-col w-full gap-6 max-w-6xl mx-auto">
@@ -193,7 +193,7 @@ export default function AdminOptionsPage() {
                     NIS-01 // FORM CONTROLS CONFIGURATION
                   </div>
                   <h1 className="font-heading text-3xl font-extrabold text-deep-navy tracking-tight">
-                    Shift Roles &amp; Campus Venues
+                    Event Venues &amp; Roles
                   </h1>
                   <p className="font-sans text-sm text-tech-grey mt-1 max-w-2xl">
                     Configure the selectable options for student members logging their shifts. Any added or updated options update immediately across the portal.

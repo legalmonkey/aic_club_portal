@@ -116,7 +116,7 @@ export function Sidebar({ pendingReviewCount }: SidebarProps) {
                 active: pathname === '/admin',
               },
               {
-                label: 'Shift Dropdowns',
+                label: 'Event Venues & Roles',
                 href: '/admin/options',
                 icon: 'tune',
                 active: pathname === '/admin/options',
